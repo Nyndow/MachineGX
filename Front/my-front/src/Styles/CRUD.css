@@ -1,0 +1,191 @@
+/* Style for the CRUD container */
+.crud-container {
+  font-family: Arial, sans-serif;
+}
+
+/* Style for the CRUD table wrapper */
+.table-wrapper {
+  width: 85%; /* Set the width you desire */
+  margin: 0 auto; /* Center the table horizontally */
+  overflow: hidden;
+  background-color: #fff;
+}
+
+/* Style for the CRUD table */
+.crud-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  background-color: #fff; /* Change background color to white */
+  border-radius: 0 0 10px 10px;
+  color: #000;
+}
+.crud-table th,
+.crud-table td {
+  padding: 20px; /* Increase the padding to make elements bigger */
+  text-align: right;
+  border-bottom: 1px solid #ccc;
+}
+
+/* Style for the lines above and below the header */
+.crud-table th {
+  font-weight: bold;
+  color: #000;
+  border-top: 2px solid #000;
+  border-bottom: 2px solid #000;
+}
+
+/* Style for alternating row colors in the table content */
+.crud-table tr:nth-child(even) {
+  background-color: #fff;
+}
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+  /* Adjust table width for smaller screens */
+  .table-wrapper {
+    width: 100%;
+  }
+
+}
+
+
+/* Style for buttons in the table */
+.crud-table button {
+  background-color: #007bff; 
+  color: #fff; 
+  border: none;
+  padding: 10px 20px; /* Increase padding for larger buttons */
+  margin-right: 5px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 16px; /* Increase font size for larger buttons */
+}
+
+.crud-table button:hover {
+  background-color: #0056b3; 
+}
+
+.crud-table .delete-button {
+  background-color: #dd6772; 
+}
+
+.crud-table .delete-button:hover {
+  background-color: #cc1010; 
+}
+
+/* SEARCH*/
+
+/* Style for the search container */
+.search-container {
+  margin-top: 2%;
+  margin-bottom: 1%;
+  margin-left: 7.4%;
+  display: inline-block;
+  position: relative;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Style for the search input */
+.search-input {
+  padding: 10px;
+  border: none;
+  outline: none;
+  width: 200px; /* You can adjust the width as needed */
+}
+
+/* Style for the search icon */
+.search-icon {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  color: #999;
+}
+
+/* Style for the clear button */
+.clear-button {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+/* Style for the clear button icon */
+.clear-button svg {
+  color: #999;
+}
+
+/* Style to hide the search icon when input has text */
+.search-icon.hidden {
+  opacity: 0;
+}
+
+
+
+/* Pagination */
+.pagination-container .pagination .page-item {
+  border-radius: 5px; 
+  margin-left: 0.5%; 
+}
+
+.pagination-container .pagination .page-item.active .page-link {
+  background-color: #007bff; 
+  border-color: #007bff; 
+  color: #fff; 
+}
+
+/* Add button container */
+.add-button-container {
+  display: flex;
+  align-items: center;
+  margin-top: 1%;
+}
+
+.add-button {
+  margin-left: 78%; 
+}
+
+/* Style for the "Add" button */
+.add-button-icon {
+  background-color: #61b46a;
+  color: #fff;
+  padding: 12px; /* Set equal padding to create a circular button */
+  border: none;
+  border-radius: 50%; /* Use border-radius to create a circle */
+  cursor: pointer;
+  font-size: 16px;
+  width: 36px; /* Set a fixed width and height for consistency */
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+.add-button-icon:hover {
+  background-color: #0056b3;
+}
+
+/* Style for the delete icon */
+.delete-icon {
+  background-color: #dd6772; 
+  color: #fff; 
+  border: none;
+  padding: 12px 24px; /* Increase padding for larger button */
+  margin-left: 8%;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 16px; /* Increase font size for larger button */
+}
+
+.delete-icon:hover {
+  background-color: #cc1010;
+}
