@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '../Styles/CRUD.css'; // Import the CSS file
+import '../../../Styles/CRUD.css'; // Import the CSS file
 import axios from 'axios';
 import { Pagination } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -16,13 +16,15 @@ class CRUD extends Component {
       currentPage: 1,
       itemsPerPage: 5,
       selectedItems: new Set(),
-      selectAll: false
+      selectAll: false,
     };
   }
+  
 
   //FETCH DATA
   componentDidMount() {
-    axios.get(`http://localhost:3001/${this.props.entity}`)
+    const apiUrl = process.env.REACT_APP_API_URL;
+    axios.get(`${apiUrl}/${this.props.entity}`)
       .then((response) => {
         this.setState({ data: response.data });
       })
@@ -30,6 +32,33 @@ class CRUD extends Component {
         console.error('Error fetching data:', error);
       });
   }
+  
+
+  //DELETE
+  handleDelete = (rowData) => {
+    this.setState((prevState) => {
+      const updatedData = prevState.data.filter((item) => item.id !== rowData.id);
+      const updatedSelectedItems = new Set([...prevState.selectedItems].filter((id) => id !== rowData.id));
+  
+      return {
+        data: updatedData,
+        selectedItems: updatedSelectedItems,
+      };
+    });
+  };
+  
+  handleDeleteSelected = () => {
+    this.setState((prevState) => {
+      const updatedData = prevState.data.filter((item) => !prevState.selectedItems.has(item.id));
+      const updatedSelectedItems = new Set();
+  
+      return {
+        data: updatedData,
+        selectedItems: updatedSelectedItems,
+      };
+    });
+  };
+  
 
   //Change page
   handlePageChange = (page) => {
@@ -41,7 +70,7 @@ class CRUD extends Component {
     this.setState({ searchQuery: e.target.value });
   };
 
-  // Handle the selection of items
+  // SELECTION ITEM
   handleItemSelect = (rowData) => {
     const { selectedItems } = this.state;
     const newSelectedItems = new Set(selectedItems);
@@ -52,32 +81,30 @@ class CRUD extends Component {
       newSelectedItems.add(rowData.id);
     }
 
-    // Update the state with the new selected items set
     this.setState({ selectedItems: newSelectedItems });
   };
 
-    // Function to handle "Select All" checkbox
-// Function to handle "Select All" checkbox
-handleSelectAll = () => {
-  const { selectedItems, data, selectAll, searchQuery } = this.state;
 
-  if (selectAll) {
-    this.setState({ selectedItems: new Set(), selectAll: false });
-  } else {
-    // Filter the data based on the current search query
-    const filteredData = data.filter((rowData) =>
-      Object.values(rowData).some((value) =>
-        value.toString().toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    );
+  handleSelectAll = () => {
+    const { selectedItems, data, selectAll, searchQuery } = this.state;
 
-    const allItemIds = filteredData.map((item) => item.id);
-    this.setState({ selectedItems: new Set(allItemIds), selectAll: true });
-  }
-};
+    if (selectAll) {
+      this.setState({ selectedItems: new Set(), selectAll: false });
+    } else {
+      // Filter the data based on the current search query
+      const filteredData = data.filter((rowData) =>
+        Object.values(rowData).some((value) =>
+          value.toString().toLowerCase().includes(searchQuery.toLowerCase())
+        )
+      );
+
+      const allItemIds = filteredData.map((item) => item.id);
+      this.setState({ selectedItems: new Set(allItemIds), selectAll: true });
+    }
+  };
 
 
-    //CLEAR
+    //CLEAR SEARCH
     handleClearSearch = () => {
       this.setState({ searchQuery: "" });
     };
@@ -86,7 +113,6 @@ handleSelectAll = () => {
   render() {
     const { data, currentPage, itemsPerPage, searchQuery, selectedItems, selectAll } = this.state;
     const { columns } = this.props;
-    console.log(selectedItems);
 
     // Filter data based on the search query
     const filteredData = data.filter((rowData) =>
@@ -124,19 +150,18 @@ handleSelectAll = () => {
           </div>
         </div>
 
-        {/* Add button */}
+        <div className="table-wrapper" style={{ marginTop: '20px' }}>
+                  {/* Add button */}
         <div className="add-button-container">
-          <FontAwesomeIcon icon={faTrash} className="delete-icon" />
+          <FontAwesomeIcon icon={faTrash} className="delete-icon" onClick={() => this.handleDeleteSelected()} />
           <div className="add-button">
-            <Link to="/add/{$entity}">
+            <Link to={`/add/${this.props.entity}`}>
               <button className="add-button-icon">
                 <FontAwesomeIcon icon={faPlusCircle} />
               </button>
             </Link>
           </div>
         </div>
-
-        <div className="table-wrapper" style={{ marginTop: '20px' }}>
           <table className="crud-table">
             <thead>
               <tr>
@@ -174,9 +199,11 @@ handleSelectAll = () => {
                     </>
                   ) : (
                     <> {/* If not selected, render the buttons */}
-                      <button className="edit-button" onClick={() => this.handleEdit(rowData)}>
-                        <FontAwesomeIcon icon={faEdit} />
-                      </button>
+                      <Link to={`/edit/${this.props.entity}/${rowData.id}`} className="custom-link-button">
+                        <button className="edit-button">
+                          <FontAwesomeIcon icon={faEdit} />
+                        </button>
+                      </Link>
                       <button className="delete-button" onClick={() => this.handleDelete(rowData)}>
                         <FontAwesomeIcon icon={faTrash} />
                       </button>
