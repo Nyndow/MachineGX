@@ -1,6 +1,8 @@
 /* Style for the CRUD container */
 .crud-container {
   font-family: Arial, sans-serif;
+  background-color: #1a1a2e;
+  color: #e4e4e4; /* Nebula text color */
 }
 
 /* Style for the CRUD table wrapper */
@@ -8,7 +10,7 @@
   width: 85%;
   margin: 0 auto;
   overflow: hidden;
-  background-color: #fff;
+  background-color: #1a1a2e; /* Nebula background color */
 }
 
 /* Style for the CRUD table */
@@ -16,28 +18,28 @@
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
-  background-color: #fff;
+  background-color: #1a1a2e; /* Nebula background color */
   border-radius: 0 0 10px 10px;
-  color: #000;
+  color: #e4e4e4; /* Nebula text color */
 }
 .crud-table th,
 .crud-table td {
   padding: 20px;
   text-align: right;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #444; /* Nebula border color */
 }
 
 /* Style for the lines above and below the header */
 .crud-table th {
   font-weight: bold;
-  color: #000;
-  border-top: 2px solid #000;
-  border-bottom: 2px solid #000;
+  color: #e4e4e4; /* Nebula text color */
+  border-top: 2px solid #e4e4e4; /* Nebula border color */
+  border-bottom: 2px solid #e4e4e4; /* Nebula border color */
 }
 
 /* Style for alternating row colors in the table content */
 .crud-table tr:nth-child(even) {
-  background-color: #fff;
+  background-color: #1a1a2e; /* Nebula background color */
 }
 
 /* Responsive styles */
@@ -56,7 +58,7 @@
 
   /* Adjust "Add" button positioning and size for smaller screens */
   .add-button {
-    margin-left:0; /* Reset margin */
+    margin-left: 0; /* Reset margin */
     margin-top: 10px; /* Add margin-top for spacing */
   }
 
@@ -68,8 +70,8 @@
 
 /* Style for buttons in the table */
 .crud-table button {
-  background-color: #007bff;
-  color: #fff;
+  background-color: #ff6b00; /* Purple color */
+  color: #e4e4e4; /* Nebula text color */
   border: none;
   padding: 10px 20px;
   margin-right: 5px;
@@ -79,18 +81,18 @@
 }
 
 .crud-table button:hover {
-  background-color: #0056b3;
+  background-color: #E7BFEA; /* Light purple on hover */
 }
 
 .crud-table .delete-button {
-  background-color: #dd6772;
+  background-color: #BF5CC8; /* Pink color */
 }
 
 .crud-table .delete-button:hover {
-  background-color: #cc1010;
+  background-color: #903499; /* Dark pink on hover */
 }
 
-/* SEARCH*/
+/* SEARCH */
 
 /* Style for the search container */
 .search-container {
@@ -99,8 +101,8 @@
   margin-left: 7.4%;
   display: inline-block;
   position: relative;
-  background: #fff;
-  border: 1px solid #ccc;
+  background: #1a1a2e; /* Nebula background color */
+  border: 1px solid #444; /* Nebula border color */
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -111,6 +113,8 @@
   border: none;
   outline: none;
   width: 100%;
+  color: #e4e4e4; /* Nebula text color */
+  background-color: #1a1a2e; /* Nebula background color */
 }
 
 /* Style for the search icon */
@@ -119,7 +123,7 @@
   top: 50%;
   left: 10px;
   transform: translateY(-50%);
-  color: #999;
+  color: #ff6b00; /* Orange accent color */
 }
 
 /* Style for the clear button */
@@ -135,7 +139,7 @@
 
 /* Style for the clear button icon */
 .clear-button svg {
-  color: #999;
+  color: #ff6b00; /* Orange accent color */
 }
 
 /* Style to hide the search icon when input has text */
@@ -144,16 +148,47 @@
 }
 
 /* Pagination */
+.pagination-container .pagination {
+  display: flex;
+  justify-content: flex-start; /* Align pagination buttons to the left */
+  align-items: center;
+  margin: 20px 0;
+}
+
 .pagination-container .pagination .page-item {
+  margin-right: 5px; /* Adjust right margin for spacing */
+}
+
+.pagination-container .pagination .page-link {
+  background-color: #1a1a2e; /* Nebula background color */
+  border: 1px solid #444; /* Nebula border color */
+  color: #e4e4e4; /* Nebula button text color */
+  padding: 10px 15px;
   border-radius: 5px;
-  margin-left: 0.5%;
+  transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+}
+
+.pagination-container .pagination .page-link:hover {
+  background-color: #ff6b00; /* Orange accent color */
+  border-color: #ff6b00; /* Orange accent color */
+  color: #fff; /* Text color on hover */
+  text-decoration: none; /* Remove underline on hover */
 }
 
 .pagination-container .pagination .page-item.active .page-link {
-  background-color: #007bff;
-  border-color: #007bff;
-  color: #fff;
+  background-color: #ff6b00; /* Orange accent color */
+  border-color: #ff6b00; /* Orange accent color */
+  color: #e4e4e4; /* Nebula button text color */
+  cursor: default;
 }
+
+.pagination-container .pagination .page-item.disabled .page-link {
+  background-color: #1a1a2e; /* Nebula background color */
+  border-color: #444; /* Nebula border color */
+  color: #888; /* Disabled text color */
+  cursor: not-allowed;
+}
+
 
 /* Add button container */
 .add-button-container {
@@ -187,7 +222,7 @@
 
 /* Style for the delete icon */
 .delete-icon {
-  background-color: #dd6772;
+  background-color: #BF5CC8;
   color: #fff;
   border: none;
   padding: 12px 24px;
@@ -198,5 +233,5 @@
 }
 
 .delete-icon:hover {
-  background-color: #cc1010;
+  background-color: #903499;
 }
