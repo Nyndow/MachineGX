@@ -2,7 +2,8 @@
 
 from flask import Blueprint, request, jsonify
 from database import db
-from models.administration import Administration  # Corrected import
+from models.administration import Administration
+from werkzeug.security import generate_password_hash, check_password_hash
 
 administration_bp = Blueprint('administration', __name__)
 
@@ -10,16 +11,25 @@ administration_bp = Blueprint('administration', __name__)
 def administration_list():
     if request.method == 'POST':
         data = request.json
-        username = data.get('username')
-        password = data.get('password')
-        new_administration = Administration(username=username, password=password) 
+        adminUsername = data.get('adminUsername')
+        adminPassword = generate_password_hash(data.get('adminPassword'))  # Hash the password
+        numEmployee = data.get('numEmployee')
+        new_administration = Administration(adminUsername=adminUsername, adminPassword=adminPassword, numEmployee=numEmployee) 
         db.session.add(new_administration)
         db.session.commit()
         return jsonify({"message": "Administration created successfully"})
 
     elif request.method == 'GET':
         administrators = Administration.query.all() 
-        admin_list = [{"idAdmin": admin.idAdmin, "username": admin.username, "password": admin.password} for admin in administrators]  
+        admin_list = [
+            {
+                "idAdmin": admin.idAdmin,
+                "adminUsername": admin.adminUsername,
+                "adminPasswordHashed": True,  # Indicate that the password is hashed
+                "numEmployee": admin.numEmployee
+            }
+            for admin in administrators
+        ]
         return jsonify(admin_list)
 
 @administration_bp.route('/administration/<int:admin_id>', methods=['GET', 'PUT', 'DELETE'])
@@ -31,15 +41,19 @@ def administration_detail(admin_id):
     if request.method == 'GET':
         admin_data = {
             "idAdmin": admin.idAdmin, 
-            "username": admin.username,
-            "password": admin.password
+            "adminUsername": admin.adminUsername,
+            "adminPasswordHashed": True,  # Indicate that the password is hashed
+            "numEmployee": admin.numEmployee
         }
         return jsonify(admin_data)
 
     elif request.method == 'PUT':
         data = request.json
-        admin.username = data.get('username', admin.username)
-        admin.password = data.get('password', admin.password)
+        admin.adminUsername = data.get('adminUsername', admin.adminUsername)
+        if 'adminPassword' in data:
+            adminPassword = generate_password_hash(data.get('adminPassword'))  # Update and hash the password
+            admin.adminPassword = adminPassword
+        admin.numEmployee = data.get('numEmployee', admin.numEmployee)
         db.session.commit()
         return jsonify({"message": "Administration updated successfully"})
 

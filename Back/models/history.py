@@ -6,11 +6,11 @@ class History(db.Model):
     idMachine = db.Column(db.Integer, nullable=False)
     idAdmin = db.Column(db.Integer, nullable=False)
     idOption = db.Column(db.Integer, nullable=False)
-    date = db.Column(db.Date, nullable=False)
+    dateHistory = db.Column(db.DateTime, nullable=False)
     
-    def __init__(self, idMachine, idAdmin, idOption, date):
+    def __init__(self, idMachine, idAdmin, idOption, dateHistory):
         self.idMachine = idMachine
         self.idAdmin = idAdmin
         self.idOption = idOption
-        self.date = date
+        self.dateHistory = dateHistory
 

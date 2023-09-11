@@ -152,7 +152,7 @@ class CRUD extends Component {
     const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
     return (
-      <div>
+      <div className='main-container'>
         <div className="main" style={{ background: '#1a1a2e' }}>
           <div className="crud-container">
             {/* Search input field */}

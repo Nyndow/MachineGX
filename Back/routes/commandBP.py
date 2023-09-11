@@ -10,16 +10,18 @@ command_bp = Blueprint('command', __name__)
 def command_list():
     if request.method == 'POST':
         data = request.json
-        description = data.get('description')
-        cible = data.get('cible')
-        new_command = Command(description=description, cible=cible)
+        commandDescription = data.get('commandDescription')
+        commandName = data.get('commandName')
+        commandComment = data.get('commandComment')
+        baseOS = data.get('baseOS')
+        new_command = Command(commandDescription=commandDescription, commandName=commandName,commandComment=commandComment,baseOS=baseOS)
         db.session.add(new_command)
         db.session.commit()
         return jsonify({"message": "Command created successfully"})
 
     elif request.method == 'GET':
         commands = Command.query.all()
-        command_list = [{"idCommand": command.idCommand, "description": command.description, "cible": command.cible} for command in commands]
+        command_list = [{"idCommand": command.idCommand, "commandDescription": command.commandDescription,"baseOS": command.baseOS, "commandName": command.commandName,"commandComment" :command.commandComment} for command in commands]
         return jsonify(command_list)
 
 @command_bp.route('/command/<int:command_id>', methods=['GET', 'PUT', 'DELETE'])
@@ -31,15 +33,19 @@ def command_detail(command_id):
     if request.method == 'GET':
         command_data = {
             "idCommand": command.idCommand,
-            "description": command.description,
-            "cible": command.cible
+            "commandDescription": command.commandDescription,
+            "commandName": command.commandName,
+            "commandComment": command.commandComment,
+            "baseOS": command.baseOS
         }
         return jsonify(command_data)
 
     elif request.method == 'PUT':
         data = request.json
-        command.description = data.get('description', command.description)
-        command.cible = data.get('cible', command.cible)
+        command.commandDescription = data.get('commandDescription', command.commandDescription)
+        command.commandName = data.get('commandName', command.commandName)
+        command.commandComment= data.get('commandComment', command.commandComment)
+        command.baseOS= data.get('baseOS', command.baseOS)
         db.session.commit()
         return jsonify({"message": "Command updated successfully"})
 

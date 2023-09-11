@@ -24,6 +24,7 @@ function NavBarApp() {
                 <NavDropdown.Item as={Link} to="/crud-administration">Administration</NavDropdown.Item>
                 <NavDropdown.Item as={Link} to="/crud-history">History</NavDropdown.Item>
                 <NavDropdown.Item as={Link} to="/crud-command">Command</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/crud-option">Option</NavDropdown.Item>
                 <NavDropdown.Item as={Link} to="/crud-attribution">Attribution</NavDropdown.Item>
               </NavDropdown>
             </Nav>

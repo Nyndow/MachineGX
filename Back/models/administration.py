@@ -3,9 +3,11 @@ from database import db
 class Administration(db.Model):
     __tablename__ = 'administration'
     idAdmin = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), unique=True, nullable=False)
-    password = db.Column(db.String(50), nullable=False)
+    numEmployee = db.Column(db.String(20), nullable=False)
+    adminUsername = db.Column(db.String(50), unique=True, nullable=False)
+    adminPassword = db.Column(db.String(50), nullable=False)
 
-    def __init__(self, username, password):
-        self.username = username
-        self.password = password
+    def __init__(self, adminUsername, adminPassword, numEmployee):
+        self.adminUsername = adminUsername
+        self.adminPassword = adminPassword
+        self.numEmployee = numEmployee

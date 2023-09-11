@@ -7,3 +7,4 @@ export { default as CRUDCommand } from './CRUD-command';
 export { default as CRUDEmployee } from './CRUD-employee';
 export { default as CRUDHistory } from './CRUD-history';
 export { default as CRUDMachine } from './CRUD-machine';
+export { default as CRUDOption } from './CRUD-option';

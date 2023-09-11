@@ -11,11 +11,12 @@ def machine_list():
     if request.method == 'POST':
         data = request.json
         os = data.get('os')
-        hardware = data.get('hardware')
+        machineName = data.get('machineName')
         ram = data.get('ram')
         hdd = data.get('hdd')
         cpu = data.get('cpu')
-        new_machine = Machine(os=os, hardware=hardware, ram=ram, hdd=hdd, cpu=cpu)
+        ipAddr = data.get('ipAddr')
+        new_machine = Machine(os=os, machineName=machineName, ram=ram, hdd=hdd, cpu=cpu, ipAddr=ipAddr)
         db.session.add(new_machine)
         db.session.commit()
         return jsonify({"message": "Machine record created successfully"})
@@ -26,10 +27,11 @@ def machine_list():
             {
                 "idMachine": machine.idMachine,
                 "os": machine.os,
-                "hardware": machine.hardware,
+                "machineName": machine.machineName,
                 "ram": machine.ram,
                 "hdd": machine.hdd,
-                "cpu": machine.cpu
+                "cpu": machine.cpu,
+                "ipAddr": machine.ipAddr
             }
             for machine in machines
         ]
@@ -45,20 +47,22 @@ def machine_detail(machine_id):
         machine_data = {
             "idMachine": machine.idMachine,
             "os": machine.os,
-            "hardware": machine.hardware,
+            "machineName": machine.machineName,
             "ram": machine.ram,
             "hdd": machine.hdd,
-            "cpu": machine.cpu
+            "cpu": machine.cpu,
+            "ipAddr": machine.ipAddr
         }
         return jsonify(machine_data)
 
     elif request.method == 'PUT':
         data = request.json
         machine.os = data.get('os', machine.os)
-        machine.hardware = data.get('hardware', machine.hardware)
+        machine.machineName = data.get('machineName', machine.machineName)
         machine.ram = data.get('ram', machine.ram)
         machine.hdd = data.get('hdd', machine.hdd)
         machine.cpu = data.get('cpu', machine.cpu)
+        machine.ipAddr = data.get('ipAddr', machine.ipAddr)
         db.session.commit()
         return jsonify({"message": "Machine record updated successfully"})
 

@@ -1,12 +1,9 @@
-# attribution_bp.py
-
 from flask import Blueprint, request, jsonify
 from database import db
+from datetime import datetime
 from models.attribution import Attribution  # Import the Attribution model
 
 attribution_bp = Blueprint('attribution', __name__)
-
-# attribution_bp.py (continued)
 
 @attribution_bp.route('/attribution/', methods=['GET', 'POST'])
 def attribution_list():
@@ -14,14 +11,28 @@ def attribution_list():
         data = request.json
         idMachine = data.get('idMachine')
         idUser = data.get('idUser')
-        new_attribution = Attribution(idMachine=idMachine, idUser=idUser)
+        dateDebut_String = data.get('dateDebut')
+        dateDebut = datetime.strptime(dateDebut_String, '%Y-%m-%dT%H:%M')  # Parse with date and time
+        dateFin_string = data.get('dateFin')
+        dateFin = datetime.strptime(dateFin_string, '%Y-%m-%dT%H:%M')  # Parse with date and time
+
+        new_attribution = Attribution(idMachine=idMachine, idUser=idUser, dateDebut=dateDebut, dateFin=dateFin)
         db.session.add(new_attribution)
         db.session.commit()
         return jsonify({"message": "Attribution created successfully"})
 
     elif request.method == 'GET':
         attributions = Attribution.query.all()
-        attribution_list = [{"idAttribution": attribution.idAttribution, "idMachine": attribution.idMachine, "idUser": attribution.idUser} for attribution in attributions]
+        attribution_list = [
+            {
+                "idAttribution": attribution.idAttribution, 
+                "idMachine": attribution.idMachine, 
+                "idUser": attribution.idUser, 
+                "dateDebut": attribution.dateDebut.strftime('%Y-%m-%d %H:%M'),
+                "dateFin": attribution.dateFin.strftime('%Y-%m-%d %H:%M')
+            } 
+            for attribution in attributions
+        ]
         return jsonify(attribution_list)
 
 @attribution_bp.route('/attribution/<int:attribution_id>', methods=['GET', 'PUT', 'DELETE'])
@@ -34,7 +45,9 @@ def attribution_detail(attribution_id):
         attribution_data = {
             "idAttribution": attribution.idAttribution,
             "idMachine": attribution.idMachine,
-            "idUser": attribution.idUser
+            "idUser": attribution.idUser,
+            "dateDebut": attribution.dateDebut.strftime('%Y-%m-%dT%H:%M'),
+            "dateFin": attribution.dateFin.strftime('%Y-%m-%dT%H:%M')
         }
         return jsonify(attribution_data)
 
@@ -42,6 +55,10 @@ def attribution_detail(attribution_id):
         data = request.json
         attribution.idMachine = data.get('idMachine', attribution.idMachine)
         attribution.idUser = data.get('idUser', attribution.idUser)
+        dateDebut_string = data.get('dateDebut', attribution.dateDebut)
+        attribution.dateDebut = datetime.strptime(dateDebut_string, '%Y-%m-%dT%H:%M')  # Parse with date and time
+        dateFin_string = data.get('dateFin', attribution.dateFin)
+        attribution.dateFin = datetime.strptime(dateFin_string, '%Y-%m-%dT%H:%M')  # Parse with date and time
         db.session.commit()
         return jsonify({"message": "Attribution updated successfully"})
 

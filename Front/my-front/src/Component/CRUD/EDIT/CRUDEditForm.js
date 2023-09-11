@@ -1,3 +1,4 @@
+// Import the necessary modules and components at the beginning of CRUDEditForm.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -9,7 +10,8 @@ const CRUDEditForm = ({ entity, columns, entityId }) => {
     const apiUrl = process.env.REACT_APP_API_URL;
     axios.get(`${apiUrl}/${entity}/${entityId}`)
       .then((response) => {
-        setFormData(response.data);
+        const formattedData = { ...response.data };
+        setFormData(formattedData);
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
@@ -30,7 +32,7 @@ const CRUDEditForm = ({ entity, columns, entityId }) => {
   // Replace onSubmit with the actual submit function
   const onSubmit = (data) => {
     const apiUrl = process.env.REACT_APP_API_URL;
-    // Implement your submit logic here, e.g., make a POST request to update the entity
+    // Implement your submit logic here, e.g., make a PUT request to update the entity
     axios.put(`${apiUrl}/${entity}/${entityId}`, data)
       .then((response) => {
         // Handle successful update
@@ -42,6 +44,35 @@ const CRUDEditForm = ({ entity, columns, entityId }) => {
       });
   };
 
+  const renderInput = (column) => {
+    if (column === 'dateHistory' || column === 'dateDebut' || column === 'dateFin') {
+      return (
+        <input
+          className="crud-form-input"
+          type="datetime-local"
+          id={column}
+          name={column}
+          value={formData[column] || ''}
+          onChange={handleChange}
+          required
+        />
+      );
+    } else {
+      return (
+        <input
+          className="crud-form-input"
+          type="text"
+          id={column}
+          name={column}
+          value={formData[column] || ''}
+          onChange={handleChange}
+          required
+        />
+      );
+    }
+  };
+  
+
   return (
     <form className="crud-form-container" onSubmit={handleSubmit}>
       <h2 className="crud-form-title">Edit {entity}</h2>
@@ -50,15 +81,7 @@ const CRUDEditForm = ({ entity, columns, entityId }) => {
           <label className="crud-form-label" htmlFor={column}>
             {column}:
           </label>
-          <input
-            className="crud-form-input"
-            type="text"
-            id={column}
-            name={column}
-            value={formData[column] || ''}
-            onChange={handleChange}
-            required
-          />
+          {renderInput(column, formData, handleChange)} {/* Use the renderInput function */}
         </div>
       ))}
       <button className="crud-form-button" type="submit">

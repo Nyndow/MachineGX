@@ -10,6 +10,7 @@ import LoginForm from './LoginForm';
 import NotFound from './NotFound';
 import AddAdmin from './CRUD/ADD/CRUDAdd'
 import EditCRUD from './CRUD/EDIT/EditCRUD';
+import "../Styles/App.css"
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route path="/crud-history" component={CRUDGeneral.CRUDHistory} />
           <Route path="/crud-attribution" component={CRUDGeneral.CRUDAttribution} />
           <Route path="/crud-administration" component={CRUDGeneral.CRUDAdmin} />
+          <Route path="/crud-option" component={CRUDGeneral.CRUDOption} />
           
           {/*CRUDADD*/}
           <Route path="/add/:entity" component={AddAdmin} />

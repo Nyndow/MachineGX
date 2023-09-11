@@ -9,15 +9,15 @@ function EditCRUD() {
 
   switch (entity) {
     case 'user':
-      columns = ['username', 'password'];
+      columns = ['numEmployee','userUsername','userPassword'];
       break;
   
     case 'administration':
-      columns = ['username', 'password'];
+      columns = ['numEmployee','adminUsername','adminPassword'];
       break;
   
     case 'machine':
-      columns = ['os', 'type', 'ram', 'cpu', 'hdd'];
+      columns = ['machineName','os','ram','cpu','hdd','ipAddr'];
       break;
   
     case 'history':
@@ -25,11 +25,15 @@ function EditCRUD() {
       break;
   
     case 'attribution':
-      columns = ['idEmployee', 'idMachine', 'dateDebut', 'dateFin'];
+      columns = ['idUser', 'idMachine', 'dateDebut', 'dateFin'];
       break;
   
     case 'command':
-      columns = ['command', 'description', 'options'];
+      columns = ['commandName','baseOS', 'commandDescription', 'commandComment'];
+      break;
+
+    case 'option':
+      columns = ['idCommand', 'optionDescription', 'optionSyntax','optionComment','target'];
       break;
   
     default:

@@ -3,9 +3,11 @@ from database import db
 class User(db.Model):
     __tablename__ = 'user'
     idUser = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), unique=True, nullable=False)
-    password = db.Column(db.String(50), nullable=False)
+    userUsername = db.Column(db.String(30), nullable=False)
+    userPassword = db.Column(db.String(30), nullable=False)
+    numEmployee = db.Column(db.String(20), nullable=False)
 
-    def __init__(self, username, password):
-        self.username = username
-        self.password = password
+    def __init__(self, userUsername, userPassword,numEmployee):
+        self.userUsername = userUsername
+        self.userPassword = userPassword
+        self.numEmployee = numEmployee
