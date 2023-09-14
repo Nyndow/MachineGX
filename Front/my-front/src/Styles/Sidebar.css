@@ -1,84 +1,72 @@
-
 .main-container {
   display: flex;
   flex-direction: column;
   background-color: #1a1a2e;
   color: #e4e4e4;
-  width: 100%; /* Make the sidebar full width */
-  padding: 20px; /* Add padding for better spacing */
-  box-sizing: border-box; /* Include padding in width */
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
 }
-/* Sidebar Container */
+
 .sidebar {
-    height: 100%;
-    width: 5%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    background-color: #333; /* Sidebar background color */
-    padding-top: 30px;
-    border-radius: 5px;
-  }
-  
-  /* Sidebar Links */
-  .sidebar a {
-    padding: 15px 10px;
-    text-align: left;
-    text-decoration: none;
-    font-size: 18px;
-    color: #fff; /* Link text color */
-    display: block;
-    transition: 0.3s;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: #333;
+  padding-top: 30px;
+  border-radius: 5px;
+}
+
+.sidebar a {
+  padding: 15px 10px;
+  text-align: left;
+  text-decoration: none;
+  font-size: 18px;
+  color: #fff;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidebar .nav-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  overflow: hidden;
+}
+
+.sidebar .nav-link img {
+  width: 35px;
+  height: 35px;
+  margin-right: 10px;
+}
+
+.sidebar .nav-link:hover {
+  background-color: #FFFF;
+}
+
+.sidebar a:hover {
+  background-color: #555;
+  color: #fff;
+}
+
+.sidebar .active {
+  background-color: #555;
+}
+
+.main-content {
+  padding: 20px;
+}
+
+@media screen and (max-width: 600px) {
+  .sidebar {
+    width: 100%;
+    padding: 10px;
+    position: relative;
   }
 
-  .sidebar .nav-link {
-    display: flex;
-    align-items: center; /* Center vertically */
-    justify-content: center; /* Center horizontally */
-    width: 100%; /* Add a width to constrain the size */
-    overflow: hidden; /* Hide overflow content */
-  }
-  
-  .sidebar .nav-link img {
-    width: 35px; /* Adjust the icon width as needed */
-    height: 35px; /* Adjust the icon height as needed */
-    margin-right: 10px; /* Add spacing between image and text */
-  }
-  
-  /* Add hover styles */
-  .sidebar .nav-link:hover {
-    background-color: #FFFF; /* Add your hover background color */
-  }
-  
-  
-  /* You can adjust the margin-right value to control the spacing between the image and text as desired. */
-  
-  /* Sidebar Links on Hover */
-  .sidebar a:hover {
-    background-color: #555; /* Hover background color */
-    color: #fff;
-  }
-  
-  /* Active Link */
-  .sidebar .active {
-    background-color: #555; /* Active link background color */
-  }
-  
-  /* Main content (pushed to the right) */
   .main-content {
-    margin-left: 250px; /* Adjust this value to match the sidebar width */
-    padding: 20px;
+    margin-left: 0;
   }
-  
-  /* Mobile responsive sidebar */
-  @media screen and (max-width: 600px) {
-    .sidebar {
-      width: 100%;
-      padding: 10px;
-      position: relative;
-    }
-    .main-content {
-      margin-left: 0;
-    }
-  }
-  
+}

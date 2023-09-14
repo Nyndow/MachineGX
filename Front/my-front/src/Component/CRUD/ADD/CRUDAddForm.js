@@ -1,7 +1,7 @@
 import '../../../Styles/CRUDAddForm.css';
 import React, { useState } from 'react';
 import axios from 'axios';
-import { isValid, parseISO } from 'date-fns'; // Import date-fns functions
+import { isValid, parseISO } from 'date-fns'; 
 
 const CRUDAddForm = ({ entity, columns }) => {
   const [formData, setFormData] = useState({});
@@ -13,7 +13,6 @@ const CRUDAddForm = ({ entity, columns }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // You can perform form validation here
     onSubmit(formData);
   };
 
@@ -25,19 +24,16 @@ const onSubmit = (data) => {
   data.dateHistory = dateObject;
   console.log(data.dateHistory)
 
-  // Implement your submit logic here, e.g., make a POST request to update the entity
   axios.post(`${apiUrl}/${entity}/`, data)
     .then((response) => {
-      // Handle successful update
       console.log('Entity updated:', response.data);
     })
     .catch((error) => {
-      // Handle errors
       console.error('Error updating entity:', error);
     });
 };
 
-  // Function to render a date input field if the column is a date
+  // Render a date input field if the column is a date
   const renderInput = (column) => {
     if (column === 'dateHistory' || column === 'dateDebut' || column === 'dateFin') {
       return (
@@ -74,7 +70,7 @@ const onSubmit = (data) => {
           <label className="crud-form-label" htmlFor={column}>
             {column}:
           </label>
-          {renderInput(column)} {/* Call the renderInput function */}
+          {renderInput(column)}
         </div>
       ))}
       <button className="crud-form-button" type="submit">

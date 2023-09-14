@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import NavBarApp from './Navbar';
-import Home from './Home';
 import Command from './Command';
 import Machine from './Machine';
 import History from './History';
@@ -11,6 +10,7 @@ import NotFound from './NotFound';
 import AddAdmin from './CRUD/ADD/CRUDAdd'
 import EditCRUD from './CRUD/EDIT/EditCRUD';
 import "../Styles/App.css"
+import CardList from './Card/CardList';
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
       <Router>
         <NavBarApp />
         <Switch>
-          <Route path="/home" component={Home} />
+          <Route path="/home" component={CardList} />
           <Route path="/command" component={Command} />
           <Route path="/machine" component={Machine} />
           <Route path="/history" component={History} />
@@ -31,6 +31,7 @@ function App() {
           <Route path="/crud-attribution" component={CRUDGeneral.CRUDAttribution} />
           <Route path="/crud-administration" component={CRUDGeneral.CRUDAdmin} />
           <Route path="/crud-option" component={CRUDGeneral.CRUDOption} />
+          <Route path="/crud-os" component={CRUDGeneral.CRUDOS} />
           
           {/*CRUDADD*/}
           <Route path="/add/:entity" component={AddAdmin} />

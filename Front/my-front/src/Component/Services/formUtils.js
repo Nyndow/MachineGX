@@ -4,7 +4,7 @@ export const renderInput = (column, formData, handleChange) => {
       return (
         <input
           className="crud-form-input"
-          type="datetime-local" // Use type="datetime-local" for date-time inputs
+          type="datetime-local"
           id={column}
           name={column}
           value={formData[column] || ''}

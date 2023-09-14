@@ -2,7 +2,8 @@
 
 from flask import Blueprint, request, jsonify
 from database import db
-from models.machine import Machine  # Import the Machine model
+from models.machine import Machine  
+from models.OS import OSys
 
 machine_bp = Blueprint('machine', __name__)
 
@@ -10,13 +11,13 @@ machine_bp = Blueprint('machine', __name__)
 def machine_list():
     if request.method == 'POST':
         data = request.json
-        os = data.get('os')
+        idOS = data.get('idOS')
         machineName = data.get('machineName')
         ram = data.get('ram')
         hdd = data.get('hdd')
         cpu = data.get('cpu')
         ipAddr = data.get('ipAddr')
-        new_machine = Machine(os=os, machineName=machineName, ram=ram, hdd=hdd, cpu=cpu, ipAddr=ipAddr)
+        new_machine = Machine(idOS=idOS, machineName=machineName, ram=ram, hdd=hdd, cpu=cpu, ipAddr=ipAddr)
         db.session.add(new_machine)
         db.session.commit()
         return jsonify({"message": "Machine record created successfully"})
@@ -26,7 +27,7 @@ def machine_list():
         machine_list = [
             {
                 "idMachine": machine.idMachine,
-                "os": machine.os,
+                "idOS": machine.idOS,
                 "machineName": machine.machineName,
                 "ram": machine.ram,
                 "hdd": machine.hdd,
@@ -46,7 +47,7 @@ def machine_detail(machine_id):
     if request.method == 'GET':
         machine_data = {
             "idMachine": machine.idMachine,
-            "os": machine.os,
+            "idOS": machine.idOS,
             "machineName": machine.machineName,
             "ram": machine.ram,
             "hdd": machine.hdd,
@@ -57,7 +58,7 @@ def machine_detail(machine_id):
 
     elif request.method == 'PUT':
         data = request.json
-        machine.os = data.get('os', machine.os)
+        machine.idOS = data.get('idOS', machine.idOS)
         machine.machineName = data.get('machineName', machine.machineName)
         machine.ram = data.get('ram', machine.ram)
         machine.hdd = data.get('hdd', machine.hdd)
@@ -70,3 +71,23 @@ def machine_detail(machine_id):
         db.session.delete(machine)
         db.session.commit()
         return jsonify({"message": "Machine record deleted successfully"})
+    
+@machine_bp.route('/machineList', methods=['GET'])
+def machineHome():
+    try:
+        query = db.session.query(OSys, Machine).filter(OSys.idOS == Machine.idOS).all()
+
+        machine_list = []
+        for oSys, machine in query:
+            machine_list.append({
+                'machineName': machine.machineName,
+                'imgOS': oSys.imgOS,
+                'idMachine': machine.idMachine,
+                'idOS': machine.idOS,
+                'ipAddr': machine.ipAddr
+            })
+
+        return jsonify({'machineHome': machine_list})
+
+    except Exception as e:
+        return str(e)

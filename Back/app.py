@@ -8,6 +8,7 @@ from routes.historyBP import history_bp
 from routes.machineBP import machine_bp
 from routes.optionBP import option_bp
 from routes.userBP import user_bp
+from routes.osBP import oSys_bp
 
 app = Flask(__name__)
 CORS(app)
@@ -22,6 +23,7 @@ app.register_blueprint(history_bp)
 app.register_blueprint(machine_bp)
 app.register_blueprint(option_bp)
 app.register_blueprint(user_bp)
+app.register_blueprint(oSys_bp)
 
 # Initialize the database
 with app.app_context():

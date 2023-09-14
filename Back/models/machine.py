@@ -3,7 +3,7 @@ from database import db
 class Machine(db.Model):
     __tablename__ = 'machine'
     idMachine = db.Column(db.Integer, primary_key=True)
-    os = db.Column(db.String(40), nullable=True)
+    idOS = db.Column(db.Integer, nullable=True)
     machineName = db.Column(db.String(30), nullable=False)
     ram = db.Column(db.Integer, nullable=False)
     hdd = db.Column(db.Integer, nullable=False)
@@ -11,8 +11,8 @@ class Machine(db.Model):
     ipAddr = db.Column(db.String(32), nullable=True)
     
 
-    def __init__(self, os, machineName, ram, hdd, cpu,ipAddr):
-        self.os = os
+    def __init__(self, idOS, machineName, ram, hdd, cpu,ipAddr):
+        self.idOS = idOS
         self.machineName = machineName
         self.ram = ram
         self.hdd = hdd

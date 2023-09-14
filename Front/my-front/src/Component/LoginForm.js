@@ -9,7 +9,7 @@ class LoginForm extends Component {
       username: '',
       password: '',
       isLoggedIn: false,
-      error: '', // Add an error state to handle errors
+      error: '',
     };
   }
 
@@ -21,10 +21,8 @@ class LoginForm extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
 
-    // You can add your login logic here
     const { username, password } = this.state;
 
-    // Example: Check if username and password match
     if (username === 'exampleUser' && password === 'examplePassword') {
       this.setState({ isLoggedIn: true, error: '' });
     } else {

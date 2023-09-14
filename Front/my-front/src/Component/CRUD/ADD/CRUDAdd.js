@@ -1,9 +1,9 @@
 import React from 'react';
-import { useParams } from 'react-router-dom'; // Import useParams to get URL parameters
+import { useParams } from 'react-router-dom'; //Get from the URL
 import CRUDAddForm from './CRUDAddForm';
 
 const AddAdmin = () => {
-  const { entity } = useParams(); // Get the 'entity' parameter from the URL
+  const { entity } = useParams();
   
   let columns = [];
 
@@ -17,7 +17,11 @@ const AddAdmin = () => {
       break;
   
     case 'machine':
-      columns = ['machineName','os', 'ram', 'cpu', 'hdd','ipAddr'];
+      columns = ['machineName','idOS', 'ram', 'cpu', 'hdd','ipAddr'];
+      break;
+
+    case 'oSys':
+      columns = ['nomOS','versionOS', 'imgOS'];
       break;
   
     case 'history':
