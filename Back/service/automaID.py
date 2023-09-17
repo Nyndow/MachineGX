@@ -1,13 +1,17 @@
-from database import db  # Import the db object from your Flask app
+from database import db
+from sqlalchemy import create_engine, text
 
 def id_automa(column_name, table_name, prefix):
-    try:
-        max_value = db.session.query(db.func.max(db.cast(db.func.substr(getattr(table_name, column_name), len(prefix) + 1), db.Integer))).scalar()
-        if max_value is not None:
-            max_value += 1
-        else:
-            max_value = 1
-        return f"{prefix}{max_value}"
-    except Exception as e:
-        print(e)
-        return f"{prefix}{1}"
+    engine = db.get_engine()  
+    with engine.connect() as connection:
+        query = text(f"SELECT MAX(CAST(SUBSTRING({column_name}, {len(prefix) + 1}) AS UNSIGNED)) AS max_numeric_value FROM {table_name} WHERE {column_name} LIKE :prefix")
+        result = connection.execute(query, {'prefix': f'{prefix}%'}).fetchone()
+
+    if result and result.max_numeric_value is not None:
+        max_numeric_value = int(result.max_numeric_value)
+        max_numeric_value += 1
+    else:
+        max_numeric_value = 1 
+
+    new_id = f'{prefix}{max_numeric_value}'
+    return new_id

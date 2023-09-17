@@ -3,19 +3,26 @@
 from flask import Blueprint, request, jsonify
 from database import db
 from models.OS import OSys
+from service.automaID import id_automa
 oSys_bp = Blueprint('oSys', __name__)
 
 @oSys_bp.route('/oSys/', methods=['GET', 'POST'])
 def oSys_list():
     if request.method == 'POST':
         data = request.json
+        prefix = data.get('option')
+        idOS = id_automa("idOS", "OSys", prefix)
         nomOS = data.get('nomOS')
         versionOS = data.get('versionOS')
         imgOS = data.get('imgOS')
-        new_oSys = OSys(nomOS=nomOS, versionOS=versionOS, imgOS=imgOS) 
+        
+        new_oSys = OSys(idOS=idOS, nomOS=nomOS, versionOS=versionOS, imgOS=imgOS)
+        
         db.session.add(new_oSys)
         db.session.commit()
+        
         return jsonify({"message": "oSys created successfully"})
+
 
     elif request.method == 'GET':
         oSysS = OSys.query.all() 
@@ -30,7 +37,7 @@ def oSys_list():
         ]
         return jsonify(oSys_list)
 
-@oSys_bp.route('/oSys/<int:oSys_id>', methods=['GET', 'PUT', 'DELETE'])
+@oSys_bp.route('/oSys/<string:oSys_id>', methods=['GET', 'PUT', 'DELETE'])
 def oSys_detail(oSys_id):
     oSys = OSys.query.get(oSys_id)  
     if not oSys:

@@ -1,8 +1,10 @@
 import React from 'react';
 import { Pagination } from 'react-bootstrap';
+import "../../Styles/Pagination.css"
 
 const PaginationComponent = ({ currentPage, totalPages, onPageChange }) => {
   return (
+    <div className='pagination-container'>
     <Pagination>
       {Array.from({ length: totalPages }, (_, page) => (
         <Pagination.Item
@@ -14,6 +16,7 @@ const PaginationComponent = ({ currentPage, totalPages, onPageChange }) => {
         </Pagination.Item>
       ))}
     </Pagination>
+    </div>
   );
 };
 
