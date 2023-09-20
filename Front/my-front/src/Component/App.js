@@ -11,6 +11,7 @@ import AddAdmin from './CRUD/ADD/CRUDAdd'
 import EditCRUD from './CRUD/EDIT/EditCRUD';
 import "../Styles/App.css"
 import CardList from './Card/CardList';
+import CardPage from './Card/CardPage';
 
 function App() {
   return (
@@ -38,6 +39,9 @@ function App() {
 
           {/*CRUDEDIT*/}
           <Route path="/edit/:entity/:id" component={EditCRUD} />
+
+          {/*MACHINELIST ELEMENT*/}
+          <Route path="/machineList/:idMachine" component={CardPage}/>
 
           {/* Add the login route */}
           <Route path="/login" component={LoginForm} />

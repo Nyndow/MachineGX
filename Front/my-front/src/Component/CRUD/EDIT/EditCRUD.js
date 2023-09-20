@@ -17,7 +17,7 @@ function EditCRUD() {
       break;
   
     case 'machine':
-      columns = ['machineName','idOS','ram','cpu','hdd','ipAddr'];
+      columns = ['machineName','idOS','ram','cpu','hdd','ipAddr','portNumber'];
       break;
 
     case 'oSys':

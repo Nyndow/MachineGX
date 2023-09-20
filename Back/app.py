@@ -9,13 +9,13 @@ from routes.machineBP import machine_bp
 from routes.optionBP import option_bp
 from routes.userBP import user_bp
 from routes.osBP import oSys_bp
+from routes.ssh import ssh_bp
 
 app = Flask(__name__)
 CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///machineGX.db'
 db.init_app(app)
 
-# Register Blueprints
 app.register_blueprint(administration_bp)
 app.register_blueprint(attribution_bp)
 app.register_blueprint(command_bp)
@@ -24,6 +24,7 @@ app.register_blueprint(machine_bp)
 app.register_blueprint(option_bp)
 app.register_blueprint(user_bp)
 app.register_blueprint(oSys_bp)
+app.register_blueprint(ssh_bp)
 
 # Initialize the database
 with app.app_context():

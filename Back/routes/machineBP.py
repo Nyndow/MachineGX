@@ -17,7 +17,8 @@ def machine_list():
         hdd = data.get('hdd')
         cpu = data.get('cpu')
         ipAddr = data.get('ipAddr')
-        new_machine = Machine(idOS=idOS, machineName=machineName, ram=ram, hdd=hdd, cpu=cpu, ipAddr=ipAddr)
+        portNumber = data.get('portNumber')
+        new_machine = Machine(idOS=idOS, machineName=machineName, ram=ram, hdd=hdd, cpu=cpu, ipAddr=ipAddr,portNumber=portNumber)
         db.session.add(new_machine)
         db.session.commit()
         return jsonify({"message": "Machine record created successfully"})
@@ -32,7 +33,8 @@ def machine_list():
                 "ram": machine.ram,
                 "hdd": machine.hdd,
                 "cpu": machine.cpu,
-                "ipAddr": machine.ipAddr
+                "ipAddr": machine.ipAddr,
+                "portNumber": machine.portNumber
             }
             for machine in machines
         ]
@@ -52,7 +54,8 @@ def machine_detail(machine_id):
             "ram": machine.ram,
             "hdd": machine.hdd,
             "cpu": machine.cpu,
-            "ipAddr": machine.ipAddr
+            "ipAddr": machine.ipAddr,
+            "portNumber": machine.portNumber
         }
         return jsonify(machine_data)
 
@@ -64,6 +67,7 @@ def machine_detail(machine_id):
         machine.hdd = data.get('hdd', machine.hdd)
         machine.cpu = data.get('cpu', machine.cpu)
         machine.ipAddr = data.get('ipAddr', machine.ipAddr)
+        machine.portNumber = data.get('portNumber', machine.portNumber)
         db.session.commit()
         return jsonify({"message": "Machine record updated successfully"})
 
@@ -84,7 +88,8 @@ def machineHome():
                 'imgOS': oSys.imgOS,
                 'idMachine': machine.idMachine,
                 'idOS': machine.idOS,
-                'ipAddr': machine.ipAddr
+                'ipAddr': machine.ipAddr,
+                'portNumber': machine.portNumber
             })
 
         return jsonify({'machineHome': machine_list})

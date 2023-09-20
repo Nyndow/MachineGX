@@ -2,8 +2,7 @@
 
 from flask import Blueprint, request, jsonify
 from database import db
-from models.user import User  # Import the User model
-from werkzeug.security import generate_password_hash, check_password_hash
+from models.user import User 
 
 user_bp = Blueprint('user', __name__)
 
@@ -12,7 +11,7 @@ def user_list():
     if request.method == 'POST':
         data = request.json
         userUsername = data.get('userUsername')
-        userPassword = generate_password_hash(data.get('userPassword'))  # Hash the password
+        userPassword = data.get('userPassword')
         numEmployee = data.get('numEmployee')
         new_user = User(userUsername=userUsername, userPassword=userPassword, numEmployee=numEmployee)
         db.session.add(new_user)
@@ -25,7 +24,7 @@ def user_list():
             {
                 "idUser": user.idUser,
                 "userUsername": user.userUsername,
-                "userPasswordHashed": True,  # Indicate that the password is hashed
+                "userPassword": user.userPassword,
                 "numEmployee": user.numEmployee
             }
             for user in users
@@ -42,7 +41,7 @@ def user_detail(user_id):
         user_data = {
             "idUser": user.idUser,
             "userUsername": user.userUsername,
-            "userPasswordHashed": True,  # Indicate that the password is hashed
+            "userPassword": user.userPassword,
             "numEmployee": user.numEmployee
         }
         return jsonify(user_data)
@@ -50,9 +49,7 @@ def user_detail(user_id):
     elif request.method == 'PUT':
         data = request.json
         user.userUsername = data.get('userUsername', user.userUsername)
-        if 'userPassword' in data:
-            userPassword = generate_password_hash(data.get('userPassword'))  # Update and hash the password
-            user.userPassword = userPassword
+        user.userPassword = data.get('userUsername', user.userUsername)
         user.numEmployee = data.get('numEmployee', user.numEmployee)
         db.session.commit()
         return jsonify({"message": "User updated successfully"})

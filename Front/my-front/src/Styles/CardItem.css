@@ -1,5 +1,25 @@
-/* Add this CSS to your stylesheet */
 .card-link {
+    text-decoration: none;
+  }
+
+  .green-state {
+    background-color: green;
+  }
+  
+  .red-state {
+    background-color: red;
+  }
+  
+  .state-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+  }
+  
+
+  .link{
     text-decoration: none;
   }
   
@@ -7,7 +27,7 @@
     width: 200px; 
     height: 200px; 
     background-color: #fff;
-    border-radius: 10px; /* Set the border radius to create rounded corners */
+    border-radius: 10px; 
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease-in-out;
     margin-bottom: 20px;
@@ -18,23 +38,23 @@
   }
   
   .card:hover {
-    transform: scale(1.05); /* Add a scale effect on hover for a subtle interaction */
+    transform: scale(1.05); 
   }
   
   .card-image {
-    width: 80px; /* Set the width of the image */
-    height: 80px; /* Set the height of the image */
-    object-fit: cover; /* Maintain aspect ratio while covering the image container */
-    border-radius: 50%; /* Make the image round */
+    width: 80px;
+    height: 80px; 
+    object-fit: cover; 
+    border-radius: 50%; 
   }
   
   .card-title {
-    font-size: 1.2rem; /* Customize the title font size */
+    font-size: 1.2rem; 
     margin: 8px 0;
   }
   
   .card-description {
-    font-size: 0.9rem; /* Customize the description font size */
+    font-size: 0.9rem;
     color: #777;
     text-align: center;
   }

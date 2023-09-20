@@ -1,5 +1,5 @@
 from database import db
-from sqlalchemy import create_engine, text
+from sqlalchemy import text
 
 def id_automa(column_name, table_name, prefix):
     engine = db.get_engine()  

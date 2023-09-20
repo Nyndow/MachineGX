@@ -54,7 +54,7 @@ const CRUDEditForm = ({ entity, columns, entityId }) => {
       return (
         <input
           className="crud-form-input"
-          type="text"
+          type={column === 'userPassword' ? 'password' : 'text'}
           id={column}
           name={column}
           value={formData[column] || ''}

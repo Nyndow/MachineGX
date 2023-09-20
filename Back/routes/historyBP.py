@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from database import db
-from models.history import History  # Import the History model
+from models.history import History 
 from datetime import datetime
 from service.automaID import id_automa
 
@@ -31,7 +31,7 @@ def history_list():
                 "idMachine": record.idMachine,
                 "idAdmin": record.idAdmin,
                 "idOption": record.idOption,
-                "dateHistory": record.dateHistory.strftime('%Y-%m-%d %H:%M')  # Use '%Y-%m-%d %H:%M:%S' format
+                "dateHistory": record.dateHistory.strftime('%Y-%m-%d %H:%M') 
             }
             for record in history_records
         ]
@@ -60,7 +60,7 @@ def history_detail(history_id):
         history_record.idOption = data.get('idOption', history_record.idOption)
         dateHistory_string = data.get('dateHistory')
 
-        history_record.dateHistory = datetime.strptime(dateHistory_string, '%Y-%m-%dT%H:%M')  # Use '%Y-%m-%d %H:%M:%S' format
+        history_record.dateHistory = datetime.strptime(dateHistory_string, '%Y-%m-%dT%H:%M') 
 
         db.session.commit()
         return jsonify({"message": "History record updated successfully"})
