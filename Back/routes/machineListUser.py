@@ -66,7 +66,6 @@ def machineHome():
         return str(e)
 
 
-#TRANSFERT FILE IF IT'S A LINUX SYS
 @machine_user_list.route('/transfer-script/<int:machine_id>', methods=['POST'])
 def transfer_file(machine_id):
     uploaded_file = request.files['file']
@@ -79,14 +78,18 @@ def transfer_file(machine_id):
 
         try:
             sftp = ssh.open_sftp()
-            sftp.put(uploaded_file.filename, '/home/'+user_username+'/notEmployee/' + uploaded_file.filename)
+            remote_path = '/home/' + user_username + '/notEmployee/' + uploaded_file.filename
+            sftp.putfo(uploaded_file, remote_path)
             sftp.close()
 
             return jsonify({"message": "File uploaded successfully to SSH server"})
         except Exception as e:
+            # Log the error for debugging purposes
+            print(f"Error during file transfer: {str(e)}")
             return jsonify({"error": f"Error during file transfer: {str(e)}"}), 500
     else:
         return jsonify({"error": "No file provided"}), 400
+
 
 #RESSOURCES DETAILS IF IT'S A LINUX SYS
 @machine_user_list.route('/execute-script/<int:machine_id>', methods=['GET'])
