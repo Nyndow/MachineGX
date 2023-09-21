@@ -15,7 +15,7 @@ const CardList = () => {
   useEffect(() => {
     fetchData();
 
-    const intervalId = setInterval(fetchScriptData, 3000);
+    const intervalId = setInterval(fetchScriptData, 500);
 
     return () => {
       clearInterval(intervalId);
@@ -40,40 +40,37 @@ const CardList = () => {
   const fetchScriptData = () => {
     const updatedCardData = [...cardData];
   
-    // Use Promise.all to wait for all the axios requests to complete
-    Promise.all(
-      updatedCardData.map((machine, i) => {
-        return axios
-          .get(`${apiUrl}/execute-script/${machine.idMachine}`)
-          .then((response) => {
-            if (response.data && response.data.script_data) {
-              updatedCardData[i] = {
-                ...machine,
-                script_data: {
-                  CPUUsage: response.data.script_data.CPUUsage,
-                  DownloadSpeed: response.data.script_data.DownloadSpeed,
-                  FreeMemory: response.data.script_data.FreeMemory,
-                  TotalMemory: response.data.script_data.TotalMemory,
-                  Unknown: response.data.script_data.Unknown,
-                  UploadSpeed: response.data.script_data.UploadSpeed,
-                },
-              };
-            } else {
-              console.error('Invalid script_data response format:', response.data);
-            }
-          })
-          .catch((error) => {
-            console.error('Error fetching script_data:', error);
-          });
-      })
-    )
-      .then(() => {
-        setCardData(updatedCardData);
-      })
-      .catch((error) => {
-        console.error('Error fetching script_data:', error);
-      });
+    updatedCardData.forEach((machine, i) => {
+      axios
+        .get(`${apiUrl}/execute-script/${machine.idMachine}`)
+        .then((response) => {
+          if (response.data && response.data.script_data) {
+            updatedCardData[i] = {
+              ...machine,
+              script_data: {
+                CPUUsage: response.data.script_data.CPUUsage,
+                DownloadSpeed: response.data.script_data.DownloadSpeed,
+                FreeMemory: response.data.script_data.FreeMemory,
+                TotalMemory: response.data.script_data.TotalMemory,
+                Unknown: response.data.script_data.Unknown,
+                UploadSpeed: response.data.script_data.UploadSpeed,
+              },
+            };
+            // Update the state immediately when a request finishes
+            setCardData(updatedCardData);
+          } else {
+            console.error('Invalid script_data response format:', response.data);
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching script_data:', error);
+        });
+    });
   };
+  
+  // To fetch data initially and whenever needed
+  fetchScriptData();
+  
   
 
   const updateMachineState = async () => {
