@@ -6,28 +6,17 @@ import PaginationComponent from '../Services/Pagination';
 
 const CardList = () => {
   const [cardData, setCardData] = useState([]);
+  const apiUrl = process.env.REACT_APP_API_URL;
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 16;
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const connectedMachines = cardData.filter((machine) => machine.state === 'up');
 
   useEffect(() => {
     fetchData(); // Fetch data initially
   }, []);
 
-  useEffect(() => {
-    // When the component mounts or cardData changes, update localStorage
-    localStorage.setItem('machineStates', JSON.stringify(cardData));
-  }, [cardData]);
-
-  useEffect(() => {
-    // When the component mounts, check if there are stored machine states in localStorage
-    const storedMachineStates = localStorage.getItem('machineStates');
-    if (storedMachineStates) {
-      setCardData(JSON.parse(storedMachineStates));
-    }
-  }, []);
-
   const fetchData = () => {
-    const apiUrl = process.env.REACT_APP_API_URL;
     axios
       .get(`${apiUrl}/machineList`)
       .then((response) => {
@@ -47,23 +36,45 @@ const CardList = () => {
   };
 
   const updateMachineState = async () => {
-    const apiUrl = process.env.REACT_APP_API_URL;
-    const updatedCardData = [...cardData]; // Create a copy of the existing data
+    const updatedCardData = [...cardData];
   
     for (let i = 0; i < updatedCardData.length; i++) {
       const machine = updatedCardData[i];
       try {
         const response = await axios.post(`${apiUrl}/connect/${machine.idMachine}`);
         console.log('Machine state updated:', response);
-        updatedCardData[i] = { ...machine, state: 'up' }; // Update the state to 'up' in the copy
+        updatedCardData[i] = { ...machine, state: 'up' }; 
       } catch (error) {
         console.error('Error updating machine state:', error);
       }
     }
   
-    setCardData(updatedCardData); // Update the state with the modified data
+    setCardData(updatedCardData); 
   };
 
+  const disconnectAllMachines = async () => {
+  
+    try {
+      for (let i = 0; i < connectedMachines.length; i++) {
+        const machine = connectedMachines[i];
+        await axios.post(`${apiUrl}/disconnect/${machine.idMachine}`);
+      }
+      const updatedCardData = cardData.map((machine) => {
+        if (machine.state === 'up') {
+          return {
+            ...machine,
+            state: 'down', 
+          };
+        }
+        return machine;
+      });
+      setCardData(updatedCardData);
+    } catch (error) {
+      console.error('Error disconnecting connected machines:', error);
+    }
+  };
+  
+  
   const getPaginatedData = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
@@ -74,20 +85,58 @@ const CardList = () => {
     setCurrentPage(newPage);
   };
 
+  const handleFileSelect = (e) => {
+    setSelectedFiles([...e.target.files]);
+  };
+
+  const uploadFile = async (file, machineId) => {
+    const formData = new FormData();
+    formData.append('file', file);
+  
+    try {
+      const response = await axios.post(`${apiUrl}/transfer-script/${machineId}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log(`File uploaded to machine ${machineId}:`, response);
+    } catch (error) {
+      console.error(`Error uploading file to machine ${machineId}:`, error);
+    }
+  };
+  
+  const uploadFiles = async () => {
+    try {
+      for (const machine of connectedMachines) {
+        const promises = selectedFiles.map((file) => uploadFile(file, machine.idMachine));
+        await Promise.all(promises);
+      }
+      setSelectedFiles([]);
+    } catch (error) {
+      console.error('Error uploading files:', error);
+    }
+  };
+  
+    
+
   return (
     <div className="card-list">
       {getPaginatedData().map((card) => (
         <div key={card.idMachine} className="card-item-container">
           <CardItem
             title={card.machineName}
-            description={card.ipAddr}
+            description={card.numEmployee}
+            description2={card.userUsername}
             imageUrl={card.imgOS}
             idMachine={card.idMachine}
             state={card.state}
           />
         </div>
       ))}
-      <button onClick={updateMachineState}>Update State for All Machines</button>
+      <input type="file" multiple onChange={handleFileSelect} />
+      <button onClick={uploadFiles} className='uploadButton'>Upload</button>
+      <button onClick={updateMachineState}className='connectButton'>Connect</button>
+      <button onClick={disconnectAllMachines}className='disconnectButton'>Disconnect</button>
       <div className="pagination-container">
         <PaginationComponent
           currentPage={currentPage}

@@ -2,7 +2,7 @@ import React from 'react';
 import '../../Styles/CardItem.css';
 import { Link } from 'react-router-dom/cjs/react-router-dom';
 
-const CardItem = ({ title, description, imageUrl, idMachine, state }) => {
+const CardItem = ({ title, description, imageUrl, idMachine, state, description2 }) => {
   const stateIndicatorClass = state === 'up' ? 'green-state' : 'red-state';
 
   return (

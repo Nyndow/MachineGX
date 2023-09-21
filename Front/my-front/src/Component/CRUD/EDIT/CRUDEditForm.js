@@ -3,9 +3,9 @@ import axios from 'axios';
 
 const CRUDEditForm = ({ entity, columns, entityId }) => {
   const [formData, setFormData] = useState({});
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    const apiUrl = process.env.REACT_APP_API_URL;
     axios.get(`${apiUrl}/${entity}/${entityId}`)
       .then((response) => {
         const formattedData = { ...response.data };
@@ -27,7 +27,6 @@ const CRUDEditForm = ({ entity, columns, entityId }) => {
   };
 
   const onSubmit = (data) => {
-    const apiUrl = process.env.REACT_APP_API_URL;
     axios.put(`${apiUrl}/${entity}/${entityId}`, data)
       .then((response) => {
         console.log('Entity updated:', response.data);

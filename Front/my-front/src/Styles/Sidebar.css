@@ -1,13 +1,3 @@
-.main-container {
-  display: flex;
-  flex-direction: column;
-  background-color: #1a1a2e;
-  color: #e4e4e4;
-  width: 100%;
-  padding: 20px;
-  box-sizing: border-box;
-}
-
 .sidebar {
   position: fixed;
   top: 0;

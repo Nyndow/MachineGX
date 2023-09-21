@@ -1,9 +1,6 @@
-# machine_bp.py
-
 from flask import Blueprint, request, jsonify
 from database import db
 from models.machine import Machine  
-from models.OS import OSys
 
 machine_bp = Blueprint('machine', __name__)
 
@@ -75,24 +72,3 @@ def machine_detail(machine_id):
         db.session.delete(machine)
         db.session.commit()
         return jsonify({"message": "Machine record deleted successfully"})
-    
-@machine_bp.route('/machineList', methods=['GET'])
-def machineHome():
-    try:
-        query = db.session.query(OSys, Machine).filter(OSys.idOS == Machine.idOS).all()
-
-        machine_list = []
-        for oSys, machine in query:
-            machine_list.append({
-                'machineName': machine.machineName,
-                'imgOS': oSys.imgOS,
-                'idMachine': machine.idMachine,
-                'idOS': machine.idOS,
-                'ipAddr': machine.ipAddr,
-                'portNumber': machine.portNumber
-            })
-
-        return jsonify({'machineHome': machine_list})
-
-    except Exception as e:
-        return str(e)

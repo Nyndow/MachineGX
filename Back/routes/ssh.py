@@ -5,15 +5,18 @@ from models.attribution import Attribution
 from models.user import User
 from datetime import datetime
 import paramiko
+from .ssh_manager import ssh_clients
 
 ssh_bp = Blueprint('ssh', __name__)
 
-# Define a global SSH client variable
-ssh_clients = {}
-
+# SSH CONNECTION
 @ssh_bp.route('/connect/<int:machine_id>', methods=['POST'])
 def connect(machine_id):
     try:
+
+        if machine_id in ssh_clients:
+            return jsonify({'status': 'Already connected'}), 400
+        
         machine = Machine.query.get(machine_id)
         datenow = datetime.now()
         query = (
@@ -35,7 +38,6 @@ def connect(machine_id):
         ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         ssh_client.connect(hostname=machine.ipAddr, port=machine.portNumber, username=userUsername, password=userPassword)
 
-        # Store the SSH client in the global dictionary
         ssh_clients[machine_id] = ssh_client
 
         return jsonify({'status': 'up'})
@@ -46,14 +48,13 @@ def connect(machine_id):
     except Exception as e:
         return jsonify({'status': 'An error occurred', 'error_message': str(e)}), 500
 
+# SSH DECONNECTION
 @ssh_bp.route('/disconnect/<int:machine_id>', methods=['POST'])
 def disconnect(machine_id):
     try:
-        # Get the SSH client from the global dictionary
         ssh_client = ssh_clients.get(machine_id)
 
         if ssh_client:
-            # Close the SSH connection
             ssh_client.close()
             del ssh_clients[machine_id]
             return jsonify({'status': 'down'})

@@ -6,6 +6,7 @@ import '../../../Styles/CRUDAddForm.css';
 
 const CRUDAddForm = ({ entity, columns }) => {
   const [formData, setFormData] = useState({});
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,7 +19,6 @@ const CRUDAddForm = ({ entity, columns }) => {
   };
 
   const onSubmit = (data) => {
-    const apiUrl = process.env.REACT_APP_API_URL;
 
     const dateString = data.dateHistory;
     const dateObject = new Date(dateString);
