@@ -15,7 +15,7 @@ const CardList = () => {
   useEffect(() => {
     fetchData();
 
-    const intervalId = setInterval(fetchScriptData, 500);
+    const intervalId = setInterval(fetchScriptData, 1000);
 
     return () => {
       clearInterval(intervalId);
@@ -39,11 +39,12 @@ const CardList = () => {
 
   const fetchScriptData = () => {
     const updatedCardData = [...cardData];
-  
-    updatedCardData.forEach((machine, i) => {
-      axios
-        .get(`${apiUrl}/execute-script/${machine.idMachine}`)
-        .then((response) => {
+
+    updatedCardData.forEach(async (machine, i) => {
+      // Only fetch script data if the machine state is 'up'
+      if (machine.state === 'up') {
+        try {
+          const response = await axios.get(`${apiUrl}/execute-script/${machine.idMachine}`);
           if (response.data && response.data.script_data) {
             updatedCardData[i] = {
               ...machine,
@@ -61,10 +62,10 @@ const CardList = () => {
           } else {
             console.error('Invalid script_data response format:', response.data);
           }
-        })
-        .catch((error) => {
+        } catch (error) {
           console.error('Error fetching script_data:', error);
-        });
+        }
+      }
     });
   };
   
@@ -91,27 +92,21 @@ const CardList = () => {
   };
 
   const disconnectAllMachines = async () => {
-  
     try {
       for (let i = 0; i < connectedMachines.length; i++) {
         const machine = connectedMachines[i];
         await axios.post(`${apiUrl}/disconnect/${machine.idMachine}`);
       }
-      const updatedCardData = cardData.map((machine) => {
-        if (machine.state === 'up') {
-          return {
-            ...machine,
-            state: 'down', 
-          };
-        }
-        return machine;
-      });
+      
+      const updatedCardData = cardData.map((machine) => ({
+        ...machine,
+        state: 'down',
+      }));
       setCardData(updatedCardData);
     } catch (error) {
       console.error('Error disconnecting connected machines:', error);
     }
-  };
-  
+  };  
   
   const getPaginatedData = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
