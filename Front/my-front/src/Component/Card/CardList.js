@@ -13,7 +13,13 @@ const CardList = () => {
   const connectedMachines = cardData.filter((machine) => machine.state === 'up');
 
   useEffect(() => {
-    fetchData(); // Fetch data initially
+    fetchData();
+
+    const intervalId = setInterval(fetchScriptData, 3000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
   }, []);
 
   const fetchData = () => {
@@ -21,11 +27,7 @@ const CardList = () => {
       .get(`${apiUrl}/machineList`)
       .then((response) => {
         if (response.data && response.data.machineHome) {
-          const machinesWithState = response.data.machineHome.map((machine) => ({
-            ...machine,
-            state: 'down',
-          }));
-          setCardData(machinesWithState);
+          setCardData(response.data.machineHome);
         } else {
           console.error('Invalid API response format:', response.data);
         }
@@ -34,6 +36,45 @@ const CardList = () => {
         console.error('Error fetching data:', error);
       });
   };
+
+  const fetchScriptData = () => {
+    const updatedCardData = [...cardData];
+  
+    // Use Promise.all to wait for all the axios requests to complete
+    Promise.all(
+      updatedCardData.map((machine, i) => {
+        return axios
+          .get(`${apiUrl}/execute-script/${machine.idMachine}`)
+          .then((response) => {
+            if (response.data && response.data.script_data) {
+              updatedCardData[i] = {
+                ...machine,
+                script_data: {
+                  CPUUsage: response.data.script_data.CPUUsage,
+                  DownloadSpeed: response.data.script_data.DownloadSpeed,
+                  FreeMemory: response.data.script_data.FreeMemory,
+                  TotalMemory: response.data.script_data.TotalMemory,
+                  Unknown: response.data.script_data.Unknown,
+                  UploadSpeed: response.data.script_data.UploadSpeed,
+                },
+              };
+            } else {
+              console.error('Invalid script_data response format:', response.data);
+            }
+          })
+          .catch((error) => {
+            console.error('Error fetching script_data:', error);
+          });
+      })
+    )
+      .then(() => {
+        setCardData(updatedCardData);
+      })
+      .catch((error) => {
+        console.error('Error fetching script_data:', error);
+      });
+  };
+  
 
   const updateMachineState = async () => {
     const updatedCardData = [...cardData];
@@ -116,21 +157,24 @@ const CardList = () => {
       console.error('Error uploading files:', error);
     }
   };
-  
-    
 
   return (
     <div className="card-list">
       {getPaginatedData().map((card) => (
         <div key={card.idMachine} className="card-item-container">
-          <CardItem
-            title={card.machineName}
-            description={card.numEmployee}
-            description2={card.userUsername}
-            imageUrl={card.imgOS}
-            idMachine={card.idMachine}
-            state={card.state}
-          />
+        <CardItem
+          machineName={card.machineName}
+          numEmployee={card.numEmployee}
+          userUsername={card.userUsername}
+          imageUrl={card.imgOS}
+          idMachine={card.idMachine}
+          state={card.state}
+          freeRAM={card.script_data?.FreeMemory || "0 GB"}
+          totalRAM={card.script_data?.TotalMemory || "0 GB"}
+          DownUsage={card.script_data?.DownloadSpeed || "0 KB/s"}
+          UpUsage={card.script_data?.UploadSpeed || "0 KB/s"}
+          CPUUsage={card.script_data?.CPUUsage || "0%"}
+        />
         </div>
       ))}
       <input type="file" multiple onChange={handleFileSelect} />

@@ -12,7 +12,6 @@ machine_user_list = Blueprint('machine_user_list', __name__)
 @machine_user_list.route('/machineList', methods=['GET'])
 def machineHome():
     try:
-        # Perform a join between relevant tables to fetch machine and user data in one query
         query = db.session.query(
             Machine.machineName,
             OSys.imgOS,
@@ -85,3 +84,28 @@ def transfer_file(machine_id):
             return jsonify({"error": f"Error during file transfer: {str(e)}"}), 500
     else:
         return jsonify({"error": "No file provided"}), 400
+    
+@machine_user_list.route('/execute-script/<int:machine_id>', methods=['GET'])
+def execute_script(machine_id):
+    try:
+        ssh = ssh_clients.get(machine_id)
+        if ssh is None:
+            return jsonify({"error": "SSH client not found for machine ID"}), 405
+
+        script_path = "/home/debian/notEmployee/ressources.sh"
+
+        _, stdout, _ = ssh.exec_command(f"/bin/bash {script_path}")
+        script_output = stdout.read().decode('utf-8')
+        script_data = {}
+        for line in script_output.split('\n'):
+            parts = line.strip().split(': ')
+            if len(parts) == 2:
+                key, value = parts
+                script_data[key] = value
+            elif len(parts) == 1:
+                script_data["Unknown"] = parts[0]
+
+        return jsonify({"message": "Script executed successfully on SSH client", "script_data": script_data})
+
+    except Exception as e:
+        return jsonify({"error": f"Error during script execution: {str(e)}"}), 500
