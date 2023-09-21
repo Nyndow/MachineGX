@@ -43,7 +43,6 @@ const CardList = () => {
     updatedCardData.forEach(async (machine, i) => {
       if (machine.state === 'up') {
         try {
-          // Include machine.userUsername as a parameter in the URL
           const response = await axios.get(`${apiUrl}/execute-script/${machine.idMachine}`, {
             params: {
               userUsername: machine.userUsername
