@@ -65,9 +65,12 @@ def machineHome():
     except Exception as e:
         return str(e)
 
+
+#TRANSFERT FILE IF IT'S A LINUX SYS
 @machine_user_list.route('/transfer-script/<int:machine_id>', methods=['POST'])
 def transfer_file(machine_id):
     uploaded_file = request.files['file']
+    user_username = request.args.get('userUsername')
 
     if uploaded_file:
         ssh = ssh_clients.get(machine_id)
@@ -76,7 +79,7 @@ def transfer_file(machine_id):
 
         try:
             sftp = ssh.open_sftp()
-            sftp.put(uploaded_file.filename, '/home/debian/notEmployee/' + uploaded_file.filename)
+            sftp.put(uploaded_file.filename, '/home/'+user_username+'/notEmployee/' + uploaded_file.filename)
             sftp.close()
 
             return jsonify({"message": "File uploaded successfully to SSH server"})
@@ -84,15 +87,17 @@ def transfer_file(machine_id):
             return jsonify({"error": f"Error during file transfer: {str(e)}"}), 500
     else:
         return jsonify({"error": "No file provided"}), 400
-    
+
+#RESSOURCES DETAILS IF IT'S A LINUX SYS
 @machine_user_list.route('/execute-script/<int:machine_id>', methods=['GET'])
 def execute_script(machine_id):
     try:
+        user_username = request.args.get('userUsername')
         ssh = ssh_clients.get(machine_id)
         if ssh is None:
             return jsonify({"error": "SSH client not found for machine ID"}), 405
 
-        script_path = "/home/debian/notEmployee/ressources.sh"
+        script_path = '/home/'+user_username+'/notEmployee/ressources.sh'
 
         _, stdout, _ = ssh.exec_command(f"/bin/bash {script_path}")
         script_output = stdout.read().decode('utf-8')

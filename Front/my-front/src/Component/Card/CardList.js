@@ -39,12 +39,17 @@ const CardList = () => {
 
   const fetchScriptData = () => {
     const updatedCardData = [...cardData];
-
+  
     updatedCardData.forEach(async (machine, i) => {
-      // Only fetch script data if the machine state is 'up'
       if (machine.state === 'up') {
         try {
-          const response = await axios.get(`${apiUrl}/execute-script/${machine.idMachine}`);
+          // Include machine.userUsername as a parameter in the URL
+          const response = await axios.get(`${apiUrl}/execute-script/${machine.idMachine}`, {
+            params: {
+              userUsername: machine.userUsername
+            }
+          });
+  
           if (response.data && response.data.script_data) {
             updatedCardData[i] = {
               ...machine,
@@ -57,7 +62,6 @@ const CardList = () => {
                 UploadSpeed: response.data.script_data.UploadSpeed,
               },
             };
-            // Update the state immediately when a request finishes
             setCardData(updatedCardData);
           } else {
             console.error('Invalid script_data response format:', response.data);
@@ -68,6 +72,7 @@ const CardList = () => {
       }
     });
   };
+  
   
   // To fetch data initially and whenever needed
   fetchScriptData();
@@ -122,26 +127,26 @@ const CardList = () => {
     setSelectedFiles([...e.target.files]);
   };
 
-  const uploadFile = async (file, machineId) => {
+  const uploadFile = async (file, machineId, userUsername) => {
     const formData = new FormData();
     formData.append('file', file);
   
     try {
-      const response = await axios.post(`${apiUrl}/transfer-script/${machineId}`, formData, {
+      const response = await axios.post(`${apiUrl}/transfer-script/${machineId}?userUsername=${userUsername}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log(`File uploaded to machine ${machineId}:`, response);
+      console.log(`File uploaded to machine ${machineId} for user ${userUsername}:`, response);
     } catch (error) {
-      console.error(`Error uploading file to machine ${machineId}:`, error);
+      console.error(`Error uploading file to machine ${machineId} for user ${userUsername}:`, error);
     }
   };
   
   const uploadFiles = async () => {
     try {
       for (const machine of connectedMachines) {
-        const promises = selectedFiles.map((file) => uploadFile(file, machine.idMachine));
+        const promises = selectedFiles.map((file) => uploadFile(file, machine.idMachine, machine.userUsername));
         await Promise.all(promises);
       }
       setSelectedFiles([]);
