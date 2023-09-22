@@ -78,8 +78,7 @@ def transfer_file(machine_id):
 
         try:
             sftp = ssh.open_sftp()
-            remote_path = '/home/' + user_username + '/notEmployee/' + uploaded_file.filename
-            sftp.putfo(uploaded_file, remote_path)
+            sftp.putfo(uploaded_file, '/home/' + user_username + '/notEmployee/' + uploaded_file.filename)
             sftp.close()
 
             return jsonify({"message": "File uploaded successfully to SSH server"})

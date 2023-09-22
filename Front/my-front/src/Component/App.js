@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import NavBarApp from './Navbar';
 import Command from './Command';
-import Machine from './Machine';
+import MachineOption from './MachineOption';
 import History from './History';
 import * as CRUDGeneral from './CRUD/GENERAL';
 import LoginForm from './LoginForm';
@@ -21,7 +21,7 @@ function App() {
         <Switch>
           <Route path="/home" component={CardList} />
           <Route path="/command" component={Command} />
-          <Route path="/machine" component={Machine} />
+          <Route path="/machine" component={MachineOption} />
           <Route path="/history" component={History} />
 
           {/*CRUD GENERAL*/}

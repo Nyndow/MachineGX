@@ -19,6 +19,11 @@ function Sidebar() {
           </Nav.Link>
         </Nav.Item>
         <Nav.Item>
+          <Nav.Link as={Link} to="/machine">
+          <img src={TerminalIcon} alt="machine"/>
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
           <Nav.Link as={Link} to="/command">
           <img src={TerminalIcon} alt="Command"/>
           </Nav.Link>
