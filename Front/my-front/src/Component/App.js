@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import NavBarApp from './Navbar';
+import Sidebar from './Navbar';
 import Command from './Command';
 import MachineOption from './MachineOption';
 import History from './History';
@@ -17,7 +17,7 @@ function App() {
   return (
     <div className="app-container">
       <Router>
-        <NavBarApp />
+        <Sidebar />
         <Switch>
           <Route path="/home" component={CardList} />
           <Route path="/command" component={Command} />

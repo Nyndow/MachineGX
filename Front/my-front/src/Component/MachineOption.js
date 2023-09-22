@@ -8,8 +8,6 @@ function MachineOption() {
     ipAddr: '',
     portNumber: '',
     machineName: '',
-    username: '',
-    password: '',
   });
   const [selectedNomOS, setSelectedNomOS] = useState('');
   const [selectedVersionOS, setSelectedVersionOS] = useState('');
@@ -71,8 +69,6 @@ function MachineOption() {
         ipAddr: formData.ipAddr,
         portNumber: formData.portNumber,
         machineName: formData.machineName,
-        username: formData.username,
-        password: formData.password,
         nomOS: useManualEntry ? manualNomOS : selectedNomOS,
         versionOS: useManualEntry ? manualVersionOS : selectedVersionOS,
       };
@@ -103,6 +99,16 @@ function MachineOption() {
   return (
     <div>
       <div>
+        <label htmlFor="machineNameInput">Machine Name:</label>
+        <input
+          type="text"
+          id="machineNameInput"
+          name="machineName"
+          value={formData.machineName}
+          onChange={handleInputChange}
+        />
+      </div>
+      <div>
         <label htmlFor="ipAddrInput">IP Address:</label>
         <input
           type="text"
@@ -122,38 +128,8 @@ function MachineOption() {
           onChange={handleInputChange}
         />
       </div>
-      <div>
-        <label htmlFor="machineNameInput">Machine Name:</label>
-        <input
-          type="text"
-          id="machineNameInput"
-          name="machineName"
-          value={formData.machineName}
-          onChange={handleInputChange}
-        />
-      </div>
-      <div>
-        <label htmlFor="usernameInput">Username:</label>
-        <input
-          type="text"
-          id="usernameInput"
-          name="username"
-          value={formData.username}
-          onChange={handleInputChange}
-        />
-      </div>
-      <div>
-        <label htmlFor="passwordInput">Password:</label>
-        <input
-          type="password"
-          id="passwordInput"
-          name="password"
-          value={formData.password}
-          onChange={handleInputChange}
-        />
-      </div>
 
-      {/* Toggle button for mode selection */}
+      {/* OS SELECTION */}
       <button onClick={handleToggleMode}>
         {useManualEntry ? 'Use Dropdown' : 'Use Manual Entry'}
       </button>
