@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../../Styles/CRUD.css'; 
 import axios from 'axios';
 import PaginationComponent from '../../Services/Pagination';
@@ -6,238 +6,209 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import { faSearch, faTrash, faEdit, faPlusCircle, faTimes } from '@fortawesome/free-solid-svg-icons';
 
-class CRUD extends Component {
-  constructor(props) {
-    super(props);
+function CRUD(props) {
+  const [data, setData] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5);
+  const [selectedItems, setSelectedItems] = useState(new Set());
+  const [selectAll, setSelectAll] = useState(false);
 
-    this.state = {
-      data: [],
-      searchQuery: '',
-      currentPage: 1,
-      itemsPerPage: 5,
-      selectedItems: new Set(),
-      selectAll: false,
-    };
-  }
-
-  componentDidMount() {
+  useEffect(() => {
     const apiUrl = process.env.REACT_APP_API_URL;
     axios
-      .get(`${apiUrl}/${this.props.entity}`)
+      .get(`${apiUrl}/${props.entity}`)
       .then((response) => {
-        this.setState({ data: response.data });
+        setData(response.data);
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
-  }
+  }, [props.entity]);
 
-  //NAVIGATION
-  handlePageChange = (newPage) => {
-    this.setState({ currentPage: newPage });
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
   };
 
-  //CLEAR
-  handleClearSearch = () => {
-    this.setState({ searchQuery: '' });
+  const handleClearSearch = () => {
+    setSearchQuery('');
   };
-  
 
-  handleItemSelect = (rowData) => {
-    const { selectedItems } = this.state;
+  const handleItemSelect = (rowData) => {
     const newSelectedItems = new Set(selectedItems);
-
-    if (newSelectedItems.has(rowData[this.props.idField])) {
-      newSelectedItems.delete(rowData[this.props.idField]);
+    if (newSelectedItems.has(rowData[props.idField])) {
+      newSelectedItems.delete(rowData[props.idField]);
     } else {
-      newSelectedItems.add(rowData[this.props.idField]);
+      newSelectedItems.add(rowData[props.idField]);
     }
-
-    this.setState({ selectedItems: newSelectedItems });
+    setSelectedItems(newSelectedItems);
   };
 
-  handleSelectAll = () => {
-    const { selectedItems, data, selectAll, searchQuery } = this.state;
-
+  const handleSelectAll = () => {
     if (selectAll) {
-      this.setState({ selectedItems: new Set(), selectAll: false });
+      setSelectedItems(new Set());
+      setSelectAll(false);
     } else {
       const filteredData = data.filter((rowData) =>
         Object.values(rowData).some((value) =>
           value.toString().toLowerCase().includes(searchQuery.toLowerCase())
         )
       );
-
-      const allItemIds = filteredData.map((item) => item[this.props.idField]);
-      this.setState({ selectedItems: new Set(allItemIds), selectAll: true });
+      const allItemIds = filteredData.map((item) => item[props.idField]);
+      setSelectedItems(new Set(allItemIds));
+      setSelectAll(true);
     }
   };
 
-  handleSearchInputChange = (e) => {
-    this.setState({ searchQuery: e.target.value });
+  const handleSearchInputChange = (e) => {
+    setSearchQuery(e.target.value);
   };
 
-  //DELETE
-    handleDelete = (rowData) => {
-      const { idField } = this.props;
-      const apiUrl = process.env.REACT_APP_API_URL;
+  const handleDelete = (rowData) => {
+    const apiUrl = process.env.REACT_APP_API_URL;
+    axios
+      .delete(`${apiUrl}/${props.entity}/${rowData[props.idField]}`)
+      .then((response) => {
+        const updatedData = data.filter((item) => item[props.idField] !== rowData[props.idField]);
+        setData(updatedData);
+        console.log('Item deleted successfully:', response.data);
+      })
+      .catch((error) => {
+        console.error('Error deleting item:', error);
+      });
+  };
 
-      axios
-        .delete(`${apiUrl}/${this.props.entity}/${rowData[idField]}`)
-        .then((response) => {
-          const updatedData = this.state.data.filter((item) => item[idField] !== rowData[idField]);
-          this.setState({ data: updatedData });
-
-          console.log('Item deleted successfully:', response.data);
-        })
-        .catch((error) => {
-          console.error('Error deleting item:', error);
-        });
-    };
-
-    handleDeleteSelected = () => {
-      const { idField } = this.props;
-      const apiUrl = process.env.REACT_APP_API_URL;
-      const { selectedItems } = this.state;
-  
-      const selectedIds = Array.from(selectedItems);
-  
-      Promise.all(
-        selectedIds.map((itemId) =>
-          axios.delete(`${apiUrl}/${this.props.entity}/${itemId}`)
-        )
+  const handleDeleteSelected = () => {
+    const apiUrl = process.env.REACT_APP_API_URL;
+    const selectedIds = Array.from(selectedItems);
+    Promise.all(
+      selectedIds.map((itemId) =>
+        axios.delete(`${apiUrl}/${props.entity}/${itemId}`)
       )
-        .then((responses) => {
-          const updatedData = this.state.data.filter((item) => !selectedIds.includes(item[idField]));
-          this.setState({ data: updatedData, selectedItems: new Set() });
-  
-          console.log('Selected items deleted successfully:', responses);
-        })
-        .catch((error) => {
-          console.error('Error deleting selected items:', error);
-        });
-    };
-  
+    )
+      .then((responses) => {
+        const updatedData = data.filter((item) => !selectedIds.includes(item[props.idField]));
+        setData(updatedData);
+        setSelectedItems(new Set());
+        console.log('Selected items deleted successfully:', responses);
+      })
+      .catch((error) => {
+        console.error('Error deleting selected items:', error);
+      });
+  };
 
-  render() {
-    const { data, currentPage, itemsPerPage, searchQuery, selectedItems, selectAll } = this.state;
-    const { columns } = this.props;
+  const { columns } = props;
 
-    const filteredData = data.filter((rowData) =>
-      Object.values(rowData).some((value) =>
-        value.toString().toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    );
+  const filteredData = data.filter((rowData) =>
+    Object.values(rowData).some((value) =>
+      value.toString().toLowerCase().includes(searchQuery.toLowerCase())
+    )
+  );
 
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    const dataToDisplay = filteredData.slice(startIndex, endIndex);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const dataToDisplay = filteredData.slice(startIndex, endIndex);
 
-    const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
-    return (
-      <div className='main-container'>
-        <div className="main" style={{ background: '#1a1a2e' }}>
-          <div className="crud-container">
-            {/* Search input */}
-            <div className="search-container">
-              <div className="search-input-container">
-                <FontAwesomeIcon icon={faSearch} className={`search-icon ${this.state.searchQuery ? 'hidden' : ''}`} />
-                <input
-                  type="text"
-                  placeholder="      Search..."
-                  value={this.state.searchQuery}
-                  onChange={this.handleSearchInputChange}
-                  className="search-input"
-                />
-                {this.state.searchQuery && (
-                  <button className="clear-button" onClick={this.handleClearSearch}>
-                    <FontAwesomeIcon icon={faTimes} />
+  return (
+    <div className='main-container'>
+      <div className="main" style={{ background: '#1a1a2e' }}>
+        <div className="crud-container">
+          <div className="search-container">
+            <div className="search-input-container">
+              <FontAwesomeIcon icon={faSearch} className={`search-icon ${searchQuery ? 'hidden' : ''}`} />
+              <input
+                type="text"
+                placeholder="      Search..."
+                value={searchQuery}
+                onChange={handleSearchInputChange}
+                className="search-input"
+              />
+              {searchQuery && (
+                <button className="clear-button" onClick={handleClearSearch}>
+                  <FontAwesomeIcon icon={faTimes} />
+                </button>
+              )}
+            </div>
+          </div>
+          <div className="table-wrapper" style={{ marginTop: '20px' }}>
+            <div className="add-button-container">
+              <FontAwesomeIcon icon={faTrash} className="delete-icon" onClick={handleDeleteSelected} />
+              <div className="add-button">
+                <Link to={`/add/${props.entity}`}>
+                  <button className="add-button-icon">
+                    <FontAwesomeIcon icon={faPlusCircle} />
                   </button>
-                )}
+                </Link>
               </div>
             </div>
-    
-            <div className="table-wrapper" style={{ marginTop: '20px' }}>
-              {/* Add button */}
-              <div className="add-button-container">
-                <FontAwesomeIcon icon={faTrash} className="delete-icon" onClick={() => this.handleDeleteSelected()} />
-                <div className="add-button">
-                  <Link to={`/add/${this.props.entity}`}>
-                    <button className="add-button-icon">
-                      <FontAwesomeIcon icon={faPlusCircle} />
-                    </button>
-                  </Link>
-                </div>
-              </div>
-              <table className="crud-table">
-                <thead>
-                  <tr>
-                    <th>
+            <table className="crud-table">
+              <thead>
+                <tr>
+                  <th>
+                    <input
+                      type="checkbox"
+                      checked={selectAll}
+                      onChange={handleSelectAll}
+                      className="select-all-checkbox"
+                    />
+                  </th>
+                  {columns.map((column) => (
+                    <th key={column}>{column}</th>
+                  ))}
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {dataToDisplay.map((rowData, index) => (
+                  <tr
+                    key={index}
+                    className={index % 2 === 0 ? 'crud-table-row-even' : null}
+                  >
+                    <td>
                       <input
                         type="checkbox"
-                        checked={selectAll}
-                        onChange={this.handleSelectAll}
-                        className="select-all-checkbox"
+                        checked={selectedItems.has(rowData[props.idField])}
+                        onChange={() => handleItemSelect(rowData)}
                       />
-                    </th>
+                    </td>
                     {columns.map((column) => (
-                      <th key={column}>{column}</th>
+                      <td key={column}>{rowData[column]}</td>
                     ))}
-                    <th></th>
+                    <td>
+                      {selectedItems.has(rowData[props.idField]) ? (
+                        <>
+                        </>
+                      ) : (
+                        <>
+                          <Link to={`/edit/${props.entity}/${rowData[props.idField]}`} className="custom-link-button">
+                            <button className="edit-button">
+                              <FontAwesomeIcon icon={faEdit} />
+                            </button>
+                          </Link>
+                          <button className="delete-button" onClick={() => handleDelete(rowData)}>
+                            <FontAwesomeIcon icon={faTrash} />
+                          </button>
+                        </>
+                      )}
+                    </td>
                   </tr>
-                </thead>
-                <tbody>
-        {dataToDisplay.map((rowData, index) => (
-          <tr
-            key={index}
-            className={index % 2 === 0 ? 'crud-table-row-even' : null}
-          >
-            <td>
-              <input
-                type="checkbox"
-                checked={selectedItems.has(rowData[this.props.idField])}
-                onChange={() => this.handleItemSelect(rowData)}
-              />
-            </td>
-            {columns.map((column) => (
-              <td key={column}>{rowData[column]}</td>
-            ))}
-            <td>
-              {selectedItems.has(rowData[this.props.idField]) ? (
-                <> {/* If selected, render nothing (empty fragment) */}
-                </>
-              ) : (
-                <> {/* If not selected, render the buttons */}
-                  <Link to={`/edit/${this.props.entity}/${rowData[this.props.idField]}`} className="custom-link-button">
-                    <button className="edit-button">
-                      <FontAwesomeIcon icon={faEdit} />
-                    </button>
-                  </Link>
-                  <button className="delete-button" onClick={() => this.handleDelete(rowData)}>
-                    <FontAwesomeIcon icon={faTrash} />
-                  </button>
-                </>
-              )}
-            </td>
-          </tr>
-        ))}
-      </tbody>
-              </table>
-              <div className="pagination-container">
+                ))}
+              </tbody>
+            </table>
+            <div className="pagination-container">
               <PaginationComponent
                 currentPage={currentPage}
                 totalPages={totalPages}
-                onPageChange={this.handlePageChange}
+                onPageChange={handlePageChange}
               />
-            </div>
             </div>
           </div>
         </div>
       </div>
-    );
-    
-  }
+    </div>
+  );
 }
 
 export default CRUD;
