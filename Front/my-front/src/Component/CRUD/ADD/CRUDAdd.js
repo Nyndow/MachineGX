@@ -17,7 +17,7 @@ const AddAdmin = () => {
       break;
   
     case 'machine':
-      columns = ['machineName','idOS', 'ram', 'cpu', 'hdd','ipAddr','portNumber'];
+      columns = ['machineName','idOS','ipAddr','portNumber'];
       break;
 
     case 'oSys':

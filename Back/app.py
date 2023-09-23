@@ -11,6 +11,7 @@ from routes.userBP import user_bp
 from routes.osBP import oSys_bp
 from routes.ssh import ssh_bp
 from routes.machineListUser import machine_user_list
+from routes.machineUser import machine_user
 
 app = Flask(__name__)
 CORS(app)
@@ -27,8 +28,8 @@ app.register_blueprint(user_bp)
 app.register_blueprint(oSys_bp)
 app.register_blueprint(ssh_bp)
 app.register_blueprint(machine_user_list)
+app.register_blueprint(machine_user)
 
-# Initialize the database
 with app.app_context():
     db.create_all()
 

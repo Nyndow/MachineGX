@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { isValid, parseISO } from 'date-fns';
 
 import '../../../Styles/CRUDAddForm.css';
 
@@ -119,6 +118,16 @@ const CRUDAddForm = ({ entity, columns }) => {
               onChange={handleChange}
             />
             OPE
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="option"
+              value="OTH"
+              checked={formData.option === 'OTH'}
+              onChange={handleChange}
+            />
+            OTHER
           </label>
         </div>
       );

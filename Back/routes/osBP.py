@@ -1,5 +1,3 @@
-# oSys_bp.py
-
 from flask import Blueprint, request, jsonify
 from database import db
 from models.OS import OSys
@@ -11,26 +9,31 @@ def oSys_list():
     if request.method == 'POST':
         data = request.json
         prefix = data.get('option')
-        idOS = id_automa("idOS", "OSys", prefix)
         nomOS = data.get('nomOS')
         versionOS = data.get('versionOS')
         imgOS = data.get('imgOS')
-        
+
+        existing_oSys = OSys.query.filter_by(nomOS=nomOS, versionOS=versionOS).first()
+
+        if existing_oSys:
+            db.session.delete(existing_oSys)
+            db.session.commit()
+
+        idOS = id_automa("idOS", "OSys", prefix)
         new_oSys = OSys(idOS=idOS, nomOS=nomOS, versionOS=versionOS, imgOS=imgOS)
-        
+
         db.session.add(new_oSys)
         db.session.commit()
-        
+
         return jsonify({"message": "oSys created successfully"})
 
-
     elif request.method == 'GET':
-        oSysS = OSys.query.all() 
+        oSysS = OSys.query.all()
         oSys_list = [
             {
                 "idOS": oSys.idOS,
                 "nomOS": oSys.nomOS,
-                "versionOS":oSys.versionOS, 
+                "versionOS": oSys.versionOS,
                 "imgOS": oSys.imgOS
             }
             for oSys in oSysS

@@ -1,3 +1,5 @@
+//It's MemFree here but it's for the mem used
+
 import React, { useState, useEffect } from 'react';
 import CardItem from './CardItem';
 import axios from 'axios';
@@ -72,8 +74,6 @@ const CardList = () => {
     });
   };
   
-  
-  // To fetch data initially and whenever needed
   fetchScriptData();
   
   
@@ -165,7 +165,7 @@ const CardList = () => {
           imageUrl={card.imgOS}
           idMachine={card.idMachine}
           state={card.state}
-          freeRAM={card.script_data?.FreeMemory || "0 GB"}
+          freeRAM={card.script_data?.FreeMemory || "0"}
           totalRAM={card.script_data?.TotalMemory || "0 GB"}
           DownUsage={card.script_data?.DownloadSpeed || "0 KB/s"}
           UpUsage={card.script_data?.UploadSpeed || "0 KB/s"}

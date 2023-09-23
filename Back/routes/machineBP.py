@@ -10,12 +10,9 @@ def machine_list():
         data = request.json
         idOS = data.get('idOS')
         machineName = data.get('machineName')
-        ram = data.get('ram')
-        hdd = data.get('hdd')
-        cpu = data.get('cpu')
         ipAddr = data.get('ipAddr')
         portNumber = data.get('portNumber')
-        new_machine = Machine(idOS=idOS, machineName=machineName, ram=ram, hdd=hdd, cpu=cpu, ipAddr=ipAddr,portNumber=portNumber)
+        new_machine = Machine(idOS=idOS, machineName=machineName, ipAddr=ipAddr,portNumber=portNumber)
         db.session.add(new_machine)
         db.session.commit()
         return jsonify({"message": "Machine record created successfully"})
@@ -27,9 +24,6 @@ def machine_list():
                 "idMachine": machine.idMachine,
                 "idOS": machine.idOS,
                 "machineName": machine.machineName,
-                "ram": machine.ram,
-                "hdd": machine.hdd,
-                "cpu": machine.cpu,
                 "ipAddr": machine.ipAddr,
                 "portNumber": machine.portNumber
             }
@@ -48,9 +42,6 @@ def machine_detail(machine_id):
             "idMachine": machine.idMachine,
             "idOS": machine.idOS,
             "machineName": machine.machineName,
-            "ram": machine.ram,
-            "hdd": machine.hdd,
-            "cpu": machine.cpu,
             "ipAddr": machine.ipAddr,
             "portNumber": machine.portNumber
         }
@@ -60,9 +51,6 @@ def machine_detail(machine_id):
         data = request.json
         machine.idOS = data.get('idOS', machine.idOS)
         machine.machineName = data.get('machineName', machine.machineName)
-        machine.ram = data.get('ram', machine.ram)
-        machine.hdd = data.get('hdd', machine.hdd)
-        machine.cpu = data.get('cpu', machine.cpu)
         machine.ipAddr = data.get('ipAddr', machine.ipAddr)
         machine.portNumber = data.get('portNumber', machine.portNumber)
         db.session.commit()

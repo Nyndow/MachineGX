@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import axios from 'axios';
+import '../Styles/machineOption.css';
 
 function MachineOption() {
   const apiUrl = process.env.REACT_APP_API_URL;
@@ -8,12 +9,9 @@ function MachineOption() {
     ipAddr: '',
     portNumber: '',
     machineName: '',
+    nomOS: '', // Add nomOS field to the form data
+    versionOS: '', // Add versionOS field to the form data
   });
-  const [selectedNomOS, setSelectedNomOS] = useState('');
-  const [selectedVersionOS, setSelectedVersionOS] = useState('');
-  const [manualNomOS, setManualNomOS] = useState('');
-  const [manualVersionOS, setManualVersionOS] = useState('');
-  const [useManualEntry, setUseManualEntry] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -39,42 +37,12 @@ function MachineOption() {
     }));
   }, []);
 
-  const nomOSOptions = useMemo(() => {
-    return oSysData.map((item) => (
-      <option key={item.idOsys} value={item.nomOS}>
-        {item.nomOS}
-      </option>
-    ));
-  }, [oSysData]);
-
-  const versionOSOptions = useMemo(() => {
-    return oSysData
-      .filter((item) => item.nomOS === selectedNomOS)
-      .map((item) => (
-        <option key={item.idOsys} value={item.versionOS}>
-          {item.versionOS}
-        </option>
-      ));
-  }, [oSysData, selectedNomOS]);
-
-  const handleToggleMode = useCallback(() => {
-    setUseManualEntry(!useManualEntry);
-  }, [useManualEntry]);
-
   const handleSubmit = useCallback(() => {
     if (!isSubmitting) {
       setIsSubmitting(true);
 
-      const dataToSend = {
-        ipAddr: formData.ipAddr,
-        portNumber: formData.portNumber,
-        machineName: formData.machineName,
-        nomOS: useManualEntry ? manualNomOS : selectedNomOS,
-        versionOS: useManualEntry ? manualVersionOS : selectedVersionOS,
-      };
-
       axios
-        .post(`${apiUrl}/your-endpoint`, dataToSend)
+        .post(`${apiUrl}/machine_user_add/`, formData)
         .then((response) => {
           console.log('Data sent successfully', response);
         })
@@ -85,101 +53,91 @@ function MachineOption() {
           setIsSubmitting(false);
         });
     }
-  }, [
-    apiUrl,
-    isSubmitting,
-    formData,
-    useManualEntry,
-    manualNomOS,
-    manualVersionOS,
-    selectedNomOS,
-    selectedVersionOS,
-  ]);
+  }, [apiUrl, isSubmitting, formData]);
+
+  const nomOSOptions = useMemo(() => {
+    return oSysData.map((item) => (
+      <option key={item.idOsys} value={item.nomOS}>
+        {item.nomOS}
+      </option>
+    ));
+  }, [oSysData]);
+  
+  const versionOSOptions = useMemo(() => {
+    return oSysData
+      .filter((item) => item.nomOS === formData.nomOS)
+      .map((item) => (
+        <option key={item.idOsys} value={item.versionOS}>
+          {item.versionOS}
+        </option>
+      ));
+  }, [oSysData, formData.nomOS]);  
 
   return (
-    <div>
-      <div>
-        <label htmlFor="machineNameInput">Machine Name:</label>
-        <input
-          type="text"
-          id="machineNameInput"
-          name="machineName"
-          value={formData.machineName}
-          onChange={handleInputChange}
-        />
-      </div>
-      <div>
-        <label htmlFor="ipAddrInput">IP Address:</label>
-        <input
-          type="text"
-          id="ipAddrInput"
-          name="ipAddr"
-          value={formData.ipAddr}
-          onChange={handleInputChange}
-        />
-      </div>
-      <div>
-        <label htmlFor="portNumberInput">Port Number:</label>
-        <input
-          type="text"
-          id="portNumberInput"
-          name="portNumber"
-          value={formData.portNumber}
-          onChange={handleInputChange}
-        />
-      </div>
-
-      {/* OS SELECTION */}
-      <button onClick={handleToggleMode}>
-        {useManualEntry ? 'Use Dropdown' : 'Use Manual Entry'}
-      </button>
-
-      {useManualEntry ? (
+    <div className="machineOption-container">
+      <div className="input-group">
         <div>
-          <div>
-            <label htmlFor="manualNomOSInput">Enter nomOS manually:</label>
-            <input
-              type="text"
-              id="manualNomOSInput"
-              name="manualNomOS"
-              value={manualNomOS}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div>
-            <label htmlFor="manualVersionOSInput">Enter versionOS manually:</label>
-            <input
-              type="text"
-              id="manualVersionOSInput"
-              name="manualVersionOS"
-              value={manualVersionOS}
-              onChange={handleInputChange}
-            />
-          </div>
+          <label htmlFor="machineNameInput">Machine Name:</label>
+          <input
+            type="text"
+            id="machineNameInput"
+            name="machineName"
+            value={formData.machineName}
+            onChange={handleInputChange}
+            required
+          />
         </div>
-      ) : (
         <div>
-          <label>Select nomOS:</label>
-          <select
-            id="nomOSSelect"
-            value={selectedNomOS}
-            onChange={(e) => setSelectedNomOS(e.target.value)}
-          >
-            <option value="">Select nomOS</option>
-            {nomOSOptions}
-          </select>
-
-          <label>Select versionOS:</label>
-          <select
-            id="versionOSSelect"
-            value={selectedVersionOS}
-            onChange={(e) => setSelectedVersionOS(e.target.value)}
-          >
-            <option value="">Select versionOS</option>
-            {versionOSOptions}
-          </select>
+          <label htmlFor="ipAddrInput">IP Address:</label>
+          <input
+            type="text"
+            id="ipAddrInput"
+            name="ipAddr"
+            value={formData.ipAddr}
+            onChange={handleInputChange}
+            required
+          />
         </div>
-      )}
+        <div>
+          <label htmlFor="portNumberInput">Port Number:</label>
+          <input
+            type="text"
+            id="portNumberInput"
+            name="portNumber"
+            value={formData.portNumber}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+      </div>
+
+      <div>
+        <label>OS:</label>
+        <select
+          id="nomOSSelect"
+          name="nomOS"
+          value={formData.nomOS}
+          onChange={handleInputChange}
+          required
+        >
+          <option value="">Select nomOS</option>
+          {nomOSOptions}
+        </select>
+      </div>
+
+      <div>
+        <label>Version:</label>
+        <select
+          id="versionOSSelect"
+          name="versionOS"
+          value={formData.versionOS}
+          onChange={handleInputChange}
+          required
+        >
+          <option value="">Select versionOS</option>
+          {versionOSOptions}
+        </select>
+      </div>
 
       <button onClick={handleSubmit} disabled={isSubmitting}>
         {isSubmitting ? 'Submitting...' : 'Submit Data'}

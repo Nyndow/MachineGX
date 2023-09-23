@@ -13,12 +13,10 @@ const CardItem = ({ machineName,freeRAM,totalRAM,CPUUsage,DownUsage,UpUsage,user
           <h2 className="card-title">{machineName}</h2>
           <p className="card-description">{numEmployee}</p>
           <div className={`state-indicator ${stateIndicatorClass}`}></div>
-          <ul>
-            <li>RAM : {freeRAM}/{totalRAM}</li>
-            <li>CPU : {CPUUsage} </li>
-            <li>Download : {DownUsage} </li>
-            <li>Upload : {UpUsage} </li>
-          </ul>
+            <p>RAM : {freeRAM}/{totalRAM}</p>
+            <p>CPU : {CPUUsage} </p>
+            <p>Download : {DownUsage} </p>
+            <p>Upload : {UpUsage} </p>
         </div>
       </div>
     </Link>

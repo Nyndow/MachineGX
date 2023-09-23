@@ -1,7 +1,6 @@
 from flask import Blueprint, request, jsonify
 from database import db
-from models.option import Option  # Import the Option class from your models file
-
+from models.option import Option 
 option_bp = Blueprint('option', __name__)
 
 @option_bp.route('/option/', methods=['GET', 'POST'])

@@ -1,0 +1,101 @@
+/* machineOption.css */
+.machineOption-container {
+    margin-left: 32.5%;
+    margin-top: 2%;
+    width: 32.5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+  
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+  }
+  
+  .input-group label {
+    margin-bottom: 5px;
+  }
+  
+  .input-group input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin-bottom: 10px;
+  }
+  
+  /* Style the label and input to align horizontally */
+  .input-group label,
+  .input-group input {
+    display: inline-block;
+    width: 100%;
+  }
+  
+  button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  
+  button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  /* Styling for the manual input fields */
+  .manual-input {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+  }
+  
+  .manual-input label {
+    margin-bottom: 5px;
+  }
+  
+  .manual-input input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin-bottom: 10px;
+  }
+  
+  /* Style the label and input to align horizontally */
+  .manual-input label,
+  .manual-input input {
+    display: inline-block;
+    width: 100%;
+  }
+  
+  /* Styling for the select dropdowns */
+  .select-dropdown {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+  }
+  
+  .select-dropdown label {
+    margin-bottom: 5px;
+  }
+  
+  .select-dropdown select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin-bottom: 10px;
+  }
+  
+  /* Style the label and select to align horizontally */
+  .select-dropdown label,
+  .select-dropdown select {
+    display: inline-block;
+    width: 100%;
+  }
+  

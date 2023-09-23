@@ -83,7 +83,6 @@ def transfer_file(machine_id):
 
             return jsonify({"message": "File uploaded successfully to SSH server"})
         except Exception as e:
-            # Log the error for debugging purposes
             print(f"Error during file transfer: {str(e)}")
             return jsonify({"error": f"Error during file transfer: {str(e)}"}), 500
     else:
