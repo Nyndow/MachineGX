@@ -1,13 +1,28 @@
 .ressource-container {
-    width: 350px;
-    background-color: black;
-    height: 600px;
-    overflow: auto;
-    border: 1px solid #ccc;
-    border-radius: 1%;
-  }
+  width: 350px;
+  background-color: #110f18;
+  height: 705px;
+  overflow: auto;
+  border: 2px solid #fafaf1;
+  border-radius: 10px;
+  color: white;
+}
 
-  .red-bar {
-    background-color: red;
-  }
-  
+.machine-info p,
+.ressource-info p {
+  margin: 5px 0;
+}
+
+.hr {
+  border: 2px solid #fafaf1;
+  margin: 20px 0;
+}
+
+.progress-bar {
+  margin-top: 10px;
+}
+
+.red-bar {
+  background-color: red;
+  color: red;
+}

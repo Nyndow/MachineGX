@@ -67,3 +67,4 @@ def oSys_detail(oSys_id):
         db.session.delete(oSys)
         db.session.commit()
         return jsonify({"message": "oSys deleted successfully"})
+    

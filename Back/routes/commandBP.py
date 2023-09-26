@@ -53,3 +53,69 @@ def command_detail(command_id):
         db.session.delete(command)
         db.session.commit()
         return jsonify({"message": "Command deleted successfully"})
+
+def getLinuxDistroCmd(base_os_prefix):
+    commands = Command.query.filter((Command.baseOS.like(f'{base_os_prefix}%'))|(Command.baseOS.like('ALL%'))|(Command.baseOS.like('LINUX%'))).all()
+    command_list = [
+        {
+            "idCommand": command.idCommand,
+            "commandDescription": command.commandDescription,
+            "baseOS": command.baseOS,
+            "commandName": command.commandName,
+            "commandComment": command.commandComment
+        }
+        for command in commands
+    ]
+    
+    return jsonify(command_list)
+
+@command_bp.route('/commandList/<string:osys_id>', methods=['GET'])
+def command_list_os(osys_id):
+    if osys_id.startswith("WIN"):
+        commands = Command.query.filter((Command.baseOS.like('WIN%')) | (Command.baseOS.like('ALL%'))).all()
+        command_list = [
+            {
+                "idCommand": command.idCommand,
+                "commandDescription": command.commandDescription,
+                "baseOS": command.baseOS,
+                "commandName": command.commandName,
+                "commandComment": command.commandComment
+            }
+            for command in commands
+        ]
+        return jsonify(command_list)
+    
+    # LINUX
+    elif osys_id.startswith("LINUX"):
+        commands = Command.query.filter(Command.baseOS.like('LINUX%')).all()
+        command_list = [
+            {
+                "idCommand": command.idCommand,
+                "commandDescription": command.commandDescription,
+                "baseOS": command.baseOS,
+                "commandName": command.commandName,
+                "commandComment": command.commandComment
+            }
+            for command in commands
+        ]
+        return jsonify(command_list)
+    
+    # DEBIAN
+    elif (osys_id.startswith("DEB")):
+        return getLinuxDistroCmd('DEB')
+    
+    # ARCH
+    elif (osys_id.startswith("ARC")):
+        return getLinuxDistroCmd("ARC")
+
+    # FEDORA
+    elif (osys_id.startswith("FED")):
+        return getLinuxDistroCmd("FED")
+
+    # OPENSUSE
+    elif (osys_id.startswith("OPE")):
+        return getLinuxDistroCmd("OPE")
+    
+    # OTHER
+    elif (osys_id.startswith("OTH")):
+        return getLinuxDistroCmd("OTH")

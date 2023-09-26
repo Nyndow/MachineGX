@@ -1,6 +1,8 @@
 .command-container{
     width:500px;
-    background-color: black;
-    height: 742px;
+    background-color: #110f18;
+    height: 820px;
+    border-radius: 10px;
+    border: 2px solid #fafaf1;
 }
 

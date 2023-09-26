@@ -1,9 +1,10 @@
 .terminal-container {
     width: 700px;
     margin-top: 2.8%;
-    background-color: black;
-    height: 360px; /* Adjust the height as needed */
+    background-color: #110f18;
+    height: 400px; /* Adjust the height as needed */
     overflow: auto;
-    border: 1px solid #ccc; /* Optional: Add a border for visual separation */
+    border-radius: 10px;
+    border: 2px solid #fafaf1;
   }
   

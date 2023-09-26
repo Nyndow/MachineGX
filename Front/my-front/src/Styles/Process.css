@@ -1,8 +1,51 @@
 .process-container {
     width: 700px;
-    background-color: black;
-    height: 360px;
+    font-family: Arial, sans-serif;
+    background-color: #110f18;
+    height: 400px;
     overflow: auto;
-    border: 1px solid #ccc;
+    border: 2px solid #fafaf1;
+    border-radius: 10px;
+    color: #e4e4e4; 
   }
+
+  .process-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    border-radius: 0 0 10px 10px;
+    color: #e4e4e4; 
+  }
+
+  .process-table th,
+.process-table td {
+  padding: 20px;
+  text-align: right;
+  border-bottom: 1px solid #444; 
+}
+
+
+.process-table th {
+  font-weight: bold;
+  color: #e4e4e4; 
+  border-top: 2px solid #e4e4e4;
+  border-bottom: 2px solid #e4e4e4; 
+}
+
+.process-table button {
+  background-color: #68625e; 
+  color: #e4e4e4; 
+  border: none;
+  padding: 10px 20px;
+  margin-right: 5px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.process-table button:hover {
+  background-color: #E7BFEA; 
+}
+
+
   

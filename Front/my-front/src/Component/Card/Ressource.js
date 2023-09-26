@@ -16,7 +16,7 @@ export default function Ressource() {
         <p>RAM: 2.00/4.00 Go</p>
         <p>CPU: {cpuUsage}%</p>
         <div className="progress-bar">
-    <progress value={cpuUsage} max="100" style={{color:"red"}}> 32% </progress>
+          <progress value={cpuUsage} max="100" className="red-bar"></progress>
         </div>
         <p>HDD: 20/34 Go</p>
       </div>
