@@ -6,7 +6,7 @@ import Ressource from './Ressource'
 import { useParams } from 'react-router-dom/cjs/react-router-dom'
 
 export default function CardPage() {
-  const { idMachine } = useParams();
+  const { idMachine, idOS } = useParams();
   return (
     <div className='cardpage-container'>
       <div className='toAlign'>
@@ -14,7 +14,7 @@ export default function CardPage() {
         <Process idMachine={idMachine}/>
         <Terminal/>
         </div>
-        <Command/>
+        <Command idOS={idOS}/>
         <div className='right-side'>
           <button className='deconnect'>DECONNECTION</button>
           <hr className='hr'></hr>

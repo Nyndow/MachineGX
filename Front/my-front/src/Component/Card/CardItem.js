@@ -2,11 +2,11 @@ import React from 'react';
 import '../../Styles/CardItem.css';
 import { Link } from 'react-router-dom/cjs/react-router-dom';
 
-const CardItem = ({ machineName,freeRAM,totalRAM,CPUUsage,DownUsage,UpUsage,userUsername, numEmployee, imageUrl, idMachine, state }) => {
+const CardItem = ({ idOS, machineName,freeRAM,totalRAM,CPUUsage,DownUsage,UpUsage,userUsername, numEmployee, imageUrl, idMachine, state }) => {
   const stateIndicatorClass = state === 'up' ? 'green-state' : 'red-state';
 
   return (
-    <Link to={`/machine-page/${idMachine}`} className="link">
+    <Link to={`/machine-page/${idMachine}/${idOS}`} className="link">
       <div className="card">
         <img src={imageUrl} alt={machineName} className="card-image" />
         <div className="card-content">

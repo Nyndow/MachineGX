@@ -119,3 +119,6 @@ def command_list_os(osys_id):
     # OTHER
     elif (osys_id.startswith("OTH")):
         return getLinuxDistroCmd("OTH")
+
+    # Handle cases where none of the conditions match (add a default response)
+    return jsonify({"error": "Invalid osys_id"})  # You can customize this error response

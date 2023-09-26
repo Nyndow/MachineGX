@@ -169,6 +169,7 @@ const CardList = () => {
       {getPaginatedData().map((card) => (
         <div key={card.idMachine} className="card-item-container">
         <CardItem
+          idOS={card.idOS}
           machineName={card.machineName}
           numEmployee={card.numEmployee}
           userUsername={card.userUsername}
