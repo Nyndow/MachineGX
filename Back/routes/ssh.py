@@ -1,9 +1,4 @@
 from flask import Blueprint, request, jsonify
-from database import db
-from models.machine import Machine  
-from models.attribution import Attribution
-from models.user import User
-from datetime import datetime
 import paramiko
 from .ssh_manager import ssh_clients
 
@@ -13,30 +8,17 @@ ssh_bp = Blueprint('ssh', __name__)
 @ssh_bp.route('/connect/<int:machine_id>', methods=['POST'])
 def connect(machine_id):
     try:
-
         if machine_id in ssh_clients:
             return jsonify({'status': 'Already connected'}), 400
+        data = request.json
+        userUsername = data.get('userUsername')
+        userPassword = data.get('userPassword')
+        ipAddr = data.get('ipAddr')
+        portNumber = data.get('portNumber')
         
-        machine = Machine.query.get(machine_id)
-        datenow = datetime.now()
-        query = (
-            db.session.query(User.userUsername, User.userPassword)
-            .filter(User.idUser == Attribution.idUser)
-            .filter(Attribution.idMachine == machine_id)
-            .filter(Attribution.dateDebut <= datenow)
-            .filter(datenow <= Attribution.dateFin)
-        )
-        result = query.first()
-
-        if result:
-            userUsername, userPassword = result
-        else:
-            print("No matching attribution found for the given idMachine and date range.")
-            return jsonify({'status': 'Attribution not found'}), 404
-
         ssh_client = paramiko.SSHClient()
         ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        ssh_client.connect(hostname=machine.ipAddr, port=machine.portNumber, username=userUsername, password=userPassword)
+        ssh_client.connect(hostname=ipAddr, port=portNumber, username=userUsername, password=userPassword)
 
         ssh_clients[machine_id] = ssh_client
 

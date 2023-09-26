@@ -41,7 +41,7 @@ function App() {
           <Route path="/edit/:entity/:id" component={EditCRUD} />
 
           {/*MACHINELIST ELEMENT*/}
-          <Route path="/machineList/:idMachine" component={CardPage}/>
+          <Route path="/machine-page/:idMachine" component={CardPage}/>
 
           {/* Add the login route */}
           <Route path="/login" component={LoginForm} />

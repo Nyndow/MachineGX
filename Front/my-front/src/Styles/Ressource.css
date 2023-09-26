@@ -1,0 +1,13 @@
+.ressource-container {
+    width: 350px;
+    background-color: black;
+    height: 600px;
+    overflow: auto;
+    border: 1px solid #ccc;
+    border-radius: 1%;
+  }
+
+  .red-bar {
+    background-color: red;
+  }
+  

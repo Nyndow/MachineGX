@@ -1,12 +1,26 @@
-import React, { Component } from 'react'
-import ProcessCompoenent from './ProcessCompoenent'
+import React from 'react'
+import Process from './Process'
+import Terminal from './Terminal'
+import Command from './Command'
+import Ressource from './Ressource'
 
-export default class CardPage extends Component {
-  render() {
-    return (
-      <div>
-        <ProcessCompoenent/>
+export default function CardPage() {
+  return (
+    <div className='cardpage-container'>
+      <div className='toAlign'>
+        <div className='vertical'>
+        <Process/>
+        <Terminal/>
+        </div>
+        <Command/>
+        <div className='right-side'>
+          <button className='deconnect'>DECONNECTION</button>
+          <hr className='hr'></hr>
+          <div className='ressource'>
+            <Ressource/>
+          </div>
+        </div>
       </div>
-    )
-  }
+    </div>
+  )
 }

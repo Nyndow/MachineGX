@@ -17,7 +17,7 @@ const CardList = () => {
   useEffect(() => {
     fetchData();
 
-    const intervalId = setInterval(fetchScriptData, 1000);
+    const intervalId = setInterval(fetchScriptData, 2000);
 
     return () => {
       clearInterval(intervalId);
@@ -63,10 +63,11 @@ const CardList = () => {
                 UploadSpeed: response.data.script_data.UploadSpeed,
               },
             };
-            setCardData(updatedCardData);
-          } else {
+          } 
+          else {
             console.error('Invalid script_data response format:', response.data);
           }
+          setCardData(updatedCardData);
         } catch (error) {
           console.error('Error fetching script_data:', error);
         }
@@ -83,16 +84,25 @@ const CardList = () => {
   
     for (let i = 0; i < updatedCardData.length; i++) {
       const machine = updatedCardData[i];
-      try {
-        const response = await axios.post(`${apiUrl}/connect/${machine.idMachine}`);
-        console.log('Machine state updated:', response);
-        updatedCardData[i] = { ...machine, state: 'up' }; 
-      } catch (error) {
-        console.error('Error updating machine state:', error);
-      }
+      const requestData = {
+        userUsername: machine.userUsername,
+        userPassword: machine.userPassword,
+        ipAddr: machine.ipAddr, 
+        portNumber: machine.portNumber,
+      };
+      console.log('Sending POST request for machine:', machine.idMachine);
+      axios
+        .post(`${apiUrl}/connect/${machine.idMachine}`, requestData)
+        .then(() => {
+          updatedCardData[i] = { ...machine, state: 'up' };
+          setCardData(updatedCardData);
+          console.log('POST request successful for machine:', machine.idMachine);
+        })
+        .catch((error) => {
+          console.error('Error updating machine state:', error);
+          console.log('POST request failed for machine:', machine.idMachine);
+        });      
     }
-  
-    setCardData(updatedCardData); 
   };
 
   const disconnectAllMachines = async () => {

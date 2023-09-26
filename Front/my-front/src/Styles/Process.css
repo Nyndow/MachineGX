@@ -1,0 +1,8 @@
+.process-container {
+    width: 700px;
+    background-color: black;
+    height: 360px;
+    overflow: auto;
+    border: 1px solid #ccc;
+  }
+  

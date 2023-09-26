@@ -6,7 +6,7 @@ const CardItem = ({ machineName,freeRAM,totalRAM,CPUUsage,DownUsage,UpUsage,user
   const stateIndicatorClass = state === 'up' ? 'green-state' : 'red-state';
 
   return (
-    <Link to={`/machineList/${idMachine}`} className="link">
+    <Link to={`/machine-page/${idMachine}`} className="link">
       <div className="card">
         <img src={imageUrl} alt={machineName} className="card-image" />
         <div className="card-content">
