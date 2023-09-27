@@ -53,3 +53,19 @@ def option_detail(option_id):
         db.session.delete(option)
         db.session.commit()
         return jsonify({"message": "Option deleted successfully"})
+    
+@option_bp.route('/optionByCmd/<int:command_id>', methods=['GET'])
+def option_basedCommand(command_id):
+    options = Option.query.filter_by(idCommand=command_id).all()
+    if not options:
+        return jsonify({"error": "Option not found"}), 404
+
+    option_data = [{
+        "idOption": option.idOption,
+        "idCommand": option.idCommand,
+        "optionDescription": option.optionDescription,
+        "optionSyntax": option.optionSyntax,
+        "optionComment": option.optionComment,
+        "target": option.target
+        }for option in options]
+    return jsonify(option_data)
