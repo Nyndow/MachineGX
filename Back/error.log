@@ -1,0 +1,4 @@
+2023-09-28 16:50:44,084 - ERROR - Exception: (sqlite3.IntegrityError) NOT NULL constraint failed: history.idOption
+[SQL: INSERT INTO history ("idMachine", "idAdmin", "idOption", "dateHistory", target) VALUES (?, ?, ?, ?, ?)]
+[parameters: (2, 2, None, '2023-09-28 16:50:44.081362', '/')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)

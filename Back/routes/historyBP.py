@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 from database import db
 from models.history import History 
 from datetime import datetime
-from service.automaID import id_automa
+from .ssh_manager import ssh_clients
 
 history_bp = Blueprint('history', __name__)
 
@@ -13,12 +13,13 @@ def history_list():
         idMachine = data.get('idMachine')
         idAdmin = data.get('idAdmin')
         idOption = data.get('idOption')
+        target = data.get('target')
 
         date_history_string = data.get('dateHistory')
         dateHistory = datetime.strptime(date_history_string, '%Y-%m-%dT%H:%M:%S.%fZ')
 
         
-        new_history = History(idMachine=idMachine, idAdmin=idAdmin, idOption=idOption, dateHistory=dateHistory)
+        new_history = History(idMachine=idMachine, idAdmin=idAdmin, target=target,idOption=idOption, dateHistory=dateHistory)
         db.session.add(new_history)
         db.session.commit()
         return jsonify({"message": "History record created successfully"})
@@ -31,6 +32,7 @@ def history_list():
                 "idMachine": record.idMachine,
                 "idAdmin": record.idAdmin,
                 "idOption": record.idOption,
+                "target": record.target,
                 "dateHistory": record.dateHistory.strftime('%Y-%m-%d %H:%M') 
             }
             for record in history_records
@@ -49,6 +51,7 @@ def history_detail(history_id):
             "idMachine": history_record.idMachine,
             "idAdmin": history_record.idAdmin,
             "idOption": history_record.idOption,
+            "target": history_record.target,
             "dateHistory": history_record.dateHistory.strftime('%Y-%m-%dT%H:%M  ')
         }
         return jsonify(history_data)
@@ -58,6 +61,7 @@ def history_detail(history_id):
         history_record.idMachine = data.get('idMachine', history_record.idMachine)
         history_record.idAdmin = data.get('idAdmin', history_record.idAdmin)
         history_record.idOption = data.get('idOption', history_record.idOption)
+        history_record.target = data.get('target', history_record.target)
         dateHistory_string = data.get('dateHistory')
 
         history_record.dateHistory = datetime.strptime(dateHistory_string, '%Y-%m-%dT%H:%M') 

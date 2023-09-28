@@ -1,7 +1,7 @@
 .main-container {
   display: flex;
   flex-direction: column;
-  background-color: #1a1a2e;
+  background-color: #131322;
   color: #e4e4e4;
   width: 100%; 
   padding: 20px; 
@@ -10,7 +10,7 @@
 
 .crud-container {
   font-family: Arial, sans-serif;
-  background-color: #1a1a2e;
+  background-color: #131322;
   color: #e4e4e4; 
   width: 95%;
   margin-left: 5%;
@@ -21,7 +21,7 @@
 
 .table-wrapper {
   overflow-x: auto; 
-  background-color: #1a1a2e; 
+  background-color: #131322; 
   border-radius: 5px;
   margin-top: 20px; 
   padding: 10px; 
@@ -33,7 +33,7 @@
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
-  background-color: #1a1a2e; 
+  background-color: #131322; 
   border-radius: 0 0 10px 10px;
   color: #e4e4e4; 
 }
@@ -53,7 +53,7 @@
 }
 
 .crud-table tr:nth-child(even) {
-  background-color: #1a1a2e; 
+  background-color: #131322; 
 }
 
 @media screen and (max-width: 768px) {
@@ -108,7 +108,7 @@
   margin-left:0.7%;
   display: inline-block;
   position: relative;
-  background: #1a1a2e; 
+  background: #131322; 
   border: 1px solid #444; 
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -120,7 +120,7 @@
   outline: none;
   width: 100%;
   color: #e4e4e4; 
-  background-color: #1a1a2e; 
+  background-color: #131322; 
 }
 
 .search-icon {

@@ -113,7 +113,7 @@ function CRUD(props) {
 
   return (
     <div className='main-container'>
-      <div className="main" style={{ background: '#1a1a2e' }}>
+      <div className="main" style={{ background: '#131322' }}>
         <div className="crud-container">
           <div className="search-container">
             <div className="search-input-container">

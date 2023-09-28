@@ -14,7 +14,7 @@ export default function CardPage() {
         <Process idMachine={idMachine}/>
         <Terminal/>
         </div>
-        <Command idOS={idOS}/>
+        <Command idMachine={idMachine} idOS={idOS}/>
         <div className='right-side'>
           <button className='deconnect'>DECONNECTION</button>
           <hr className='hr'></hr>

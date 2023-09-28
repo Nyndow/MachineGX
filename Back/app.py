@@ -13,6 +13,7 @@ from routes.ssh import ssh_bp
 from routes.machineListUser import machine_user_list
 from routes.machineUser import machine_user
 from routes.topBP import top_bp
+from routes.customCommandBP import custom_cmd_bp
 
 app = Flask(__name__)
 CORS(app)
@@ -31,6 +32,7 @@ app.register_blueprint(ssh_bp)
 app.register_blueprint(machine_user_list)
 app.register_blueprint(machine_user)
 app.register_blueprint(top_bp)
+app.register_blueprint(custom_cmd_bp)
 
 with app.app_context():
     db.create_all()

@@ -2,7 +2,7 @@
 
 from flask import Blueprint, request, jsonify
 from database import db
-from models.command import Command  # Import the Command model
+from models.command import Command 
 
 command_bp = Blueprint('command', __name__)
 
@@ -120,5 +120,6 @@ def command_list_os(osys_id):
     elif (osys_id.startswith("OTH")):
         return getLinuxDistroCmd("OTH")
 
-    # Handle cases where none of the conditions match (add a default response)
-    return jsonify({"error": "Invalid osys_id"})  # You can customize this error response
+    return jsonify({"error": "Invalid osys_id"})  
+
+
