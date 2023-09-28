@@ -4,13 +4,18 @@ import axios from 'axios';
 import '../../../Styles/CRUDAddForm.css';
 
 const CRUDAddForm = ({ entity, columns }) => {
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({ targetIn: false });
   const apiUrl = process.env.REACT_APP_API_URL;
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    const { name, value, type, checked } = e.target;
+    if (type === 'checkbox') {
+      setFormData({ ...formData, [name]: checked });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -57,7 +62,6 @@ const CRUDAddForm = ({ entity, columns }) => {
           name={column}
           value={formData[column] || ''}
           onChange={handleChange}
-          required
         />
       );
     }
@@ -140,11 +144,23 @@ const CRUDAddForm = ({ entity, columns }) => {
       <h2 className="crud-form-title">Create {entity}</h2>
       {columns.map((column) => (
         <div key={column} className="input-group">
-          <label className="crud-form-label" htmlFor={column}>
-            {column}:
-          </label>
-          {renderInput(column)}
-        </div>
+        <label className="crud-form-label" htmlFor={column}>
+          {column}:
+        </label>
+        {column === 'targetIn' ? (
+          <div className="input-group">
+            <input
+              type="checkbox"
+              id="targetIn"
+              name="targetIn"
+              checked={formData.targetIn || false}
+              onChange={handleChange}
+            />
+          </div>
+        ) : (
+          renderInput(column)
+        )}
+      </div>
       ))}
 
       {renderRadioOptions()} 

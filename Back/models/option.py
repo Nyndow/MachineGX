@@ -7,11 +7,11 @@ class Option(db.Model):
     optionDescription = db.Column(db.String(50), nullable=False)
     optionSyntax = db.Column(db.String(50), nullable=True) 
     optionComment = db.Column(db.String(100), nullable=True)
-    target = db.Column(db.String(200), nullable=True)
+    targetIn = db.Column(db.Boolean,nullable=False)
 
-    def __init__(self, idCommand, optionDescription, optionSyntax, optionComment=None, target=None):
+    def __init__(self, idCommand, optionDescription, optionSyntax, optionComment=None,targetIn=False):
         self.idCommand = idCommand
         self.optionDescription = optionDescription
         self.optionSyntax = optionSyntax
         self.optionComment = optionComment
-        self.target = target
+        self.targetIn = targetIn

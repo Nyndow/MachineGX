@@ -11,16 +11,28 @@ def option_list():
         optionDescription = data.get('optionDescription')
         optionSyntax = data.get('optionSyntax')
         optionComment = data.get('optionComment')
-        target = data.get('target')
-        new_option = Option(idCommand=idCommand, optionDescription=optionDescription, optionSyntax=optionSyntax,optionComment=optionComment,target=target)
+        targetIn = data.get('targetIn')
+        new_option = Option(idCommand=idCommand, optionDescription=optionDescription, optionSyntax=optionSyntax,optionComment=optionComment,targetIn=targetIn)
         db.session.add(new_option)
         db.session.commit()
         return jsonify({"message": "Option created successfully"})
 
     elif request.method == 'GET':
         options = Option.query.all()
-        option_list = [{"idOption": option.idOption, "idCommand": option.idCommand, "optionSyntax": option.optionSyntax,"optionDescription": option.optionDescription,"optionComment": option.optionComment,"target": option.target} for option in options]
+        option_list = [
+            {
+                "idOption": option.idOption,
+                "idCommand": option.idCommand,
+                "optionSyntax": option.optionSyntax,
+                "optionDescription": option.optionDescription,
+                "optionComment": option.optionComment,
+                "targetIn": option.targetIn
+            }
+            for option in options
+        ]
+
         return jsonify(option_list)
+
 
 @option_bp.route('/option/<int:option_id>', methods=['GET', 'PUT', 'DELETE'])
 def option_detail(option_id):
@@ -35,7 +47,7 @@ def option_detail(option_id):
             "optionDescription": option.optionDescription,
             "optionSyntax": option.optionSyntax,
             "optionComment": option.optionComment,
-            "target": option.target
+            "targetIn": option.targetIn
         }
         return jsonify(option_data)
 
@@ -45,7 +57,7 @@ def option_detail(option_id):
         option.optionSyntax = data.get('optionSyntax', option.optionSyntax)
         option.optionComment = data.get('optionComment', option.optionComment)
         option.idCommand = data.get('idCommand', option.idCommand)
-        option.target = data.get('target', option.target)
+        option.targetIn = data.get('targetIn', option.targetIn)
         db.session.commit()
         return jsonify({"message": "Option updated successfully"})
 
@@ -66,6 +78,6 @@ def option_basedCommand(command_id):
         "optionDescription": option.optionDescription,
         "optionSyntax": option.optionSyntax,
         "optionComment": option.optionComment,
-        "target": option.target
+        "targetIn": option.targetIn
         }for option in options]
     return jsonify(option_data)

@@ -161,21 +161,25 @@ function CRUD(props) {
                 </tr>
               </thead>
               <tbody>
-                {dataToDisplay.map((rowData, index) => (
-                  <tr
-                    key={index}
-                    className={index % 2 === 0 ? 'crud-table-row-even' : null}
-                  >
-                    <td>
-                      <input
-                        type="checkbox"
-                        checked={selectedItems.has(rowData[props.idField])}
-                        onChange={() => handleItemSelect(rowData)}
-                      />
-                    </td>
-                    {columns.map((column) => (
-                      <td key={column}>{rowData[column]}</td>
-                    ))}
+              {dataToDisplay.map((rowData, index) => (
+              <tr key={index} className={index % 2 === 0 ? 'crud-table-row-even' : null}>
+                <td>
+                  <input
+                    type="checkbox"
+                    checked={selectedItems.has(rowData[props.idField])}
+                    onChange={() => handleItemSelect(rowData)}
+                  />
+                </td>
+                {columns.map((column) => (
+                  <td key={column}>
+                    {column === 'targetIn' ? (
+                      rowData[column] ? 'True' : 'False'
+                    ) : (
+                      rowData[column]
+                    )}
+                  </td>
+                ))}
+
                     <td>
                       {selectedItems.has(rowData[props.idField]) ? (
                         <>

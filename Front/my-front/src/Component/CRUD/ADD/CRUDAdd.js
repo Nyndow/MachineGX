@@ -25,7 +25,7 @@ const AddAdmin = () => {
       break;
   
     case 'history':
-      columns = ['idMachine', 'idAdmin', 'idOption', 'dateHistory'];
+      columns = ['idMachine', 'idAdmin', 'idOption', 'dateHistory','target'];
       break;
   
     case 'attribution':
@@ -37,7 +37,7 @@ const AddAdmin = () => {
       break;
 
     case 'option':
-      columns = ['idCommand', 'optionDescription', 'optionSyntax','optionComment','target'];
+      columns = ['idCommand', 'optionDescription', 'optionSyntax','optionComment','targetIn'];
       break;
   
     default:
