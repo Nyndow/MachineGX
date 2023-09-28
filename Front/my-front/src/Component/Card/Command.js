@@ -20,9 +20,10 @@ function Command({ idOS }) {
       });
   }, [idOS]);
 
-  useEffect(() => {
-    if (selectedOption) {
-      axios.get(`${apiUrl}/optionByCmd/${selectedOption}`)
+  const fetchSecondSelectData = (selectedValue) => {
+    // Fetch data for the second select based on the selected option
+    if (selectedValue) {
+      axios.get(`${apiUrl}/optionByCmd/${selectedValue}`)
         .then((response) => {
           setSecondSelectData(response.data);
         })
@@ -30,13 +31,18 @@ function Command({ idOS }) {
           console.error('Error fetching second select data:', error);
         });
     } else {
+      // Clear second select data if no option is selected
       setSecondSelectData([]);
       setSelectedSecondOption('');
     }
-  }, [selectedOption]);
+  };
 
   const handleSelectChange = (event) => {
-    setSelectedOption(event.target.value);
+    const selectedValue = event.target.value;
+    setSelectedOption(selectedValue);
+
+    // Fetch data for the second select
+    fetchSecondSelectData(selectedValue);
   };
 
   const handleSecondSelectChange = (event) => {
@@ -49,10 +55,10 @@ function Command({ idOS }) {
       selectedSecondOption,
     }; 
 
-    axios.post(`${apiUrl}/launch-command/`)
+    axios.post(`${apiUrl}/launch-command/`, postData)
     .then((response) => {
-    console.log("success : ", response)//A modifier pour afficher les données en bas
-  })
+      console.log("success : ", response)//A modifier pour afficher les données en bas
+    })
     .catch((error) =>{
       console.log(error)
     })
@@ -72,7 +78,7 @@ function Command({ idOS }) {
       {selectedOption && (
         <div>
           <select value={selectedSecondOption} onChange={handleSecondSelectChange}>
-            <option value="">Select a second option</option>
+            <option value="">Select option</option>
             {secondSelectData.map((item) => (
               <option key={item.idOption} value={item.idOption}>
                 {item.optionDescription}
