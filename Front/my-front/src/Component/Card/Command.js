@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import '../../Styles/Command.css';
 import axios from 'axios';
 
-function Command({ idOS }) {
+function Command({ idOS, idMachine }) {
   const [data, setData] = useState([]);
   const [selectedOption, setSelectedOption] = useState('');
   const [secondSelectData, setSecondSelectData] = useState([]);
   const [selectedSecondOption, setSelectedSecondOption] = useState('');
   const apiUrl = process.env.REACT_APP_API_URL;
+  const [showInput, setShowInput] = useState(false);
 
   useEffect(() => {
     axios.get(`${apiUrl}/commandList/${idOS}`)
@@ -21,7 +22,6 @@ function Command({ idOS }) {
   }, [idOS]);
 
   const fetchSecondSelectData = (selectedValue) => {
-    // Fetch data for the second select based on the selected option
     if (selectedValue) {
       axios.get(`${apiUrl}/optionByCmd/${selectedValue}`)
         .then((response) => {
@@ -31,7 +31,6 @@ function Command({ idOS }) {
           console.error('Error fetching second select data:', error);
         });
     } else {
-      // Clear second select data if no option is selected
       setSecondSelectData([]);
       setSelectedSecondOption('');
     }
@@ -40,14 +39,27 @@ function Command({ idOS }) {
   const handleSelectChange = (event) => {
     const selectedValue = event.target.value;
     setSelectedOption(selectedValue);
-
-    // Fetch data for the second select
     fetchSecondSelectData(selectedValue);
   };
 
   const handleSecondSelectChange = (event) => {
-    setSelectedSecondOption(event.target.value);
+    const selectedItemId = event.target.value; // Ensure selectedItemId is a string
+    console.log("SelectedItemId:", selectedItemId);
+    console.log("SecondSelectData:", secondSelectData);
+  
+    const selectedItem = secondSelectData.find((item) => item.idOption == selectedItemId);
+    console.log("SelectedItem:", selectedItem);
+  
+    if (selectedItem && selectedItem.targetIn) {
+      setShowInput(true);
+    } else {
+      setShowInput(false);
+    }
+  
+    setSelectedSecondOption(selectedItemId);
   };
+  
+  
 
   const handlePostData = () => {
     const postData = {
@@ -55,7 +67,7 @@ function Command({ idOS }) {
       selectedSecondOption,
     }; 
 
-    axios.post(`${apiUrl}/launch-command/`, postData)
+    axios.post(`${apiUrl}/launch-command/${idMachine}`, postData)
     .then((response) => {
       console.log("success : ", response)//A modifier pour afficher les données en bas
     })
@@ -85,6 +97,7 @@ function Command({ idOS }) {
               </option>
             ))}
           </select>
+          {showInput && <input type="text" placeholder="Enter something" />}
           <button onClick={handlePostData}>OK!</button>
         </div>
       )}
