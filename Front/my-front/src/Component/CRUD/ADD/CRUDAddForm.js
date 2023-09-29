@@ -27,8 +27,7 @@ const CRUDAddForm = ({ entity, columns }) => {
     const dateString = data.dateHistory;
     const dateObject = new Date(dateString);
     data.dateHistory = dateObject;
-    console.log(data.dateHistory);
-    We 
+    console.log(data.dateHistory); 
     axios
       .post(`${apiUrl}/${entity}/`, data)
       .then((response) => {

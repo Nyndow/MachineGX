@@ -79,10 +79,9 @@ function Command({ idOS, idMachine }) {
         .post(`${apiUrl}/launch-command/${idMachine}`, postData)
         .then((response) => {
           console.log('Success:', response);
-          // Allow the button to be used again after the cooldown (2 seconds)
           setTimeout(() => {
             setIsConfirmButtonDisabled(false);
-          }, 2000);
+          }, 1000);
         })
         .catch((error) => {
           console.error('Error:', error);

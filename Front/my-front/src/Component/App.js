@@ -26,7 +26,6 @@ function App() {
           <Route path="/crud-machine" component={CRUDGeneral.CRUDMachine} />
           <Route path="/crud-command" component={CRUDGeneral.CRUDCommand} />
           <Route path="/crud-user" component={CRUDGeneral.CRUDEmployee} />
-          <Route path="/crud-history" component={CRUDGeneral.CRUDHistory} />
           <Route path="/crud-attribution" component={CRUDGeneral.CRUDAttribution} />
           <Route path="/crud-administration" component={CRUDGeneral.CRUDAdmin} />
           <Route path="/crud-option" component={CRUDGeneral.CRUDOption} />

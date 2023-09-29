@@ -32,7 +32,6 @@ function Sidebar() {
           <NavDropdown.Item as={Link} to="/crud-machine">Machine</NavDropdown.Item>
           <NavDropdown.Item as={Link} to="/crud-user">User</NavDropdown.Item>
           <NavDropdown.Item as={Link} to="/crud-administration">Administration</NavDropdown.Item>
-          <NavDropdown.Item as={Link} to="/crud-history">History</NavDropdown.Item>
           <NavDropdown.Item as={Link} to="/crud-command">Command</NavDropdown.Item>
           <NavDropdown.Item as={Link} to="/crud-option">Option</NavDropdown.Item>
           <NavDropdown.Item as={Link} to="/crud-os">OS</NavDropdown.Item>
