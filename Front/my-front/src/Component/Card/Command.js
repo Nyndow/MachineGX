@@ -110,7 +110,8 @@ function Command({ idOS, idMachine }) {
               onChange={handleInputValueChange}
             />
           )}
-          <button onClick={handlePostData}>OK!</button>
+          <button className='confirm-button' onClick={handlePostData}>Confirm</button>
+          <hr></hr>
         </div>
       )}
     </div>

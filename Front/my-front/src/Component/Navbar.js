@@ -24,11 +24,6 @@ function Sidebar() {
           </Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link as={Link} to="/command">
-          <img src={TerminalIcon} alt="Command"/>
-          </Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
           <Nav.Link as={Link} to="/history">
           <img src={CommandIcon} alt="History"/>
           </Nav.Link>

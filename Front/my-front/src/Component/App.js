@@ -1,9 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Sidebar from './Navbar';
-import Command from './Command';
 import MachineOption from './MachineOption';
-import History from './History';
+import History from './History/History';
 import * as CRUDGeneral from './CRUD/GENERAL';
 import LoginForm from './LoginForm';
 import NotFound from './NotFound';
@@ -20,7 +19,6 @@ function App() {
         <Sidebar />
         <Switch>
           <Route path="/home" component={CardList} />
-          <Route path="/command" component={Command} />
           <Route path="/machine" component={MachineOption} />
           <Route path="/history" component={History} />
 

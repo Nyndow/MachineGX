@@ -15,7 +15,11 @@
 
 .deconnect{
     margin-left:50%;
-    background-color: red;
+    padding: 15px 20px;
+    background-color: #652f6b;
+}
+.deconnect:hover{
+  background-color: #542958;
 }
 
 hr{
