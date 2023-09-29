@@ -5,7 +5,7 @@ import HistoryDetails from './HistoryDetails';
 
 export default function History() {
   const [dataToDisplay, setDataToDisplay] = useState([]);
-  const [selectedIdHistory, setSelectedIdHistory] = useState(null);
+  const [selectedRowData, setSelectedRowData] = useState(null);
   const apiUrl = process.env.REACT_APP_API_URL;
   const columns = ['admin', 'machineName', 'optionDescription', 'target', 'dateHistory'];
 
@@ -24,8 +24,8 @@ export default function History() {
       });
   };
 
-  const handleRowClick = (idHistory) => {
-    setSelectedIdHistory(idHistory);
+  const handleRowClick = (rowData) => {
+    setSelectedRowData(rowData);
   };
 
   return (
@@ -46,7 +46,7 @@ export default function History() {
                 {columns.map((column) => (
                   <td
                     key={column}
-                    onClick={() => handleRowClick(rowData.idHistory)}
+                    onClick={() => handleRowClick(rowData)}
                   >
                     {rowData[column]}
                   </td>
@@ -57,7 +57,7 @@ export default function History() {
         </table>
       </div>
       <div className="history-detail">
-        <HistoryDetails idHistory={selectedIdHistory} />
+        <HistoryDetails rowData={selectedRowData} />
       </div>
     </div>
   );
