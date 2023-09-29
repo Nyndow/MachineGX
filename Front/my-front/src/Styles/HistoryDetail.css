@@ -7,3 +7,12 @@
     border-radius: 10px;
     color: #e4e4e4; 
 }
+
+.machine-section h1{
+    margin-left: 20%;
+}
+  
+.history-item-container li {
+    margin-bottom: 30px; 
+    font-size: 16px;
+}

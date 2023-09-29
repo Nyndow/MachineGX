@@ -10,6 +10,7 @@ function Command({ idOS, idMachine }) {
   const [selectedSecondOption, setSelectedSecondOption] = useState('');
   const [inputValue, setInputValue] = useState('');
   const [showInput, setShowInput] = useState(false);
+  const [isConfirmButtonDisabled, setIsConfirmButtonDisabled] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -65,20 +66,29 @@ function Command({ idOS, idMachine }) {
   };
 
   const handlePostData = () => {
-    const postData = {
-      selectedOption,
-      selectedSecondOption,
-      inputData: inputValue,
-    };
+    if (!isConfirmButtonDisabled) {
+      setIsConfirmButtonDisabled(true);
 
-    axios
-      .post(`${apiUrl}/launch-command/${idMachine}`, postData)
-      .then((response) => {
-        console.log('Success:', response);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
+      const postData = {
+        selectedOption,
+        selectedSecondOption,
+        inputData: inputValue,
+      };
+
+      axios
+        .post(`${apiUrl}/launch-command/${idMachine}`, postData)
+        .then((response) => {
+          console.log('Success:', response);
+          // Allow the button to be used again after the cooldown (2 seconds)
+          setTimeout(() => {
+            setIsConfirmButtonDisabled(false);
+          }, 2000);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+          setIsConfirmButtonDisabled(false); // Reset the button state in case of an error
+        });
+    }
   };
 
   return (
@@ -110,7 +120,13 @@ function Command({ idOS, idMachine }) {
               onChange={handleInputValueChange}
             />
           )}
-          <button className='confirm-button' onClick={handlePostData}>Confirm</button>
+          <button
+            className='confirm-button'
+            onClick={handlePostData}
+            disabled={isConfirmButtonDisabled}
+          >
+            Confirm
+          </button>
           <hr></hr>
         </div>
       )}

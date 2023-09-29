@@ -46,7 +46,6 @@ const CRUDEditForm = ({ entity, columns, entityId }) => {
           name={column}
           value={formData[column] || ''}
           onChange={handleChange}
-          required
         />
       );
     } else {
@@ -58,7 +57,6 @@ const CRUDEditForm = ({ entity, columns, entityId }) => {
           name={column}
           value={formData[column] || ''}
           onChange={handleChange}
-          required
         />
       );
     }

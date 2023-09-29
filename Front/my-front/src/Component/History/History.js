@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../../Styles/History.css';
 import HistoryDetails from './HistoryDetails';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faTrash} from '@fortawesome/free-solid-svg-icons';
 
 export default function History() {
   const [dataToDisplay, setDataToDisplay] = useState([]);
@@ -23,6 +25,17 @@ export default function History() {
         console.log(error);
       });
   };
+
+  const handleDelete = (rowData) =>{
+    axios.delete(`${apiUrl}/history/${rowData.idHistory}`)
+    .then(() => {
+      const updatedData = dataToDisplay.filter((item) => item.idHistory !== rowData.idHistory);
+      setDataToDisplay(updatedData);
+    })
+    .catch((error)=>{
+      console.log(error)
+    })
+  }
 
   const handleRowClick = (rowData) => {
     setSelectedRowData(rowData);
@@ -51,6 +64,11 @@ export default function History() {
                     {rowData[column]}
                   </td>
                 ))}
+                <td>
+                  <button className='delete-button' onClick={()=>handleDelete(rowData)}>
+                  <FontAwesomeIcon icon={faTrash} />
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
