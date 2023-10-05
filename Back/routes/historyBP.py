@@ -1,75 +1,106 @@
 from flask import Blueprint, request, jsonify
 from database import db
 from models.history import History 
+from models.option import Option
+from models.administration import Administration
+from models.machine import Machine
+from models.OS import OSys
+from models.user import User
+from models.attribution import Attribution
+from models.command import Command
 from datetime import datetime
-from .ssh_manager import ssh_clients
+from sqlalchemy import text 
+from sqlalchemy import desc
 
 history_bp = Blueprint('history', __name__)
 
-@history_bp.route('/history/', methods=['GET', 'POST'])
-def history_list():
-    if request.method == 'POST':
-        data = request.json
-        idMachine = data.get('idMachine')
-        idAdmin = data.get('idAdmin')
-        idOption = data.get('idOption')
-        target = data.get('target')
-
-        date_history_string = data.get('dateHistory')
-        dateHistory = datetime.strptime(date_history_string, '%Y-%m-%dT%H:%M:%S.%fZ')
-
-        
-        new_history = History(idMachine=idMachine, idAdmin=idAdmin, target=target,idOption=idOption, dateHistory=dateHistory)
-        db.session.add(new_history)
-        db.session.commit()
-        return jsonify({"message": "History record created successfully"})
-
-    elif request.method == 'GET':
-        history_records = History.query.all()
-        history_list = [
-            {
-                "idHistory": record.idHistory,
-                "idMachine": record.idMachine,
-                "idAdmin": record.idAdmin,
-                "idOption": record.idOption,
-                "target": record.target,
-                "dateHistory": record.dateHistory.strftime('%Y-%m-%d %H:%M') 
-            }
-            for record in history_records
-        ]
-        return jsonify(history_list)
-
-@history_bp.route('/history/<int:history_id>', methods=['GET', 'PUT', 'DELETE'])
+@history_bp.route('/history/<int:history_id>', methods=['GET', 'DELETE'])
 def history_detail(history_id):
     history_record = History.query.get(history_id)
     if not history_record:
         return jsonify({"error": "History record not found"}), 404
-
+    
     if request.method == 'GET':
-        history_data = {
-            "idHistory": history_record.idHistory,
-            "idMachine": history_record.idMachine,
-            "idAdmin": history_record.idAdmin,
-            "idOption": history_record.idOption,
-            "target": history_record.target,
-            "dateHistory": history_record.dateHistory.strftime('%Y-%m-%dT%H:%M  ')
-        }
-        return jsonify(history_data)
+        sql_query = text("""
+            SELECT
+                a.numEmployee,
+                u.numEmployee,
+                c.commandDescription,
+                u.userUsername,
+                os.nomOS,
+                os.versionOS,
+                os.imgOS
+            FROM
+                History h
+            JOIN
+                Administration a ON h.idAdmin = a.idAdmin
+            JOIN
+                Option o ON h.idOption = o.idOption
+            JOIN
+                Command c ON o.idCommand = c.idCommand
+            JOIN
+                Machine m ON h.idMachine = m.idMachine
+            JOIN
+                OSys os ON m.idOS = os.idOS
+            JOIN
+                Attribution at ON m.idMachine = at.idMachine
+            JOIN
+                User u ON at.idUser = u.idUser
+            WHERE
+                h.dateHistory BETWEEN at.dateDebut AND at.dateFin
+                AND h.idHistory = :history_id
+        """)
 
-    elif request.method == 'PUT':
-        data = request.json
-        history_record.idMachine = data.get('idMachine', history_record.idMachine)
-        history_record.idAdmin = data.get('idAdmin', history_record.idAdmin)
-        history_record.idOption = data.get('idOption', history_record.idOption)
-        history_record.target = data.get('target', history_record.target)
-        dateHistory_string = data.get('dateHistory')
+        result = db.session.execute(sql_query, {"history_id": history_id}).fetchone()
 
-        history_record.dateHistory = datetime.strptime(dateHistory_string, '%Y-%m-%dT%H:%M') 
+        if result:
+            result_dict = {
+                "admin": result[0],
+                "numEmployee": result[1],
+                "commandDescription": result[2],
+                "userUsername": result[3],
+                "nomOS": result[4],
+                "versionOS": result[5],
+                "imgOS": result[6],
+            }
+            return jsonify(result_dict)
+        else:
+            return jsonify({"message": "Record not found"}), 404
 
-        db.session.commit()
-        return jsonify({"message": "History record updated successfully"})
-
-    elif request.method == 'DELETE':
+    else:
         db.session.delete(history_record)
         db.session.commit()
         return jsonify({"message": "History record deleted successfully"})
+    
+@history_bp.route('/historyList/', methods=['GET'])
+def history_list():
+    query = (
+        db.session.query(
+            Administration.adminUsername,
+            Option.optionDescription,
+            History.target,
+            History.dateHistory,
+            Machine.machineName,
+            History.idHistory
+        )
+        .join(Administration, Administration.idAdmin == History.idAdmin)
+        .join(Option, Option.idOption == History.idOption)
+        .join(Machine, Machine.idMachine == History.idMachine)
+        .order_by(desc(History.dateHistory))
+    )
+
+    history_records = query.all()
+
+    history_list = [
+        {
+            "admin": record[0],
+            "optionDescription": record[1],
+            "target": record[2],
+            "dateHistory": record[3].strftime('%Y-%m-%d %H:%M'),
+            "machineName": record[4],
+            "idHistory" : record[5]
+        }
+        for record in history_records
+    ]
+
+    return jsonify(history_list)

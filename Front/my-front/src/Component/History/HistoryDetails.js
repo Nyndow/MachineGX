@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import '../../Styles/HistoryDetail.css';
+import Button from '@mui/material/Button';
 
 export default function HistoryDetails(props) {
   const { rowData } = props;
@@ -58,7 +59,11 @@ export default function HistoryDetails(props) {
           </div>
         </div>
       ) : (
-        <div>No data selected</div>
+        <div className='no-select'>
+          <p style={{marginLeft:'25%'}}>No data selected</p>
+          <hr></hr>
+          <p style={{textAlign:'center'}}>Click on the history you want to check</p>
+          </div>
       )}
     </div>
   );
