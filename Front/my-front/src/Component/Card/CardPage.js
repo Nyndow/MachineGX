@@ -1,9 +1,10 @@
 import React from 'react'
 import Process from './Process'
-import Terminal from './Terminal'
+import TerminalComponent from './Terminal'
 import Command from './Command'
 import Ressource from './Ressource'
 import { useParams } from 'react-router-dom/cjs/react-router-dom'
+import '../../Styles/CardPage.css'
 
 export default function CardPage() {
   const { idMachine, idOS } = useParams();
@@ -12,7 +13,7 @@ export default function CardPage() {
       <div className='toAlign'>
         <div className='vertical'>
         <Process idMachine={idMachine}/>
-        <Terminal/>
+        <TerminalComponent idMachine={idMachine}/>
         </div>
         <Command idMachine={idMachine} idOS={idOS}/>
         <div className='right-side'>

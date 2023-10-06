@@ -1,9 +1,57 @@
-import React from 'react'
-import "../../Styles/Terminal.css"
-import "../../Styles/CardPage.css"
+import React, { useState } from 'react';
+import axios from 'axios';
+import '../../Styles/Terminal.css';
 
-export default function Terminal() {
+export default function TerminalComponent({ idMachine }) {
+  const [input, setInput] = useState('');
+  const [output, setOutput] = useState([]);
+  const apiUrl = process.env.REACT_APP_API_URL;
+
+  const handleInputChange = (e) => {
+    setInput(e.target.value);
+  };
+
+  const handleInputSubmit = async (e) => {
+    e.preventDefault();
+  
+    const command = input;
+  
+    if (command === 'clear') {
+      setOutput([]);
+    } else {
+      try {
+        const response = await axios.post(`${apiUrl}/execute-command/${idMachine}`, {
+          command,
+        });
+  
+        setOutput([...output, { command, result: response.data }]);
+      } catch (error) {
+        console.error('Error executing command:', error);
+      }
+    }
+    
+    setInput('');
+  };
+  
   return (
-    <div className='terminal-container'>$</div>
-  )
+    <div className="terminal">
+      <div className="terminal-output">
+        {output.map((item, index) => (
+          <div key={index}>
+            <span className="prompt">$ {item.command}</span>
+            <div className="output">{item.result}</div>
+          </div>
+        ))}
+      </div>
+      <form onSubmit={handleInputSubmit} className="terminal-input">
+        <span className="prompt">$ </span>
+        <input
+          type="text"
+          value={input}
+          onChange={handleInputChange}
+          placeholder="Enter a command..."
+        />
+      </form>
+    </div>
+  );
 }

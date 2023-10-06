@@ -1,13 +1,14 @@
 .cardpage-container {
     margin-left: 5%;
     height: 100%;
+    background-color: rgb(6, 1, 26);
   }
   
-  .toAlign {
-    display: flex;
-    justify-content: space-between;
-    margin-right: 1%;
-  }
+.toAlign {
+  display: flex;
+  justify-content: space-between;
+  margin-right: 1%;
+}
 
 .ressource{
     margin-top: 15%;

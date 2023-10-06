@@ -1,5 +1,3 @@
-# users_bp.py
-
 from flask import Blueprint, request, jsonify
 from database import db
 from models.user import User 
