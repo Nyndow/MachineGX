@@ -17,7 +17,7 @@ function App() {
   return (
     <div className="app-container">
       <Router>
-        <Sidebar />
+      <PrivateRoute path="/" component={Sidebar} />
         <Switch>
           <PrivateRoute path="/home" component={CardList} />
           <PrivateRoute path="/machine" component={MachineOption} />
