@@ -1,14 +1,12 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import '../../Styles/HistoryDetail.css';
-import Button from '@mui/material/Button';
 
 export default function HistoryDetails(props) {
   const { rowData } = props;
   const [data, setData] = useState([]);
   const apiUrl = process.env.REACT_APP_API_URL;
 
-  // Define a function to fetch data based on rowData
   const fetchData = useCallback(() => {
     if (rowData) {
       axios
@@ -22,7 +20,6 @@ export default function HistoryDetails(props) {
     }
   }, [apiUrl, rowData]);
 
-  // Use useEffect to fetch data when rowData changes
   useEffect(() => {
     fetchData();
   }, [fetchData]);

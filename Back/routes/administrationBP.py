@@ -4,6 +4,8 @@ from flask import Blueprint, request, jsonify
 from database import db
 from models.administration import Administration
 from werkzeug.security import generate_password_hash, check_password_hash
+import jwt  
+from flask import current_app as app  # Import current_app to access the Flask app
 
 administration_bp = Blueprint('administration', __name__)
 
@@ -12,7 +14,7 @@ def administration_list():
     if request.method == 'POST':
         data = request.json
         adminUsername = data.get('adminUsername')
-        adminPassword = generate_password_hash(data.get('adminPassword'))  # Hash the password
+        adminPassword = generate_password_hash(data.get('adminPassword'))
         numEmployee = data.get('numEmployee')
         new_administration = Administration(adminUsername=adminUsername, adminPassword=adminPassword, numEmployee=numEmployee) 
         db.session.add(new_administration)
@@ -25,7 +27,7 @@ def administration_list():
             {
                 "idAdmin": admin.idAdmin,
                 "adminUsername": admin.adminUsername,
-                "adminPasswordHashed": True,  # Indicate that the password is hashed
+                "adminPasswordHashed": True, 
                 "numEmployee": admin.numEmployee
             }
             for admin in administrators
@@ -61,3 +63,17 @@ def administration_detail(admin_id):
         db.session.delete(admin)
         db.session.commit()
         return jsonify({"message": "Administration deleted successfully"})
+    
+@administration_bp.route('/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    admin = Administration.query.filter_by(adminUsername=data['username']).first()
+
+    if not admin or not check_password_hash(admin.adminPassword, data['password']):
+        return jsonify({'message': 'Invalid username or password'}), 401
+
+    payload = {
+        'admin_id': admin.idAdmin
+    }
+    token = jwt.encode(payload, app.config['SECRET_KEY'], algorithm='HS256')
+    return jsonify({'token': token}), 200

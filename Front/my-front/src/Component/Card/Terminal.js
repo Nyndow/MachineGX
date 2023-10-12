@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import '../../Styles/Terminal.css';
 
@@ -7,15 +7,21 @@ export default function TerminalComponent({ idMachine }) {
   const [output, setOutput] = useState([]);
   const apiUrl = process.env.REACT_APP_API_URL;
 
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
+
   const handleInputChange = (e) => {
     setInput(e.target.value);
   };
 
   const handleInputSubmit = async (e) => {
     e.preventDefault();
-  
+
     const command = input;
-  
+
     if (command === 'clear') {
       setOutput([]);
     } else {
@@ -23,18 +29,22 @@ export default function TerminalComponent({ idMachine }) {
         const response = await axios.post(`${apiUrl}/execute-command/${idMachine}`, {
           command,
         });
-  
+
         setOutput([...output, { command, result: response.data }]);
       } catch (error) {
         console.error('Error executing command:', error);
       }
     }
-    
+
     setInput('');
   };
-  
+
+  const handleTerminalClick = () => {
+    inputRef.current.focus();
+  };
+
   return (
-    <div className="terminal">
+    <div className="terminal" onClick={handleTerminalClick}>
       <div className="terminal-output">
         {output.map((item, index) => (
           <div key={index}>
@@ -49,7 +59,7 @@ export default function TerminalComponent({ idMachine }) {
           type="text"
           value={input}
           onChange={handleInputChange}
-          placeholder="Enter a command..."
+          ref={inputRef}
         />
       </form>
     </div>

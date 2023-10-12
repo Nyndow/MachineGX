@@ -1,8 +1,22 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../Styles/Ressource.css';
+import LinearProgressWithLabel from '@mui/material/LinearProgress';
+import CircularProgressWithLabel from '@mui/material/CircularProgress'
 
 export default function Ressource() {
-  const cpuUsage = 50; // Replace with the actual CPU usage percentage
+  const [cpuUsage, setCpuUsage] = useState(20);
+  const [ramUsage, setRamUsage] = useState(25);
+  const [diskUsage, setDiskUsage] = useState(59);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCpuUsage(Math.random() * 100);
+      setRamUsage(Math.random() * 100);
+      setDiskUsage(Math.random() * 100);
+    }, 2000); 
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className='ressource-container'>
@@ -13,13 +27,22 @@ export default function Ressource() {
       </div>
       <hr></hr>
       <div className='ressource-info'>
-        <p>RAM: 2.00/4.00 Go</p>
-        <p>CPU: {cpuUsage}%</p>
-        <div className="progress-bar">
-          <progress value={cpuUsage} max="100" className="red-bar"></progress>
+        <div className="disk-bar">
+          <p>DISK:</p>
+          <LinearProgressWithLabel color="secondary" variant="determinate" value={diskUsage} />
+        </div>
+        <div className="RAM-bar">
+          <p>RAM:</p>
+          <LinearProgressWithLabel color="secondary" variant="determinate" value={ramUsage} />
+        </div>
+        <div className="CPU-bar">
+          <p>CPU:</p>
+          <CircularProgressWithLabel color="secondary" variant="determinate" value={cpuUsage} />
         </div>
         <p>HDD: 20/34 Go</p>
       </div>
+
+      <button className='clear-cache'>clear</button>
     </div>
   );
 }

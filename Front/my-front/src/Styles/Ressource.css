@@ -18,11 +18,13 @@
   margin: 20px 0;
 }
 
-.progress-bar {
-  margin-top: 10px;
-}
 
 .red-bar {
   background-color: red;
   color: red;
+}
+
+.clear-cache{
+  margin-left: 70%;
+  margin-top: 50%;;
 }

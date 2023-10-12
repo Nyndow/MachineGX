@@ -11,6 +11,8 @@ function Command({ idOS, idMachine }) {
   const [inputValue, setInputValue] = useState('');
   const [showInput, setShowInput] = useState(false);
   const [isConfirmButtonDisabled, setIsConfirmButtonDisabled] = useState(false);
+  const columns = ['Command', 'Option', 'Target', 'Date'];
+  const [dataToDisplay, setDataToDisplay] = useState({});
 
   useEffect(() => {
     async function fetchData() {
@@ -127,6 +129,36 @@ function Command({ idOS, idMachine }) {
             Confirm
           </button>
           <hr></hr>
+          <div className='history-command'>
+          <table className='process-table'>
+        <thead>
+          <tr>
+            {columns.map((column, index) => (
+              <th key={index}>{column}</th>
+            ))}
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {Object.keys(dataToDisplay).map((pid) => (
+            <tr key={pid} className='process-table-row-even'>
+              {columns.map((column, columnIndex) => (
+                <td key={columnIndex}>{dataToDisplay[pid][column]}</td>
+              ))}
+              <td>
+                <button
+                  className='clear-button'
+                  onClick={() => handleStop(dataToDisplay[pid])}
+                >
+                  clear
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+            
+          </div>
         </div>
       )}
     </div>

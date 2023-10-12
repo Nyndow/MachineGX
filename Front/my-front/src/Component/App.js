@@ -6,11 +6,12 @@ import History from './History/History';
 import * as CRUDGeneral from './CRUD/GENERAL';
 import LoginForm from './LoginForm';
 import NotFound from './NotFound';
-import AddAdmin from './CRUD/ADD/CRUDAdd'
+import AddAdmin from './CRUD/ADD/CRUDAdd';
 import EditCRUD from './CRUD/EDIT/EditCRUD';
 import "../Styles/App.css"
 import CardList from './Card/CardList';
 import CardPage from './Card/CardPage';
+import PrivateRoute from './Services/privateAuth';
 
 function App() {
   return (
@@ -18,32 +19,30 @@ function App() {
       <Router>
         <Sidebar />
         <Switch>
-          <Route path="/home" component={CardList} />
-          <Route path="/machine" component={MachineOption} />
-          <Route path="/history" component={History} />
+          <PrivateRoute path="/home" component={CardList} />
+          <PrivateRoute path="/machine" component={MachineOption} />
+          <PrivateRoute path="/history" component={History} />
 
           {/*CRUD GENERAL*/}
-          <Route path="/crud-machine" component={CRUDGeneral.CRUDMachine} />
-          <Route path="/crud-command" component={CRUDGeneral.CRUDCommand} />
-          <Route path="/crud-user" component={CRUDGeneral.CRUDEmployee} />
-          <Route path="/crud-attribution" component={CRUDGeneral.CRUDAttribution} />
-          <Route path="/crud-administration" component={CRUDGeneral.CRUDAdmin} />
-          <Route path="/crud-option" component={CRUDGeneral.CRUDOption} />
-          <Route path="/crud-os" component={CRUDGeneral.CRUDOS} />
+          <PrivateRoute path="/crud-machine" component={CRUDGeneral.CRUDMachine} />
+          <PrivateRoute path="/crud-command" component={CRUDGeneral.CRUDCommand} />
+          <PrivateRoute path="/crud-user" component={CRUDGeneral.CRUDEmployee} />;
+          <PrivateRoute path="/crud-attribution" component={CRUDGeneral.CRUDAttribution} />;
+          <PrivateRoute path="/crud-administration" component={CRUDGeneral.CRUDAdmin} />;
+          <PrivateRoute path="/crud-option" component={CRUDGeneral.CRUDOption} />;
+          <PrivateRoute path="/crud-os" component={CRUDGeneral.CRUDOS} />;
           
           {/*CRUDADD*/}
-          <Route path="/add/:entity" component={AddAdmin} />
+          <PrivateRoute path="/add/:entity" component={AddAdmin} />
 
           {/*CRUDEDIT*/}
-          <Route path="/edit/:entity/:id" component={EditCRUD} />
+          <PrivateRoute path="/edit/:entity/:id" component={EditCRUD} />
 
           {/*MACHINELIST ELEMENT*/}
-          <Route path="/machine-page/:idMachine/:idOS" component={CardPage}/>
+          <PrivateRoute path="/machine-page/:idMachine/:idOS" component={CardPage} />;
 
-          {/* Add the login route */}
           <Route path="/login" component={LoginForm} />
 
-          {/* Add the Not Found route */}
           <Route component={NotFound} />
         </Switch>
       </Router>

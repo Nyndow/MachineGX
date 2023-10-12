@@ -18,6 +18,7 @@ from routes.customCommandBP import custom_cmd_bp
 app = Flask(__name__)
 CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///machineGX.db'
+app.config['SECRET_KEY'] = 'your_secret_key'
 db.init_app(app)
 
 app.register_blueprint(administration_bp)

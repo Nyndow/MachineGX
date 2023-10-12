@@ -8,6 +8,11 @@
     color: #e4e4e4; 
 }
 
+.history-item-container hr{
+    width: 90%;
+    margin-right: 5%;
+}
+
 .machine-section h1{
     margin-left: 20%;
 }
