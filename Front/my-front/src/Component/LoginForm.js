@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom'; 
 import axios from 'axios';
 import '../Styles/LoginForm.css';
 
@@ -10,7 +11,9 @@ function LoginForm() {
   });
   const apiUrl = process.env.REACT_APP_API_URL;
   const [token, setToken] = useState(null);
+  const history = useHistory();
 
+  
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
@@ -30,15 +33,11 @@ function LoginForm() {
       setToken(token);
       setFormData({ username: '', password: '', error: '' });
       localStorage.setItem('token', token);
+      history.push('/home');
     })
     .catch(error => {
       setFormData({ ...formData, error: 'Invalid username or password' });
     });
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    setToken(null);
   };
 
   useEffect(() => {
@@ -48,13 +47,9 @@ function LoginForm() {
     }
   }, []);
 
-  if (token) {
-    return (
-      <div>
-        <div>You are logged in!</div>
-        <button onClick={handleLogout}>Logout</button>
-      </div>
-    );
+  if(token)
+  {
+    history.push('/home');
   }
 
   return (

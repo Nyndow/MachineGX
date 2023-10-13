@@ -17,7 +17,12 @@ function App() {
   return (
     <div className="app-container">
       <Router>
-      <PrivateRoute path="/" component={Sidebar} />
+        <Route path="/login" component={LoginForm} />
+        <Route
+          render={({ location }) =>
+            location.pathname !== '/login' && <Sidebar />
+          }
+        />
         <Switch>
           <PrivateRoute path="/home" component={CardList} />
           <PrivateRoute path="/machine" component={MachineOption} />
@@ -41,9 +46,7 @@ function App() {
           {/*MACHINELIST ELEMENT*/}
           <PrivateRoute path="/machine-page/:idMachine/:idOS" component={CardPage} />;
 
-          <Route path="/login" component={LoginForm} />
-
-          <Route component={NotFound} />
+          <PrivateRoute component={NotFound} />
         </Switch>
       </Router>
     </div>
