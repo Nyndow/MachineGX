@@ -8,6 +8,16 @@
   display: inline-block;
 }
 
+.new-button{
+  display: flex;
+  align-items: center;
+  background-color: #489c40;
+}
+
+.new-button:hover{
+  background-color: #2a7523;
+}
+
 .cardlist{
   display: flex;
   flex-wrap: wrap; 

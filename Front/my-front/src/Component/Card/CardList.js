@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import CardItem from './CardItem';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import '../../Styles/CardList.css';
 import PaginationComponent from '../Services/Pagination';
@@ -13,6 +14,7 @@ const CardList = () => {
   const apiUrl = process.env.REACT_APP_API_URL;
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
+  const history = useHistory();
   const [selectedFiles, setSelectedFiles] = useState([]);
   const connectedMachines = cardData.filter((machine) => machine.state === 'up');
 
@@ -169,6 +171,12 @@ const CardList = () => {
   return (
     <div className="card-list">
       <div className='option-list'>
+        <div className='left-option'>
+        <button className="new-button" onClick={() => history.push('/machine')}>
+        <ComputerIcon /> 
+        <span className="text">New</span>
+        </button>
+        </div>
       <input type="file" multiple onChange={handleFileSelect} />
       <button onClick={uploadFiles} className='uploadButton'>Upload</button>
       <button onClick={updateMachineState}className='connectButton'>Connect</button>
