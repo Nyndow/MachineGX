@@ -5,6 +5,8 @@ import CardItem from './CardItem';
 import axios from 'axios';
 import '../../Styles/CardList.css';
 import PaginationComponent from '../Services/Pagination';
+import ComputerIcon from '@mui/icons-material/Computer';
+import SortIcon from '@mui/icons-material/Sort';
 
 const CardList = () => {
   const [cardData, setCardData] = useState([]);

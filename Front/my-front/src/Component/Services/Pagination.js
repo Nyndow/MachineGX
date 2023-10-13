@@ -1,21 +1,20 @@
 import React from 'react';
-import { Pagination } from 'react-bootstrap';
-import "../../Styles/Pagination.css"
+import Pagination from '@mui/material/Pagination';
 
 const PaginationComponent = ({ currentPage, totalPages, onPageChange }) => {
+  const handleChange = (event, page) => {
+    onPageChange(page);
+  };
+
   return (
     <div className='pagination-container'>
-    <Pagination>
-      {Array.from({ length: totalPages }, (_, page) => (
-        <Pagination.Item
-          key={page}
-          active={page + 1 === currentPage}
-          onClick={() => onPageChange(page + 1)}
-        >
-          {page + 1}
-        </Pagination.Item>
-      ))}
-    </Pagination>
+      <Pagination
+        count={totalPages}
+        color="secondary"
+        size="large"
+        page={currentPage}
+        onChange={handleChange}
+      />
     </div>
   );
 };

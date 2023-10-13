@@ -7,7 +7,7 @@
   }
   
   .red-state {
-    background-color: red;
+    background-color: #444;
   }
   
   .state-indicator {
@@ -19,7 +19,7 @@
   
   .card {
     width: 250px; 
-    height: 250px; 
+    height: 220px; 
     background-color: #110f18;
     border : 2px solid #fafaf1;
     border-radius: 10px; 
