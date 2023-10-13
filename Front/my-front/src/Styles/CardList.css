@@ -1,19 +1,17 @@
-/* Add this CSS to your stylesheet */
-
 .card-list {
+    margin-top: 10px;
     margin-left: 5.7%;
     margin-right: 1.3%;
     display: flex;
-    flex-wrap: wrap; /* Allow cards to wrap to the next line */
-    justify-content: space-between; /* Distribute cards evenly along the row */
+    flex-wrap: wrap; 
+    justify-content: space-between; 
   }
   
   .pagination-container {
-    /* Adjust the positioning as per your requirements */
     position: absolute;
-    bottom: 10px; /* You can use 'top', 'bottom', 'left', 'right' to position it */
+    bottom: 10px; 
     right: 0;
-    left: 0; /* Center it horizontally */
-    text-align: center; /* Center the pagination items within the container */
+    left: 0; 
+    text-align: center; 
   }
   

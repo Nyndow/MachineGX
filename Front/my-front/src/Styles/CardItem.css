@@ -24,9 +24,10 @@
   }
   
   .card {
-    width: 200px; 
-    height: 200px; 
-    background-color: #3f3b4d;
+    width: 220px; 
+    height: 220px; 
+    background-color: #110f18;
+    border : 2px solid #fafaf1;
     border-radius: 10px; 
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease-in-out;
@@ -36,9 +37,10 @@
     justify-content: center;
     align-items: center;
   }
+
   
   .card:hover {
-    transform: scale(1.05); 
+    transform: scale(1.02); 
   }
   
   .card-image {
@@ -46,6 +48,11 @@
     height: 80px; 
     object-fit: cover; 
     border-radius: 50%; 
+  }
+
+  .internet-img{
+    width: 15px;
+    height: 20px;
   }
   
   .card-title {

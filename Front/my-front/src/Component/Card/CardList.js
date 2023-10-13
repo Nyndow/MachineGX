@@ -10,7 +10,7 @@ const CardList = () => {
   const [cardData, setCardData] = useState([]);
   const apiUrl = process.env.REACT_APP_API_URL;
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 2;
+  const itemsPerPage = 5;
   const [selectedFiles, setSelectedFiles] = useState([]);
   const connectedMachines = cardData.filter((machine) => machine.state === 'up');
 
