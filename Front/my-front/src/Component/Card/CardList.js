@@ -1,5 +1,3 @@
-//It's MemFree here but it's for the mem used
-
 import React, { useState, useEffect } from 'react';
 import CardItem from './CardItem';
 import { useHistory } from 'react-router-dom';
@@ -7,7 +5,8 @@ import axios from 'axios';
 import '../../Styles/CardList.css';
 import PaginationComponent from '../Services/Pagination';
 import ComputerIcon from '@mui/icons-material/Computer';
-import SortIcon from '@mui/icons-material/Sort';
+import UploadIcon from '@mui/icons-material/Upload';
+import SendIcon from '@mui/icons-material/Send';
 
 const CardList = () => {
   const [cardData, setCardData] = useState([]);
@@ -17,6 +16,7 @@ const CardList = () => {
   const history = useHistory();
   const [selectedFiles, setSelectedFiles] = useState([]);
   const connectedMachines = cardData.filter((machine) => machine.state === 'up');
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -45,7 +45,7 @@ const CardList = () => {
 
   const fetchScriptData = () => {
     const updatedCardData = [...cardData];
-  
+
     updatedCardData.forEach(async (machine, i) => {
       if (machine.state === 'up') {
         try {
@@ -54,7 +54,7 @@ const CardList = () => {
               userUsername: machine.userUsername
             }
           });
-  
+
           if (response.data && response.data.script_data) {
             updatedCardData[i] = {
               ...machine,
@@ -67,7 +67,7 @@ const CardList = () => {
                 UploadSpeed: response.data.script_data.UploadSpeed,
               },
             };
-          } 
+          }
           else {
             console.error('Invalid script_data response format:', response.data);
           }
@@ -78,34 +78,29 @@ const CardList = () => {
       }
     });
   };
-  
+
   fetchScriptData();
-  
-  
 
   const updateMachineState = async () => {
     const updatedCardData = [...cardData];
-  
+
     for (let i = 0; i < updatedCardData.length; i++) {
       const machine = updatedCardData[i];
       const requestData = {
         userUsername: machine.userUsername,
         userPassword: machine.userPassword,
-        ipAddr: machine.ipAddr, 
+        ipAddr: machine.ipAddr,
         portNumber: machine.portNumber,
       };
-      console.log('Sending POST request for machine:', machine.idMachine);
       axios
         .post(`${apiUrl}/connect/${machine.idMachine}`, requestData)
         .then(() => {
           updatedCardData[i] = { ...machine, state: 'up' };
           setCardData(updatedCardData);
-          console.log('POST request successful for machine:', machine.idMachine);
         })
         .catch((error) => {
           console.error('Error updating machine state:', error);
-          console.log('POST request failed for machine:', machine.idMachine);
-        });      
+        });
     }
   };
 
@@ -115,7 +110,7 @@ const CardList = () => {
         const machine = connectedMachines[i];
         await axios.post(`${apiUrl}/disconnect/${machine.idMachine}`);
       }
-      
+
       const updatedCardData = cardData.map((machine) => ({
         ...machine,
         state: 'down',
@@ -124,8 +119,8 @@ const CardList = () => {
     } catch (error) {
       console.error('Error disconnecting connected machines:', error);
     }
-  };  
-  
+  };
+
   const getPaginatedData = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
@@ -143,19 +138,18 @@ const CardList = () => {
   const uploadFile = async (file, machineId, userUsername) => {
     const formData = new FormData();
     formData.append('file', file);
-  
+
     try {
-      const response = await axios.post(`${apiUrl}/transfer-script/${machineId}?userUsername=${userUsername}`, formData, {
+      await axios.post(`${apiUrl}/transfer-script/${machineId}?userUsername=${userUsername}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log(`File uploaded to machine ${machineId} for user ${userUsername}:`, response);
     } catch (error) {
       console.error(`Error uploading file to machine ${machineId} for user ${userUsername}:`, error);
     }
   };
-  
+
   const uploadFiles = async () => {
     try {
       for (const machine of connectedMachines) {
@@ -168,39 +162,86 @@ const CardList = () => {
     }
   };
 
+  const togglePopup = () => {
+    setIsPopupOpen(!isPopupOpen);
+  };
+
   return (
     <div className="card-list">
       <div className='option-list'>
         <div className='left-option'>
-        <button className="new-button" onClick={() => history.push('/machine')}>
-        <ComputerIcon/> 
-        <span className="text">New</span>
-        </button>
+          <button className="new-button" onClick={() => history.push('/machine')}>
+            <ComputerIcon />
+            <span className="text">New</span>
+          </button>
         </div>
-      <input type="file" multiple onChange={handleFileSelect} />
-      <button onClick={uploadFiles} className='uploadButton'>Upload</button>
-      <button onClick={updateMachineState}className='connectButton'>Connect</button>
-      <button onClick={disconnectAllMachines}className='disconnectButton'>Disconnect</button>
+
+        {/* Upload Section */}
+          <div className="popup-container">
+          <button onClick={togglePopup} className="popup-button">
+            <span className="icon-container">
+              <UploadIcon />
+            </span>
+            <span className="text-container">Upload files</span>
+          </button>
+            {isPopupOpen && (
+              <div className="popup">
+                <div className="popup-content">
+                  <div className="custom-file">
+                    <input type="file" multiple onChange={handleFileSelect} id="fileInput" className="custom-file-input" />
+                    <label htmlFor="fileInput" className="custom-file-label">Click here to choose files to upload</label>
+                  </div>
+                  <hr></hr>
+                  {selectedFiles.length > 0 && (
+                    <div className="selected-files-container">
+                      {selectedFiles.map((file, index) => (
+                        <div className="file-box" key={index}>
+                          {file.type.startsWith('image') ? (
+                            <img src={URL.createObjectURL(file)} alt={file.name} />
+                          ) : file.type.startsWith('video') ? (
+                            <video controls>
+                              <source src={URL.createObjectURL(file)} type={file.type} />
+                            </video>
+                          ) : (
+                            <p>{file.name}</p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <hr></hr>
+                    <div className="send-button">
+                      <button onClick={uploadFiles} >Upload</button>
+                    </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+      {/* Ending upload Section */}
+
+        <button onClick={updateMachineState} className='connectButton'>Connect</button>
+        <button onClick={disconnectAllMachines} className='disconnectButton'>Disconnect</button>
       </div>
       <div className='cardlist'>
-      {getPaginatedData().map((card) => (
-        <div key={card.idMachine} className="card-item-container">
-        <CardItem
-          idOS={card.idOS}
-          machineName={card.machineName}
-          numEmployee={card.numEmployee}
-          userUsername={card.userUsername}
-          imageUrl={card.imgOS}
-          idMachine={card.idMachine}
-          state={card.state}
-          freeRAM={card.script_data?.FreeMemory || "0"}
-          totalRAM={card.script_data?.TotalMemory || "0 GB"}
-          DownUsage={card.script_data?.DownloadSpeed || "0 KB/s"}
-          UpUsage={card.script_data?.UploadSpeed || "0 KB/s"}
-          CPUUsage={card.script_data?.CPUUsage || "0%"}
-        />
-        </div>
-      ))}
+        {getPaginatedData().map((card) => (
+          <div key={card.idMachine} className="card-item-container">
+            <CardItem
+              idOS={card.idOS}
+              machineName={card.machineName}
+              numEmployee={card.numEmployee}
+              userUsername={card.userUsername}
+              imageUrl={card.imgOS}
+              idMachine={card.idMachine}
+              state={card.state}
+              freeRAM={card.script_data?.FreeMemory || "0"}
+              totalRAM={card.script_data?.TotalMemory || "0 GB"}
+              DownUsage={card.script_data?.DownloadSpeed || "0 KB/s"}
+              UpUsage={card.script_data?.UploadSpeed || "0 KB/s"}
+              CPUUsage={card.script_data?.CPUUsage || "0%"}
+            />
+          </div>
+        ))}
       </div>
       <div className="pagination-container">
         <PaginationComponent
