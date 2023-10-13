@@ -18,14 +18,9 @@
     margin-right: 5px;
   }
   
-
-  .link{
-    text-decoration: none;
-  }
-  
   .card {
-    width: 220px; 
-    height: 220px; 
+    width: 250px; 
+    height: 250px; 
     background-color: #110f18;
     border : 2px solid #fafaf1;
     border-radius: 10px; 
@@ -44,12 +39,16 @@
   }
   
   .card-image {
-    width: 80px;
-    height: 80px; 
+    float: right;
+    width: 35px;
+    height: 35px; 
     object-fit: cover; 
     border-radius: 50%; 
   }
 
+  .os-image{ 
+    width: 100%;
+  }
   .internet-img{
     width: 15px;
     height: 20px;

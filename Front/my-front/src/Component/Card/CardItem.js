@@ -13,13 +13,14 @@ const CardItem = ({ idOS, machineName, freeRAM, totalRAM, CPUUsage, DownUsage, U
   };
 
   return (
-    <div className="link" onClick={handleClick}>
+    <div onClick={handleClick}>
       <div className="card">
-        <img src={imageUrl} alt={machineName} className="card-image" />
         <div className="card-content">
-          <h2 className="card-title">{machineName}</h2>
-          <p className="card-description">{numEmployee}</p>
-          <div className={`state-indicator ${stateIndicatorClass}`}></div>
+          <h2 className="card-title">{machineName} | {numEmployee}</h2>
+          <div className='os-image'>
+            <div className={`state-indicator ${stateIndicatorClass}`}></div>
+            <img src={require(`../../Utils/distro-pics/${imageUrl}`)} alt={machineName} className="card-image" />
+          </div>
           <p>RAM : {freeRAM}/{totalRAM}</p>
           <p>CPU : {CPUUsage} </p>
           <p>Internet :<img src={down} className='internet-img' alt="machine" /> {DownUsage} <img src={up} className='internet-img' alt="machine" /> {UpUsage} </p>
