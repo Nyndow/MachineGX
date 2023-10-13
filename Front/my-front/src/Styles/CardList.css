@@ -12,6 +12,7 @@
   display: flex;
   align-items: center;
   background-color: #489c40;
+  border-radius: 4px;
 }
 
 .new-button:hover{

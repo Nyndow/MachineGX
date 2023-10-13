@@ -173,7 +173,7 @@ const CardList = () => {
       <div className='option-list'>
         <div className='left-option'>
         <button className="new-button" onClick={() => history.push('/machine')}>
-        <ComputerIcon /> 
+        <ComputerIcon/> 
         <span className="text">New</span>
         </button>
         </div>
