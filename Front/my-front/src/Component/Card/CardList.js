@@ -10,7 +10,7 @@ const CardList = () => {
   const [cardData, setCardData] = useState([]);
   const apiUrl = process.env.REACT_APP_API_URL;
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  const itemsPerPage = 12;
   const [selectedFiles, setSelectedFiles] = useState([]);
   const connectedMachines = cardData.filter((machine) => machine.state === 'up');
 
@@ -166,6 +166,13 @@ const CardList = () => {
 
   return (
     <div className="card-list">
+      <div className='option-list'>
+      <input type="file" multiple onChange={handleFileSelect} />
+      <button onClick={uploadFiles} className='uploadButton'>Upload</button>
+      <button onClick={updateMachineState}className='connectButton'>Connect</button>
+      <button onClick={disconnectAllMachines}className='disconnectButton'>Disconnect</button>
+      </div>
+      <div className='cardlist'>
       {getPaginatedData().map((card) => (
         <div key={card.idMachine} className="card-item-container">
         <CardItem
@@ -184,10 +191,7 @@ const CardList = () => {
         />
         </div>
       ))}
-      <input type="file" multiple onChange={handleFileSelect} />
-      <button onClick={uploadFiles} className='uploadButton'>Upload</button>
-      <button onClick={updateMachineState}className='connectButton'>Connect</button>
-      <button onClick={disconnectAllMachines}className='disconnectButton'>Disconnect</button>
+      </div>
       <div className="pagination-container">
         <PaginationComponent
           currentPage={currentPage}

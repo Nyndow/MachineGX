@@ -9,8 +9,8 @@ function MachineOption() {
     ipAddr: '',
     portNumber: '',
     machineName: '',
-    nomOS: '', // Add nomOS field to the form data
-    versionOS: '', // Add versionOS field to the form data
+    nomOS: '',
+    versionOS: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -56,13 +56,16 @@ function MachineOption() {
   }, [apiUrl, isSubmitting, formData]);
 
   const nomOSOptions = useMemo(() => {
-    return oSysData.map((item) => (
-      <option key={item.idOsys} value={item.nomOS}>
-        {item.nomOS}
+    // Create an array of unique nomOS values
+    const uniqueNomOS = [...new Set(oSysData.map((item) => item.nomOS))];
+
+    return uniqueNomOS.map((nomOSValue, index) => (
+      <option key={index} value={nomOSValue}>
+        {nomOSValue}
       </option>
     ));
   }, [oSysData]);
-  
+
   const versionOSOptions = useMemo(() => {
     return oSysData
       .filter((item) => item.nomOS === formData.nomOS)
@@ -71,7 +74,7 @@ function MachineOption() {
           {item.versionOS}
         </option>
       ));
-  }, [oSysData, formData.nomOS]);  
+  }, [oSysData, formData.nomOS]);
 
   return (
     <div className="machineOption-container">

@@ -16,7 +16,7 @@ const CardItem = ({ idOS, machineName, freeRAM, totalRAM, CPUUsage, DownUsage, U
     <div onClick={handleClick}>
       <div className="card">
         <div className="card-content">
-          <h2 className="card-title">{machineName} | {numEmployee}</h2>
+          <h3 className="card-title">{machineName} | {numEmployee}</h3>
           <div className='os-image'>
             <div className={`state-indicator ${stateIndicatorClass}`}></div>
             <img src={require(`../../Utils/distro-pics/${imageUrl}`)} alt={machineName} className="card-image" />
