@@ -194,6 +194,7 @@ const CardList = () => {
         {isPopupOpen && (
           <div className="popup">
             <div className="popup-content">
+            <ClearIcon onClick={() => togglePopup()} className='close-icon'/>
               <div className="custom-file">
                 <input type="file" multiple onChange={handleFileSelect} id="fileInput" className="custom-file-input" />
                 <label htmlFor="fileInput" className="custom-file-label">Click here to choose files to upload</label>

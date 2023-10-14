@@ -76,7 +76,6 @@
   justify-content: center;
   align-items: center;
   z-index: 999; 
-  border: 2px solid #0056b3
 }
 
 .popup-content {
@@ -97,11 +96,17 @@
 .popup-button{
   display: flex;
   align-items: center;
-  background: #007BFF;
   color: #fff;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
+  cursor: pointer;
+}
+
+.close-icon {
+  position: absolute;
+  top: 5px;
+  right: 5px;
   cursor: pointer;
 }
 .selected-file-container {
