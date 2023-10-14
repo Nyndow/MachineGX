@@ -6,7 +6,7 @@ import '../../Styles/CardList.css';
 import PaginationComponent from '../Services/Pagination';
 import ComputerIcon from '@mui/icons-material/Computer';
 import UploadIcon from '@mui/icons-material/Upload';
-import SendIcon from '@mui/icons-material/Send';
+import ClearIcon from '@mui/icons-material/Clear';
 
 const CardList = () => {
   const [cardData, setCardData] = useState([]);
@@ -132,8 +132,9 @@ const CardList = () => {
   };
 
   const handleFileSelect = (e) => {
-    setSelectedFiles([...e.target.files]);
+    setSelectedFiles((prevSelectedFiles) => [...prevSelectedFiles, ...e.target.files]);
   };
+  
 
   const uploadFile = async (file, machineId, userUsername) => {
     const formData = new FormData();
@@ -162,6 +163,12 @@ const CardList = () => {
     }
   };
 
+  const removeFile = (index) => {
+    const updatedSelectedFiles = [...selectedFiles];
+    updatedSelectedFiles.splice(index, 1);
+    setSelectedFiles(updatedSelectedFiles);
+  };
+
   const togglePopup = () => {
     setIsPopupOpen(!isPopupOpen);
   };
@@ -176,48 +183,50 @@ const CardList = () => {
           </button>
         </div>
 
-        {/* Upload Section */}
-          <div className="popup-container">
-          <button onClick={togglePopup} className="popup-button">
-            <span className="icon-container">
-              <UploadIcon />
-            </span>
-            <span className="text-container">Upload files</span>
-          </button>
-            {isPopupOpen && (
-              <div className="popup">
-                <div className="popup-content">
-                  <div className="custom-file">
-                    <input type="file" multiple onChange={handleFileSelect} id="fileInput" className="custom-file-input" />
-                    <label htmlFor="fileInput" className="custom-file-label">Click here to choose files to upload</label>
-                  </div>
-                  <hr></hr>
-                  {selectedFiles.length > 0 && (
-                    <div className="selected-files-container">
-                      {selectedFiles.map((file, index) => (
-                        <div className="file-box" key={index}>
-                          {file.type.startsWith('image') ? (
-                            <img src={URL.createObjectURL(file)} alt={file.name} />
-                          ) : file.type.startsWith('video') ? (
-                            <video controls>
-                              <source src={URL.createObjectURL(file)} type={file.type} />
-                            </video>
-                          ) : (
-                            <p>{file.name}</p>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                  <hr></hr>
-                    <div className="send-button">
-                      <button onClick={uploadFiles} >Upload</button>
-                    </div>
-                </div>
+      {/* Upload Section */}
+      <div className="popup-container">
+        <button onClick={togglePopup} className="popup-button">
+          <span className="icon-container">
+            <UploadIcon />
+          </span>
+          <span className="text-container">Upload files</span>
+        </button>
+        {isPopupOpen && (
+          <div className="popup">
+            <div className="popup-content">
+              <div className="custom-file">
+                <input type="file" multiple onChange={handleFileSelect} id="fileInput" className="custom-file-input" />
+                <label htmlFor="fileInput" className="custom-file-label">Click here to choose files to upload</label>
               </div>
-            )}
+              <hr></hr>
+              {selectedFiles.length > 0 && (
+                <div className="selected-files-container">
+                  {selectedFiles.map((file, index) => (
+                    <div className="file-box" key={index}>
+                          <div className="clear-button-container">
+                            <ClearIcon onClick={() => removeFile(index)} fontSize="small" className="clear-icon" />
+                          </div>
+                      {file.type.startsWith('image') ? (
+                        <img src={URL.createObjectURL(file)} alt={file.name} />
+                      ) : file.type.startsWith('video') ? (
+                        <video controls>
+                          <source src={URL.createObjectURL(file)} type={file.type} />
+                        </video>
+                      ) : (
+                        <p>{file.name}</p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+              <hr></hr>
+              <div className="send-button">
+                <button onClick={uploadFiles}>Upload</button>
+              </div>
+            </div>
           </div>
-
+        )}
+      </div>
       {/* Ending upload Section */}
 
         <button onClick={updateMachineState} className='connectButton'>Connect</button>
