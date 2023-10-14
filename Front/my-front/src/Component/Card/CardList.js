@@ -12,7 +12,7 @@ const CardList = () => {
   const [cardData, setCardData] = useState([]);
   const apiUrl = process.env.REACT_APP_API_URL;
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 12;
+  const itemsPerPage = 10;
   const history = useHistory();
   const [selectedFiles, setSelectedFiles] = useState([]);
   const connectedMachines = cardData.filter((machine) => machine.state === 'up');
@@ -176,21 +176,26 @@ const CardList = () => {
   return (
     <div className="card-list">
       <div className='option-list'>
-        <div className='left-option'>
-          <button className="new-button" onClick={() => history.push('/machine')}>
-            <ComputerIcon />
-            <span className="text">New</span>
-          </button>
+        <div className='test-align'>
+          <div className='left-option'>
+            <button className="new-button" onClick={() => history.push('/machine')}>
+              <ComputerIcon />
+              <span className="text">New</span>
+            </button>
+          </div>
+          <div className='right-buttons'>
+            <button onClick={togglePopup} className="popup-button">
+              <span className="icon-container">
+                <UploadIcon />
+              </span>
+              <span className="text-container">Upload files</span>
+            </button>
+            <button onClick={updateMachineState} className='connectButton'>Connect</button>
+            <button onClick={disconnectAllMachines} className='disconnectButton'>Disconnect</button>
+          </div>
         </div>
-
       {/* Upload Section */}
-      <div className="popup-container">
-        <button onClick={togglePopup} className="popup-button">
-          <span className="icon-container">
-            <UploadIcon />
-          </span>
-          <span className="text-container">Upload files</span>
-        </button>
+        <div className="popup-container">
         {isPopupOpen && (
           <div className="popup">
             <div className="popup-content">
@@ -229,9 +234,7 @@ const CardList = () => {
         )}
       </div>
       {/* Ending upload Section */}
-
-        <button onClick={updateMachineState} className='connectButton'>Connect</button>
-        <button onClick={disconnectAllMachines} className='disconnectButton'>Disconnect</button>
+      <hr/>
       </div>
       <div className='cardlist'>
         {getPaginatedData().map((card) => (
