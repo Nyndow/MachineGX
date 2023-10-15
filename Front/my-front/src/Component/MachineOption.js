@@ -8,6 +8,9 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
+import Button from '@mui/material/Button';
+import SaveIcon from '@mui/icons-material/Save';
+import HelpIcon from '@mui/icons-material/Help';
 
 function MachineOption() {
   const apiUrl = process.env.REACT_APP_API_URL;
@@ -93,6 +96,7 @@ function MachineOption() {
           name="machineName"
           value={formData.machineName}
           onChange={handleInputChange}
+          style={{ marginBottom: '10px' }}
           required
         />
         <TextField
@@ -102,6 +106,7 @@ function MachineOption() {
           name="ipAddr"
           value={formData.ipAddr}
           onChange={handleInputChange}
+          style={{ marginBottom: '10px' }}
           required
         />
         <TextField
@@ -111,6 +116,7 @@ function MachineOption() {
           name="portNumber"
           value={formData.portNumber}
           onChange={handleInputChange}
+          style={{ marginBottom: '10px' }}
           required
         />
       </div>
@@ -146,13 +152,18 @@ function MachineOption() {
           </FormControl>
         </Box>
       </div>
-      <Link href="/add/oSys" underline="hover">
-        OS Not there ?
+      <Link color="primary " href="/add/oSys" underline="hover" style={{ display: 'flex', alignItems: 'center' }}>
+        <HelpIcon style={{ marginRight: '5px' }} />OS Not there?
       </Link>
 
-      <button onClick={handleSubmit} disabled={isSubmitting}>
-        {isSubmitting ? 'Submitting...' : 'Submit Data'}
-      </button>
+        <Button variant="text"
+          size="large"
+          color="success"
+          startIcon={<SaveIcon />}
+          onClick={handleSubmit}
+        >
+          Save
+        </Button>
     </div>
   );
 }

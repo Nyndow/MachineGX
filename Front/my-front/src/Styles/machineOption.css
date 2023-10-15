@@ -1,15 +1,19 @@
 .machineOption-container {
   background-color: #110f18;
-    margin-left: 32.5%;
-    margin-top: 2%;
-    width: 32.5%;
-    height: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
+  margin: 2% auto; 
+  width: 25%; 
+  min-height: 70vh; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.machineOption-container Button{
+  margin-top: 10px;
 }
 
 .select-OS {
@@ -21,7 +25,7 @@
   .input-group {
     display: flex;
     flex-direction: column;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
   }
   
   .input-group label {
@@ -40,19 +44,4 @@
     display: inline-block;
     width: 100%;
   }
-  
-  button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 3px;
-    padding: 10px 20px;
-    cursor: pointer;
-  }
-  
-  button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
-
   
