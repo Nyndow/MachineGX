@@ -6,6 +6,8 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import TextField from '@mui/material/TextField';
+import Link from '@mui/material/Link';
 
 function MachineOption() {
   const apiUrl = process.env.REACT_APP_API_URL;
@@ -84,39 +86,33 @@ function MachineOption() {
   return (
     <div className="machineOption-container">
       <div className="input-group">
-        <div>
-          <label htmlFor="machineNameInput">Machine Name:</label>
-          <input
-            type="text"
-            id="machineNameInput"
-            name="machineName"
-            value={formData.machineName}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="ipAddrInput">IP Address:</label>
-          <input
-            type="text"
-            id="ipAddrInput"
-            name="ipAddr"
-            value={formData.ipAddr}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="portNumberInput">Port Number:</label>
-          <input
-            type="text"
-            id="portNumberInput"
-            name="portNumber"
-            value={formData.portNumber}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
+        <TextField
+          id="standard-basic"
+          label="Machine Name"
+          variant="standard"
+          name="machineName"
+          value={formData.machineName}
+          onChange={handleInputChange}
+          required
+        />
+        <TextField
+          id="standard-basic"
+          label="IP Address"
+          variant="standard"
+          name="ipAddr"
+          value={formData.ipAddr}
+          onChange={handleInputChange}
+          required
+        />
+        <TextField
+          id="standard-basic"
+          label="Port Number"
+          variant="standard"
+          name="portNumber"
+          value={formData.portNumber}
+          onChange={handleInputChange}
+          required
+        />
       </div>
 
       <div className='select-OS'> 
@@ -134,6 +130,7 @@ function MachineOption() {
             </Select>
           </FormControl>
           </Box>
+
           <Box sx={{ minWidth: 120 }}>
           <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
             <InputLabel id="demo-simple-select-label">Version</InputLabel>
@@ -149,6 +146,9 @@ function MachineOption() {
           </FormControl>
         </Box>
       </div>
+      <Link href="/add/oSys" underline="hover">
+        OS Not there ?
+      </Link>
 
       <button onClick={handleSubmit} disabled={isSubmitting}>
         {isSubmitting ? 'Submitting...' : 'Submit Data'}

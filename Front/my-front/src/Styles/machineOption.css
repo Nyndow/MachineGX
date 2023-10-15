@@ -1,7 +1,9 @@
 .machineOption-container {
+  background-color: #110f18;
     margin-left: 32.5%;
     margin-top: 2%;
     width: 32.5%;
+    height: 50%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -12,9 +14,9 @@
 
 .select-OS {
   display: flex;
-  justify-content:space-around;
+  justify-content: space-around;
+  padding-bottom: 5px; 
 }
-
   
   .input-group {
     display: flex;

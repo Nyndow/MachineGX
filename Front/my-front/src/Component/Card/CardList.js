@@ -5,7 +5,6 @@ import axios from 'axios';
 import '../../Styles/CardList.css';
 import PaginationComponent from '../Services/Pagination';
 import ComputerIcon from '@mui/icons-material/Computer';
-import UploadIcon from '@mui/icons-material/Upload';
 import ClearIcon from '@mui/icons-material/Clear';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
@@ -193,18 +192,29 @@ const CardList = () => {
       <div className='option-list'>
         <div className='test-align'>
           <div className='left-option'>
-            <button className="new-button" onClick={() => history.push('/machine')}>
-              <ComputerIcon />
-              <span className="text">New</span>
-            </button>
+          <Button
+            component="label"
+            variant="contained"
+            startIcon={<ComputerIcon />}
+            onClick={() => history.push('/machine')}
+            color="success"
+            size="large"
+          >
+            New
+          </Button>
           </div>
           <div className='right-buttons'>
             <Button onClick={togglePopup} color="secondary" size="large" component="label" variant="outlined" startIcon={<CloudUploadIcon />}>
               Upload
               <VisuallyHiddenInput type="file" />
             </Button>
-            <button onClick={updateMachineState} className='connectButton'>Connect</button>
-            <button onClick={disconnectAllMachines} className='disconnectButton'>Disconnect</button>
+            <Button variant="outlined" size="large" color="success" onClick={updateMachineState}>
+              Connect
+            </Button>
+            <Button variant="outlined" color="error" size="large" onClick={disconnectAllMachines}>
+              Disconnect
+            </Button>
+
           </div>
         </div>
       {/* Upload Section */}
