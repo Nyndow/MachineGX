@@ -1,7 +1,11 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import axios from 'axios';
-import { FormControl, InputLabel, Select, MenuItem, Box } from '@mui/material'; // Import Material-UI components
 import '../Styles/machineOption.css';
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 function MachineOption() {
   const apiUrl = process.env.REACT_APP_API_URL;
@@ -117,8 +121,8 @@ function MachineOption() {
 
       <div className='select-OS'> 
         <Box sx={{ minWidth: 120 }}>
-          <FormControl fullWidth>
-            <InputLabel id="nomOSSelect-label">Select nomOS</InputLabel>
+        <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+            <InputLabel id="nomOSSelect-label">OS</InputLabel>
             <Select
               labelId="nomOSSelect-label"
               id="nomOSSelect"
@@ -126,13 +130,12 @@ function MachineOption() {
               value={formData.nomOS}
               onChange={handleInputChange}
             >
-              <MenuItem value="">Select nomOS</MenuItem>
               {nomOSOptions}
             </Select>
           </FormControl>
           </Box>
           <Box sx={{ minWidth: 120 }}>
-          <FormControl fullWidth>
+          <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
             <InputLabel id="demo-simple-select-label">Version</InputLabel>
             <Select
               labelId="demo-simple-select-label"
