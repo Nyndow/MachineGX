@@ -7,6 +7,9 @@ import PaginationComponent from '../Services/Pagination';
 import ComputerIcon from '@mui/icons-material/Computer';
 import UploadIcon from '@mui/icons-material/Upload';
 import ClearIcon from '@mui/icons-material/Clear';
+import { styled } from '@mui/material/styles';
+import Button from '@mui/material/Button';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 const CardList = () => {
   const [cardData, setCardData] = useState([]);
@@ -173,6 +176,18 @@ const CardList = () => {
     setIsPopupOpen(!isPopupOpen);
   };
 
+  const VisuallyHiddenInput = styled('input')({
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    height: 1,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    whiteSpace: 'nowrap',
+    width: 1,
+  });
+
   return (
     <div className="card-list">
       <div className='option-list'>
@@ -184,12 +199,10 @@ const CardList = () => {
             </button>
           </div>
           <div className='right-buttons'>
-            <button onClick={togglePopup} className="popup-button">
-              <span className="icon-container">
-                <UploadIcon />
-              </span>
-              <span className="text-container">Upload files</span>
-            </button>
+            <Button onClick={togglePopup} color="secondary" size="large" component="label" variant="outlined" startIcon={<CloudUploadIcon />}>
+              Upload
+              <VisuallyHiddenInput type="file" />
+            </Button>
             <button onClick={updateMachineState} className='connectButton'>Connect</button>
             <button onClick={disconnectAllMachines} className='disconnectButton'>Disconnect</button>
           </div>
