@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import axios from 'axios';
+import { FormControl, InputLabel, Select, MenuItem, Box } from '@mui/material'; // Import Material-UI components
 import '../Styles/machineOption.css';
 
 function MachineOption() {
@@ -60,9 +61,9 @@ function MachineOption() {
     const uniqueNomOS = [...new Set(oSysData.map((item) => item.nomOS))];
 
     return uniqueNomOS.map((nomOSValue, index) => (
-      <option key={index} value={nomOSValue}>
+      <MenuItem key={index} value={nomOSValue}>
         {nomOSValue}
-      </option>
+      </MenuItem>
     ));
   }, [oSysData]);
 
@@ -70,9 +71,9 @@ function MachineOption() {
     return oSysData
       .filter((item) => item.nomOS === formData.nomOS)
       .map((item) => (
-        <option key={item.idOsys} value={item.versionOS}>
+        <MenuItem key={item.idOsys} value={item.versionOS}>
           {item.versionOS}
-        </option>
+        </MenuItem>
       ));
   }, [oSysData, formData.nomOS]);
 
@@ -114,32 +115,36 @@ function MachineOption() {
         </div>
       </div>
 
-      <div>
-        <label>OS:</label>
-        <select
-          id="nomOSSelect"
-          name="nomOS"
-          value={formData.nomOS}
-          onChange={handleInputChange}
-          required
-        >
-          <option value="">Select nomOS</option>
-          {nomOSOptions}
-        </select>
-      </div>
-
-      <div>
-        <label>Version:</label>
-        <select
-          id="versionOSSelect"
-          name="versionOS"
-          value={formData.versionOS}
-          onChange={handleInputChange}
-          required
-        >
-          <option value="">Select versionOS</option>
-          {versionOSOptions}
-        </select>
+      <div className='select-OS'> 
+        <Box sx={{ minWidth: 120 }}>
+          <FormControl fullWidth>
+            <InputLabel id="nomOSSelect-label">Select nomOS</InputLabel>
+            <Select
+              labelId="nomOSSelect-label"
+              id="nomOSSelect"
+              name="nomOS"
+              value={formData.nomOS}
+              onChange={handleInputChange}
+            >
+              <MenuItem value="">Select nomOS</MenuItem>
+              {nomOSOptions}
+            </Select>
+          </FormControl>
+          </Box>
+          <Box sx={{ minWidth: 120 }}>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Version</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="versionOSSelect"
+              name="versionOS"
+              value={formData.versionOS}
+              onChange={handleInputChange}
+            >
+              {versionOSOptions}
+            </Select>
+          </FormControl>
+        </Box>
       </div>
 
       <button onClick={handleSubmit} disabled={isSubmitting}>
