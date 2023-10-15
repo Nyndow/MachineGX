@@ -119,7 +119,6 @@ function MachineOption() {
           style={{ marginBottom: '10px' }}
           required
         />
-      </div>
 
       <div className='select-OS'> 
         <Box sx={{ minWidth: 120 }}>
@@ -152,18 +151,45 @@ function MachineOption() {
           </FormControl>
         </Box>
       </div>
-      <Link color="primary " href="/add/oSys" underline="hover" style={{ display: 'flex', alignItems: 'center' }}>
-        <HelpIcon style={{ marginRight: '5px' }} />OS Not there?
+      <Link
+        fontSize="small"
+        color="info"
+        href="/add/oSys"
+        underline="hover"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'flex-end', 
+        }}
+      >
+        <HelpIcon style={{ marginRight: '4px' }} />OS not there?
       </Link>
 
-        <Button variant="text"
-          size="large"
+      <div style={{ display: 'flex', justifyContent: 'flex-end', paddingTop:'20px', paddingBottom:'15px' }}>
+      <Link
+        color="primary"
+        href="/add/oSys"
+        underline="none"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center', 
+        }}
+      >Save without adding user
+      </Link>
+      </div>
+
+      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <Button
+          variant="contained"
           color="success"
-          startIcon={<SaveIcon />}
           onClick={handleSubmit}
         >
-          Save
+          Next
         </Button>
+      </div>
+
+    </div>
     </div>
   );
 }
