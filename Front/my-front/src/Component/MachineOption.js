@@ -9,7 +9,6 @@ import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import Button from '@mui/material/Button';
-import SaveIcon from '@mui/icons-material/Save';
 import HelpIcon from '@mui/icons-material/Help';
 
 function MachineOption() {
@@ -29,6 +28,8 @@ function MachineOption() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
+
+  console.log(formData,userFormData)
 
   useEffect(() => {
     fetchData();
@@ -123,7 +124,7 @@ function MachineOption() {
           <>
             <h3>Machine Information </h3>
             <TextField
-              id="standard-basic"
+              id="numEMP-basic"
               label="Machine Name"
               variant="standard"
               name="machineName"
@@ -133,7 +134,7 @@ function MachineOption() {
               required
             />
             <TextField
-              id="standard-basic"
+              id="userUsername-basic"
               label="IP Address"
               variant="standard"
               name="ipAddr"
@@ -143,7 +144,7 @@ function MachineOption() {
               required
             />
             <TextField
-              id="standard-basic"
+              id="userPassword-basic"
               label="Port Number"
               variant="standard"
               name="portNumber"

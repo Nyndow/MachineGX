@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-
+import TextField from '@mui/material/TextField';
 import '../../../Styles/CRUDAddForm.css';
 
 const CRUDAddForm = ({ entity, columns }) => {
@@ -45,8 +45,8 @@ const CRUDAddForm = ({ entity, columns }) => {
         <input
           className="crud-form-input"
           type="datetime-local"
-          id={column}
           name={column}
+          id={column}
           value={formData[column] || ''}
           onChange={handleChange}
           required
@@ -54,14 +54,14 @@ const CRUDAddForm = ({ entity, columns }) => {
       );
     } else {
       return (
-        <input
-          className="crud-form-input"
-          type="text"
-          id={column}
-          name={column}
-          value={formData[column] || ''}
-          onChange={handleChange}
-        />
+      <TextField
+        id={column}
+        label={column}
+        name={column}
+        variant="standard"
+        value={formData[column] || ''}
+        onChange={handleChange}
+      />
       );
     }
   };
@@ -143,9 +143,6 @@ const CRUDAddForm = ({ entity, columns }) => {
       <h2 className="crud-form-title">Create {entity}</h2>
       {columns.map((column) => (
         <div key={column} className="input-group">
-        <label className="crud-form-label" htmlFor={column}>
-          {column}:
-        </label>
         {column === 'targetIn' ? (
           <div className="input-group">
             <input

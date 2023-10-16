@@ -1,8 +1,8 @@
 .crud-form-container {
     background-color: #110f18;
-    margin-left: 32.5%;
-    margin-top: 2%;
-    width: 32.5%;
+    margin: 2% auto; 
+    width: 25%; 
+    min-height: 70vh;
     display: flex;
     flex-direction: column;
     align-items: center;

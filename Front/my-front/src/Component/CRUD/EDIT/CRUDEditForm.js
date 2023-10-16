@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import TextField from '@mui/material/TextField';
 
 const CRUDEditForm = ({ entity, columns, entityId }) => {
   const [formData, setFormData] = useState({});
@@ -50,14 +51,16 @@ const CRUDEditForm = ({ entity, columns, entityId }) => {
       );
     } else {
       return (
-        <input
-          className="crud-form-input"
-          type={column === 'userPassword' ? 'password' : 'text'}
-          id={column}
-          name={column}
-          value={formData[column] || ''}
-          onChange={handleChange}
-        />
+<TextField
+  id={column}
+  name={column}
+  label={column}
+  variant="standard"
+  type={column === 'userPassword' ? 'password' : 'text'}
+  value={formData[column] || ''}
+  onChange={(e) => handleChange(e, column)}
+/>
+
       );
     }
   };
@@ -68,9 +71,6 @@ const CRUDEditForm = ({ entity, columns, entityId }) => {
       <h2 className="crud-form-title">Edit {entity}</h2>
       {columns.map((column) => (
         <div key={column} className="input-group">
-          <label className="crud-form-label" htmlFor={column}>
-            {column}:
-          </label>
           {renderInput(column, formData, handleChange)}
         </div>
       ))}

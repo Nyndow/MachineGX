@@ -53,7 +53,7 @@ function LoginForm() {
   }
 
   return (
-    <div className="login-container">
+    <div className="crud-form-container">
       <h2 className="login-title">Login</h2>
       {formData.error && <div className="error-message">{formData.error}</div>}
       <form onSubmit={handleSubmit}>
