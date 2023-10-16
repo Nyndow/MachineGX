@@ -26,6 +26,7 @@ function MachineOption() {
     userUsername: '',
     userPassword: '',
   });
+  const [linkMachine, setLinkMachine] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
 
@@ -69,7 +70,8 @@ function MachineOption() {
       axios
         .post(`${apiUrl}/machine_user_add/`, { ...formData, ...userFormData })
         .then((response) => {
-          console.log('Data sent successfully', response);
+          setLinkMachine(response.data)
+          console.log(response.data)
         })
         .catch((error) => {
           console.error('Error sending data:', error);
@@ -284,6 +286,11 @@ function MachineOption() {
           </>
         )}
       </div>
+      {linkMachine !== '' && <p>Machine created successfully, click <Link
+              color="info"
+              href={`/machine-page/${linkMachine.link}`}
+              underline="hover"
+            >here </Link> to configure </p>}
     </div>
   );
 }
