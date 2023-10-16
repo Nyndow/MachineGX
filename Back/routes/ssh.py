@@ -26,7 +26,7 @@ def connect(machine_id):
     except paramiko.AuthenticationException:
         return jsonify({'status': 'Authentication failed'}), 401
     except paramiko.SSHException as e:
-        return jsonify({'status': 'SSH connection failed', 'error_message': str(e)}), 500
+        return jsonify({'status': 'SSH connection failed', 'error_message': str(e)}), 502
     except Exception as e:
         return jsonify({'status': 'An error occurred', 'error_message': str(e)}), 500
 

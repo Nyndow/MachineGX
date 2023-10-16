@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from database import db
 from datetime import datetime
-from models.attribution import Attribution  # Import the Attribution model
+from models.attribution import Attribution  
 
 attribution_bp = Blueprint('attribution', __name__)
 
@@ -12,9 +12,9 @@ def attribution_list():
         idMachine = data.get('idMachine')
         idUser = data.get('idUser')
         dateDebut_String = data.get('dateDebut')
-        dateDebut = datetime.strptime(dateDebut_String, '%Y-%m-%dT%H:%M')  # Parse with date and time
+        dateDebut = datetime.strptime(dateDebut_String, '%Y-%m-%dT%H:%M')  
         dateFin_string = data.get('dateFin')
-        dateFin = datetime.strptime(dateFin_string, '%Y-%m-%dT%H:%M')  # Parse with date and time
+        dateFin = datetime.strptime(dateFin_string, '%Y-%m-%dT%H:%M') 
 
         new_attribution = Attribution(idMachine=idMachine, idUser=idUser, dateDebut=dateDebut, dateFin=dateFin)
         db.session.add(new_attribution)
@@ -56,9 +56,9 @@ def attribution_detail(attribution_id):
         attribution.idMachine = data.get('idMachine', attribution.idMachine)
         attribution.idUser = data.get('idUser', attribution.idUser)
         dateDebut_string = data.get('dateDebut', attribution.dateDebut)
-        attribution.dateDebut = datetime.strptime(dateDebut_string, '%Y-%m-%dT%H:%M')  # Parse with date and time
+        attribution.dateDebut = datetime.strptime(dateDebut_string, '%Y-%m-%dT%H:%M')  
         dateFin_string = data.get('dateFin', attribution.dateFin)
-        attribution.dateFin = datetime.strptime(dateFin_string, '%Y-%m-%dT%H:%M')  # Parse with date and time
+        attribution.dateFin = datetime.strptime(dateFin_string, '%Y-%m-%dT%H:%M') 
         db.session.commit()
         return jsonify({"message": "Attribution updated successfully"})
 

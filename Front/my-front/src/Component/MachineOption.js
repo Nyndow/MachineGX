@@ -286,7 +286,7 @@ function MachineOption() {
           </>
         )}
       </div>
-      {linkMachine !== '' && <p>Machine created successfully, click <Link
+      {linkMachine !== '' && <p style={{color:'green'}}>Machine created successfully, click <Link
               color="info"
               href={`/machine-page/${linkMachine.link}`}
               underline="hover"

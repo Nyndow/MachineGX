@@ -3,7 +3,8 @@ from database import db
 from models.machine import Machine 
 from models.user import User 
 from models.OS import OSys 
-from service.automaID import id_automa
+from .ssh_manager import ssh_clients
+from models.attribution import Attribution
 
 machine_user = Blueprint('machine_user', __name__)
 
@@ -41,4 +42,20 @@ def machine_list():
 
         return jsonify({"link": str(new_machine.idMachine) + "/" + str(idOS)})
 
+@machine_user.route('/machine_user/<int:machine_id>', methods=['GET'])
+def get_machine_user(machine_id):
+    if machine_id in ssh_clients: 
+        return jsonify({"message": "already connected"}), 401 
+    try:
+        query = (
+            db.session.query(User.userUsername)
+            .join(Attribution, Attribution.idUser == User.idUser)
+            .filter(Attribution.idMachine == machine_id)
+            .distinct()
+        )
+        results = query.all()
+        user_data = [{"userUsername": user[0]} for user in results]
 
+        return jsonify(user_data)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
