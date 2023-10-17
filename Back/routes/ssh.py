@@ -1,5 +1,8 @@
 from flask import Blueprint, request, jsonify
 import paramiko
+from models.user import User
+from models.machine import Machine
+from database import db
 from .ssh_manager import ssh_clients
 
 ssh_bp = Blueprint('ssh', __name__)
@@ -11,11 +14,12 @@ def connect(machine_id):
         if machine_id in ssh_clients:
             return jsonify({'status': 'Already connected'}), 400
         data = request.json
-        userUsername = data.get('userUsername')
-        userPassword = data.get('userPassword')
-        ipAddr = data.get('ipAddr')
-        portNumber = data.get('portNumber')
-        
+        user = User.query.get(data.get('idUser'))
+        userUsername= user.userUsername
+        userPassword = user.userPassword
+        machine = Machine.query.get(machine_id)
+        ipAddr = machine.ipAddr
+        portNumber = machine.portNumber
         ssh_client = paramiko.SSHClient()
         ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         ssh_client.connect(hostname=ipAddr, port=portNumber, username=userUsername, password=userPassword)

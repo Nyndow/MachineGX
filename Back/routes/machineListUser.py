@@ -20,7 +20,7 @@ def machineHome():
             Machine.ipAddr,
             Machine.portNumber,
             User.userUsername,
-            User.userPassword,
+            User.idUser,
             User.numEmployee
         ).join(
             OSys,
@@ -45,7 +45,7 @@ def machineHome():
             ipAddr,
             portNumber,
             userUsername,
-            userPassword,
+            idUser,
             numEmployee
         ) in query:
             machine_list.append({
@@ -56,7 +56,7 @@ def machineHome():
                 'ipAddr': ipAddr,
                 'portNumber': portNumber,
                 'userUsername': userUsername,
-                'userPassword': userPassword,
+                'idUser': idUser,
                 'numEmployee':numEmployee
             })
 

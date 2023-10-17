@@ -89,10 +89,7 @@ const CardList = () => {
     for (let i = 0; i < updatedCardData.length; i++) {
       const machine = updatedCardData[i];
       const requestData = {
-        userUsername: machine.userUsername,
-        userPassword: machine.userPassword,
-        ipAddr: machine.ipAddr,
-        portNumber: machine.portNumber,
+        idUser : machine.idUser,
       };
       axios
         .post(`${apiUrl}/connect/${machine.idMachine}`, requestData)

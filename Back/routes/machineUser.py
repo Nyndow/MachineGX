@@ -48,13 +48,13 @@ def get_machine_user(machine_id):
         return jsonify({"message": "already connected"}), 401 
     try:
         query = (
-            db.session.query(User.userUsername)
+            db.session.query(User.userUsername, User.idUser)
             .join(Attribution, Attribution.idUser == User.idUser)
             .filter(Attribution.idMachine == machine_id)
             .distinct()
         )
         results = query.all()
-        user_data = [{"userUsername": user[0]} for user in results]
+        user_data = [{"userUsername": user[0], "idUser": user[1]} for user in results]
 
         return jsonify(user_data)
     except Exception as e:
