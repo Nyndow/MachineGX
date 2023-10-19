@@ -21,16 +21,8 @@ function MachineOption() {
     nomOS: '',
     versionOS: '',
   });
-  const [userFormData, setUserFormData] = useState({
-    numEMP: '',
-    userUsername: '',
-    userPassword: '',
-  });
   const [linkMachine, setLinkMachine] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [currentStep, setCurrentStep] = useState(0);
-
-  console.log(formData,userFormData)
 
   useEffect(() => {
     fetchData();
@@ -55,20 +47,12 @@ function MachineOption() {
     }));
   }, []);
 
-  const handleUserInputChange = useCallback((event) => {
-    const { name, value } = event.target;
-    setUserFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  }, []);
-
   const handleSubmit = useCallback(() => {
     if (!isSubmitting) {
       setIsSubmitting(true);
 
       axios
-        .post(`${apiUrl}/machine_user_add/`, { ...formData, ...userFormData })
+        .post(`${apiUrl}/machine/`, { ...formData })
         .then((response) => {
           setLinkMachine(response.data)
           console.log(response.data)
@@ -80,23 +64,7 @@ function MachineOption() {
           setIsSubmitting(false);
         });
     }
-  }, [apiUrl, isSubmitting, formData, userFormData]);
-
-  const handleNext = () => {
-    if (currentStep < 1) {
-      setCurrentStep(currentStep + 1);
-    }
-  };
-
-  const handlePrevious = () => {
-    if (currentStep > 0) {
-      setCurrentStep(currentStep - 1);
-    }
-  };
-
-  const isFormEmpty = currentStep === 0
-    ? Object.values(formData).some((value) => value === '')
-    : Object.values(userFormData).some((value) => value === '');
+  }, [apiUrl, isSubmitting, formData]);
 
   const nomOSOptions = useMemo(() => {
     // Create an array of unique nomOS values
@@ -119,11 +87,11 @@ function MachineOption() {
       ));
   }, [oSysData, formData.nomOS]);
 
+  const isFormEmpty = Object.values(formData).some((value) => value === '');
+
   return (
     <div className="machineOption-container">
       <div className="input-group">
-        {currentStep === 0 && (
-          <>
             <h3>Machine Information </h3>
             <TextField
               id="numEMP-basic"
@@ -216,75 +184,9 @@ function MachineOption() {
                 onClick={handleSubmit}
                 disabled={isFormEmpty} 
               >
-                Save without adding user
+                Save
               </Button>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'flex-end'}}>
-              <Button
-                variant="contained"
-                color="success"
-                onClick={handleNext}
-                disabled={isFormEmpty} 
-              >
-                Next
-              </Button>
-            </div>
-          </>
-        )}
-
-        {currentStep === 1 && (
-          <>
-            <h3>User Information</h3>
-            <TextField
-              id="numEmp-basic"
-              label="N° EMP"
-              variant="standard"
-              name="numEMP"
-              value={userFormData.numEMP}
-              onChange={handleUserInputChange}
-              style={{ marginBottom: '10px' }}
-              required
-            />
-            <TextField
-              id="userUsername-basic"
-              label="Username"
-              variant="standard"
-              name="userUsername"
-              value={userFormData.userUsername}
-              onChange={handleUserInputChange}
-              style={{ marginBottom: '10px' }}
-              required
-            />
-            <TextField
-              id="userPassword-basic"
-              label="Password"
-              variant="standard"
-              name="userPassword"
-              value={userFormData.userPassword}
-              onChange={handleUserInputChange}
-              style={{ marginBottom: '10px' }}
-              required
-            />
-
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <Button
-                variant="contained"
-                color="success"
-                onClick={handlePrevious}
-              >
-                Previous
-              </Button>
-              <Button
-                variant="contained"
-                color="success"
-                onClick={handleSubmit}
-                disabled={Object.values(userFormData).some((value) => value === '')}
-              >
-                Submit
-              </Button>
-            </div>
-          </>
-        )}
       </div>
       {linkMachine !== '' && <p style={{color:'green'}}>Machine created successfully, click <Link
               color="info"

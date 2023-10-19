@@ -14,11 +14,15 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import PersonIcon from '@mui/icons-material/Person';
 import ListIcon from '@mui/icons-material/List';
+import AddIcon from '@mui/icons-material/Add';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom';
 
 export default function CardPage() {
   const { idMachine, idOS } = useParams();
   const [data, setData] = useState([]);
+  const history = useHistory();
   const apiUrl = process.env.REACT_APP_API_URL;
+  const [connected, setConnected] = useState(false)
   const [buttonLabel, setButtonLabel] = useState('CONNECT');
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
@@ -33,7 +37,7 @@ export default function CardPage() {
       axios
         .post(`${apiUrl}/disconnect/${idMachine}`)
         .then(() => {
-          setButtonLabel('DISCONNECT');
+          setConnected(true)
         })
         .catch((error) => {
           console.error(error);
@@ -80,9 +84,22 @@ export default function CardPage() {
         </div>
         <Command idMachine={idMachine} idOS={idOS} />
         <div className="right-side">
+        {!connected ? (
           <button onClick={handleConnect} className="deconnect">
-            {buttonLabel}
+            Connect
           </button>
+        ) : (
+              <List>
+                  <ListItem disablePadding style={{ padding: '20px', height: '60px' }}>
+                    <ListItemButton>
+                      <ListItemIcon>
+                        <ListIcon />
+                      </ListItemIcon>
+                      <ListItemText primary={''} />
+                    </ListItemButton>
+                  </ListItem>
+              </List>
+        )}
           <hr className="hr"></hr>
           <div className="ressource">
             <Ressource />
@@ -109,6 +126,12 @@ export default function CardPage() {
                     </ListItemButton>
                   </ListItem>
                 ))}
+                    <ListItemButton  onClick={() => history.push('/user_add')}>
+                      <ListItemIcon>
+                        <AddIcon />
+                      </ListItemIcon>
+                      <ListItemText primary={"Add a new user"} />
+                    </ListItemButton>
               </List>
               {/* End of List inside the popup */}
             </div>

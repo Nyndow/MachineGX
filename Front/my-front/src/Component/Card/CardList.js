@@ -4,11 +4,12 @@ import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import '../../Styles/CardList.css';
 import PaginationComponent from '../Services/Pagination';
-import ComputerIcon from '@mui/icons-material/Computer';
 import ClearIcon from '@mui/icons-material/Clear';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import AddIcon from '@mui/icons-material/Add';
+import IconButton from '@mui/material/IconButton';
 
 const CardList = () => {
   const [cardData, setCardData] = useState([]);
@@ -188,19 +189,16 @@ const CardList = () => {
     <div className="card-list">
       <div className='option-list'>
         <div className='test-align'>
-          <div className='left-option'>
-          <Button
-            component="label"
-            variant="contained"
-            startIcon={<ComputerIcon />}
-            onClick={() => history.push('/machine')}
-            color="success"
-            size="large"
-          >
-            New
-          </Button>
-          </div>
+
           <div className='right-buttons'>
+          <IconButton
+            aria-label="delete"
+            style={{ fontSize: '4em' }}
+            onClick={() => history.push('/machine')}
+          >
+            <AddIcon fontSize="inherit" />
+          </IconButton>
+
             <Button onClick={togglePopup} color="secondary" size="large" component="label" variant="outlined" startIcon={<CloudUploadIcon />}>
               Upload
               <VisuallyHiddenInput type="file" />

@@ -12,6 +12,7 @@ import "../Styles/App.css"
 import CardList from './Card/CardList';
 import CardPage from './Card/CardPage';
 import PrivateRoute from './Services/privateAuth';
+import UserAdd from './CRUD/ADD/UserAdd';
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
           
           {/*CRUDADD*/}
           <PrivateRoute path="/add/:entity" component={AddAdmin} />
+          <PrivateRoute path="/user_add" component={UserAdd}/>
 
           {/*CRUDEDIT*/}
           <PrivateRoute path="/edit/:entity/:id" component={EditCRUD} />

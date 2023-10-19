@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from database import db
 from models.machine import Machine  
+from models.OS import OSys
 
 machine_bp = Blueprint('machine', __name__)
 
@@ -8,14 +9,12 @@ machine_bp = Blueprint('machine', __name__)
 def machine_list():
     if request.method == 'POST':
         data = request.json
-        idOS = data.get('idOS')
-        machineName = data.get('machineName')
-        ipAddr = data.get('ipAddr')
-        portNumber = data.get('portNumber')
-        new_machine = Machine(idOS=idOS, machineName=machineName, ipAddr=ipAddr,portNumber=portNumber)
+        oSys = OSys.query.filter_by(nomOS=data.get('nomOS'), versionOS=data.get('versionOS')).first()
+        idOS = oSys.idOS
+        new_machine = Machine(idOS=idOS, machineName=data.get('machineName'), ipAddr=data.get('ipAddr'),portNumber=data.get('portNumber'))
         db.session.add(new_machine)
         db.session.commit()
-        return jsonify({"message": "Machine record created successfully"})
+        return jsonify({"link": str(new_machine.idMachine) + "/" + str(idOS)})
 
     elif request.method == 'GET':
         machines = Machine.query.all()
