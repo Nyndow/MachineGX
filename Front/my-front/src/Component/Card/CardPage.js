@@ -4,6 +4,7 @@ import Process from './Process';
 import TerminalComponent from './Terminal';
 import Command from './Command';
 import Ressource from './Ressource';
+import DropdownButton from '../Services/DropButton';
 import { useParams } from 'react-router-dom/cjs/react-router-dom';
 import '../../Styles/CardPage.css';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -84,21 +85,12 @@ export default function CardPage() {
         </div>
         <Command idMachine={idMachine} idOS={idOS} />
         <div className="right-side">
-        {!connected ? (
+        {connected ? (
           <button onClick={handleConnect} className="deconnect">
             Connect
           </button>
         ) : (
-              <List>
-                  <ListItem disablePadding style={{ padding: '20px', height: '60px' }}>
-                    <ListItemButton>
-                      <ListItemIcon>
-                        <ListIcon />
-                      </ListItemIcon>
-                      <ListItemText primary={''} />
-                    </ListItemButton>
-                  </ListItem>
-              </List>
+          <DropdownButton/>
         )}
           <hr className="hr"></hr>
           <div className="ressource">
