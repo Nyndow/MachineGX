@@ -3,6 +3,11 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MenuIcon from '@mui/icons-material/Menu';
+import SystemUpdateAltIcon from '@mui/icons-material/SystemUpdateAlt';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import SettingsIcon from '@mui/icons-material/Settings';
+import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
+import ListItemIcon from '@mui/material/ListItemIcon';
 
 const DropdownButton = ({ statusConnection }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -46,20 +51,43 @@ const DropdownButton = ({ statusConnection }) => {
             },
           }}
         >
-          {!statusConnection && (
-          <div>
-          <MenuItem onClick={() => handleClose('Option 0')}>Connect</MenuItem>
-          <hr></hr>
-          </div>
-          )}
-          <MenuItem onClick={() => handleClose('Option 1')}>Update</MenuItem>
-          <MenuItem onClick={() => handleClose('Option 2')}>Upload</MenuItem>
           {statusConnection && (
-            <MenuItem onClick={() => handleClose('Option 3')}>Disconnect</MenuItem>
+            <MenuItem onClick={() => handleClose('Option 1')}>
+              <ListItemIcon>
+                <SystemUpdateAltIcon />
+              </ListItemIcon>
+              Update
+            </MenuItem>
           )}
-          <MenuItem onClick={() => handleClose('Option 5')}>Edit</MenuItem>
           {statusConnection && (
-            <MenuItem onClick={() => handleClose('Option 6')}>Poweroff</MenuItem>
+            <MenuItem onClick={() => handleClose('Option 2')}>
+              <ListItemIcon>
+                <CloudUploadIcon />
+              </ListItemIcon>
+              Upload
+            </MenuItem>
+          )}
+          {statusConnection && (
+            <MenuItem onClick={() => handleClose('Option 3')}>
+              <ListItemIcon>
+                <SettingsIcon />
+              </ListItemIcon>
+              Disconnect
+            </MenuItem>
+          )}
+          <MenuItem onClick={() => handleClose('Option 5')}>
+            <ListItemIcon>
+              <SettingsIcon /> {/* Add your custom icon component */}
+            </ListItemIcon>
+            Edit
+          </MenuItem>
+          {statusConnection && (
+            <MenuItem onClick={() => handleClose('Option 6')}>
+              <ListItemIcon>
+                <PowerSettingsNewIcon />
+              </ListItemIcon>
+              Poweroff
+            </MenuItem>
           )}
         </Menu>
       </div>
