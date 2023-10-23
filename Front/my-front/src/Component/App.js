@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Sidebar from './Navbar';
-import MachineOption from './MachineOption';
+import MachineOption from './CRUD/ADD/MachineOption';
 import History from './History/History';
 import * as CRUDGeneral from './CRUD/GENERAL';
 import LoginForm from './LoginForm';
@@ -13,6 +13,7 @@ import CardList from './Card/CardList';
 import CardPage from './Card/CardPage';
 import PrivateRoute from './Services/privateAuth';
 import UserAdd from './CRUD/ADD/UserAdd';
+import DropdownButton from './DropButton';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           }
         />
         <Switch>
+        <PrivateRoute path="/drop" component={DropdownButton} />
           <PrivateRoute path="/home" component={CardList} />
           <PrivateRoute path="/machine" component={MachineOption} />
           <PrivateRoute path="/history" component={History} />
