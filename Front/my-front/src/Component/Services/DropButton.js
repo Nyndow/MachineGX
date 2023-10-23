@@ -4,7 +4,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MenuIcon from '@mui/icons-material/Menu';
 
-const DropdownButton = () => {
+const DropdownButton = ({ statusConnection }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedOption, setSelectedOption] = useState(null);
 
@@ -42,16 +42,25 @@ const DropdownButton = () => {
           }}
           PaperProps={{
             style: {
-              width: '300px', 
+              width: '300px',
             },
           }}
         >
+          {!statusConnection && (
+          <div>
+          <MenuItem onClick={() => handleClose('Option 0')}>Connect</MenuItem>
+          <hr></hr>
+          </div>
+          )}
           <MenuItem onClick={() => handleClose('Option 1')}>Update</MenuItem>
           <MenuItem onClick={() => handleClose('Option 2')}>Upload</MenuItem>
-          <MenuItem onClick={() => handleClose('Option 3')}>Disconnect</MenuItem>
-          <MenuItem onClick={() => handleClose('Option 4')}>Reconnect</MenuItem>
-          <MenuItem onClick={() => handleClose('Option 6')}>Poweroff</MenuItem>
+          {statusConnection && (
+            <MenuItem onClick={() => handleClose('Option 3')}>Disconnect</MenuItem>
+          )}
           <MenuItem onClick={() => handleClose('Option 5')}>Edit</MenuItem>
+          {statusConnection && (
+            <MenuItem onClick={() => handleClose('Option 6')}>Poweroff</MenuItem>
+          )}
         </Menu>
       </div>
     </div>

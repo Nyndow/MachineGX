@@ -14,7 +14,6 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import PersonIcon from '@mui/icons-material/Person';
-import ListIcon from '@mui/icons-material/List';
 import AddIcon from '@mui/icons-material/Add';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom';
 
@@ -85,13 +84,11 @@ export default function CardPage() {
         </div>
         <Command idMachine={idMachine} idOS={idOS} />
         <div className="right-side">
-        {connected ? (
+        {!connected && (
           <button onClick={handleConnect} className="deconnect">
             Connect
-          </button>
-        ) : (
-          <DropdownButton/>
-        )}
+          </button>)}
+          <DropdownButton statusConnection={connected}/>
           <hr className="hr"></hr>
           <div className="ressource">
             <Ressource />
