@@ -8,21 +8,23 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import SettingsIcon from '@mui/icons-material/Settings';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import ListItemIcon from '@mui/material/ListItemIcon';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom';
 
-const DropdownButton = ({ statusConnection }) => {
+
+const DropdownButton = ({ statusConnection, idMachine }) => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedOption, setSelectedOption] = useState(null);
+  const history = useHistory();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
-  const handleClose = (option) => {
+  const handleClose = () => {
     setAnchorEl(null);
-    if (option) {
-      setSelectedOption(option);
-    }
   };
+
+  const goEdit= () =>{
+    history.push
+  }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -75,7 +77,7 @@ const DropdownButton = ({ statusConnection }) => {
               Disconnect
             </MenuItem>
           )}
-          <MenuItem onClick={() => handleClose('Option 5')}>
+          <MenuItem onClick={() => history.push(`/edit/machine/${idMachine}`)}>
             <ListItemIcon>
               <SettingsIcon /> {/* Add your custom icon component */}
             </ListItemIcon>

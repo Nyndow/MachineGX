@@ -84,15 +84,14 @@ export default function CardPage() {
         </div>
         <Command idMachine={idMachine} idOS={idOS} />
         <div className="right-side">
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-  {!connected && (
-    <button onClick={handleConnect} className="deconnect">
-      Connect
-    </button>
-  )}
-  <DropdownButton statusConnection={connected} />
-</div>
-
+        <div style={{ display: 'flex', justifyContent:'space-around', marginTop:'20px'}}>
+          {!connected && (
+            <button onClick={handleConnect} className='deconnect'>
+              Connect
+            </button>
+          )}
+          <DropdownButton statusConnection={connected} idMachine={idMachine} />
+        </div>
           <hr className="hr"></hr>
           <div className="ressource">
             <Ressource />
