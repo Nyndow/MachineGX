@@ -39,18 +39,23 @@ def user_detail(user_id):
         user_data = {
             "idUser": user.idUser,
             "userUsername": user.userUsername,
-            "userPassword": user.userPassword,
             "numEmployee": user.numEmployee
         }
         return jsonify(user_data)
 
     elif request.method == 'PUT':
         data = request.json
-        user.userUsername = data.get('userUsername', user.userUsername)
-        user.userPassword = data.get('userUsername', user.userUsername)
-        user.numEmployee = data.get('numEmployee', user.numEmployee)
-        db.session.commit()
-        return jsonify({"message": "User updated successfully"})
+        if not data.get('userUsername'):
+            user.userUsername = data.get('userUsername', user.userUsername)
+            user.numEmployee = data.get('numEmployee', user.numEmployee)
+            db.session.commit()
+            return jsonify({"message": "User updated successfully"})
+        else:
+            user.userPassword = data.get('userPassword', user.userPassword)
+            user.userUsername = data.get('userUsername', user.userUsername)
+            user.numEmployee = data.get('numEmployee', user.numEmployee)
+            db.session.commit()
+            return jsonify({"message": "User updated successfully"})
 
     elif request.method == 'DELETE':
         db.session.delete(user)

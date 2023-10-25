@@ -14,6 +14,8 @@ import CardList from './Card/CardList';
 import CardPage from './Card/CardPage';
 import PrivateRoute from './Services/privateAuth';
 import UserAdd from './CRUD/ADD/UserAdd';
+import User from './CRUD/GENERAL/User';
+import UserEdit from './CRUD/EDIT/UserEdit';
 
 function App() {
   return (
@@ -26,6 +28,8 @@ function App() {
           }
         />
         <Switch>
+        <PrivateRoute path="/users_machine/:idMachine" component={User} />
+        <PrivateRoute path="/user_edit/:idUser" component={UserEdit} />
           <PrivateRoute path="/home" component={CardList} />
           <PrivateRoute path="/machine" component={MachineOption} />
           <PrivateRoute path="/editMachine/:idMachine" component={MachineEdit} />

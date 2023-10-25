@@ -29,16 +29,6 @@ export default function CardPage() {
     fetchUsers();
   }, []);
 
-  useEffect(() => {
-    axios
-    .get(`${apiUrl}/verify_conn/${idMachine}`)
-    .then((response) => {
-      setConnected(response.data);
-    })
-    .catch(() => {
-    });
-  }, []);
-
   const handleConnect = () => {
       togglePopup();
     }
@@ -63,7 +53,10 @@ const fetchUsers = () => {
     .then((response) => {
       setData(response.data);
     })
-    .catch(() => {
+    .catch((error) => {
+      if (error.response && error.response.status === 401) {
+        setConnected(true);
+      }
     });
 }
 

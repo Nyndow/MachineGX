@@ -44,6 +44,8 @@ def machine_list():
 
 @machine_user.route('/machine_user/<int:machine_id>', methods=['GET'])
 def get_machine_user(machine_id):
+    if machine_id in ssh_clients: 
+        return jsonify({"message": "already connected"}), 401 
     try:
         query = (
             db.session.query(User.userUsername, User.idUser)
@@ -57,3 +59,20 @@ def get_machine_user(machine_id):
         return jsonify(user_data)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+@machine_user.route('/machine_userList/<int:machine_id>', methods=['GET'])
+def users_machine(machine_id):
+    try:
+        query = (
+            db.session.query(User.userUsername, User.idUser, User.numEmployee)
+            .join(Attribution, Attribution.idUser == User.idUser)
+            .filter(Attribution.idMachine == machine_id)
+            .distinct()
+        )
+        results = query.all()
+        user_data = [{"userUsername": user[0], "idUser": user[1], "numEmployee": user[2]} for user in results]
+
+        return jsonify(user_data)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
