@@ -77,8 +77,11 @@ function Command({ idOS, idMachine }) {
         inputData: inputValue,
       };
 
-      axios
-        .post(`${apiUrl}/launch-command/${idMachine}`, postData)
+      axios.post(`${apiUrl}/launch-command/${idMachine}`, postData, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}` 
+        }
+      })
         .then((response) => {
           console.log('Success:', response);
           setTimeout(() => {
@@ -87,7 +90,7 @@ function Command({ idOS, idMachine }) {
         })
         .catch((error) => {
           console.error('Error:', error);
-          setIsConfirmButtonDisabled(false); // Reset the button state in case of an error
+          setIsConfirmButtonDisabled(false); 
         });
     }
   };

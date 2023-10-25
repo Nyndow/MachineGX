@@ -8,6 +8,7 @@ import LoginForm from './LoginForm';
 import NotFound from './NotFound';
 import AddAdmin from './CRUD/ADD/CRUDAdd';
 import EditCRUD from './CRUD/EDIT/EditCRUD';
+import MachineEdit from './CRUD/EDIT/MachineEdit';
 import "../Styles/App.css"
 import CardList from './Card/CardList';
 import CardPage from './Card/CardPage';
@@ -27,6 +28,7 @@ function App() {
         <Switch>
           <PrivateRoute path="/home" component={CardList} />
           <PrivateRoute path="/machine" component={MachineOption} />
+          <PrivateRoute path="/editMachine/:idMachine" component={MachineEdit} />
           <PrivateRoute path="/history" component={History} />
 
           {/*CRUD GENERAL*/}

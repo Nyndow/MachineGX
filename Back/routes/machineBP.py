@@ -37,9 +37,11 @@ def machine_detail(machine_id):
         return jsonify({"error": "Machine record not found"}), 404
 
     if request.method == 'GET':
+        osys = OSys.query.get(machine.idOS)  
         machine_data = {
             "idMachine": machine.idMachine,
-            "idOS": machine.idOS,
+            "nomOS": osys.nomOS,
+            "versionOS": osys.versionOS,
             "machineName": machine.machineName,
             "ipAddr": machine.ipAddr,
             "portNumber": machine.portNumber
@@ -48,7 +50,8 @@ def machine_detail(machine_id):
 
     elif request.method == 'PUT':
         data = request.json
-        machine.idOS = data.get('idOS', machine.idOS)
+        oSys = OSys.query.filter_by(nomOS=data.get('nomOS'), versionOS=data.get('versionOS')).first()
+        machine.idOS = oSys.idOS
         machine.machineName = data.get('machineName', machine.machineName)
         machine.ipAddr = data.get('ipAddr', machine.ipAddr)
         machine.portNumber = data.get('portNumber', machine.portNumber)

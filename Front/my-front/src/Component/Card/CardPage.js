@@ -79,7 +79,7 @@ export default function CardPage() {
     <div className="cardpage-container">
       <div className="toAlign">
         <div className="vertical">
-          <Process idMachine={idMachine} />
+          <Process idMachine={idMachine} connected={connected}/>
           <TerminalComponent idMachine={idMachine} />
         </div>
         <Command idMachine={idMachine} idOS={idOS} />

@@ -6,6 +6,8 @@ from models.option import Option
 from database import db
 from .ssh_manager import ssh_clients
 from datetime import datetime
+import jwt
+from flask import current_app as app
 
 custom_cmd_bp = Blueprint('custom_cmd-bp', __name__)
 
@@ -14,7 +16,17 @@ def command_fromDb(machine_id):
     if machine_id in ssh_clients:
         data = request.json
         ssh = ssh_clients.get(machine_id)
-        
+
+        token = request.headers.get('Authorization').split(' ')[1]
+
+        try:
+            payload = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
+            admin_id = payload.get('admin_id')
+        except jwt.ExpiredSignatureError:
+            return jsonify({'error': 'Token has expired'}), 401
+        except jwt.InvalidTokenError:
+            return jsonify({'error': 'Invalid token'}), 401
+
         commandName = db.session.query(Command.commandName).filter_by(idCommand=data.get('selectedOption')).first()[0]
         optionSyntax = db.session.query(Option.optionSyntax).filter_by(idOption=data.get('selectedSecondOption')).first()[0]
         if optionSyntax is None:
@@ -26,9 +38,10 @@ def command_fromDb(machine_id):
             stdin, stdout, stderr = ssh.exec_command(command)
 
             exit_status = stdout.channel.recv_exit_status()
-            
+
             if exit_status == 0:
-                history = History(target=data.get('inputData'),idAdmin=2,idMachine=machine_id, idOption=data.get("selectedSecondOption"), dateHistory = datetime.now())
+                history = History(target=data.get('inputData'), idAdmin=admin_id, idMachine=machine_id,
+                                  idOption=data.get("selectedSecondOption"), dateHistory=datetime.now())
                 db.session.add(history)
                 db.session.commit()
                 return jsonify({"message": "Command executed successfully"})

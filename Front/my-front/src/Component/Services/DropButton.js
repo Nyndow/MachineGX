@@ -77,7 +77,7 @@ const DropdownButton = ({ statusConnection, idMachine }) => {
               Disconnect
             </MenuItem>
           )}
-          <MenuItem onClick={() => history.push(`/edit/machine/${idMachine}`)}>
+          <MenuItem onClick={() => history.push(`/editMachine/${idMachine}`)}>
             <ListItemIcon>
               <SettingsIcon /> {/* Add your custom icon component */}
             </ListItemIcon>

@@ -2,20 +2,22 @@ import React, { useEffect, useState } from 'react';
 import '../../Styles/Process.css';
 import axios from 'axios';
 
-export default function Process({ idMachine }) {
+export default function Process({ idMachine, connected }) {
   const [dataToDisplay, setDataToDisplay] = useState({});
   const apiUrl = process.env.REACT_APP_API_URL;
   const columns = ['User', 'CPU Usage', 'Memory Usage', 'Program'];
 
   useEffect(() => {
-    fetchData();
+    if (connected) {
+      fetchData();
 
-    const intervalId = setInterval(fetchData, 2000);
+      const intervalId = setInterval(fetchData, 2000);
 
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, []);
+      return () => {
+        clearInterval(intervalId);
+      };
+    }
+  }, [connected]); // Include `connected` as a dependency
 
   const fetchData = () => {
     axios
@@ -33,14 +35,14 @@ export default function Process({ idMachine }) {
   };
 
   const handleStop = (rowData) => {
-    axios.
-    post(`${apiUrl}/top/${idMachine}/${rowData.PID}`)
-    .then(
-      console.log('Stopping the program', rowData.Program)
-    )
-    .catch((error) => {
-      console.error('Error fetching data:', error);
-    });
+    axios
+      .post(`${apiUrl}/top/${idMachine}/${rowData.PID}`)
+      .then(
+        console.log('Stopping the program', rowData.Program)
+      )
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
   };
 
   return (
