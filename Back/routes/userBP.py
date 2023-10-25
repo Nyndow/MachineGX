@@ -1,11 +1,12 @@
 from flask import Blueprint, request, jsonify
 from database import db
-from models.user import User 
+from models.user import User
+from models.attribution import Attribution 
 
 user_bp = Blueprint('user', __name__)
 
-@user_bp.route('/user/', methods=['GET', 'POST'])
-def user_list():
+@user_bp.route('/user/', methods=['POST'])
+def create_user():
     if request.method == 'POST':
         data = request.json
         userUsername = data.get('userUsername')
@@ -14,7 +15,12 @@ def user_list():
         new_user = User(userUsername=userUsername, userPassword=userPassword, numEmployee=numEmployee)
         db.session.add(new_user)
         db.session.commit()
+
+        attribution = Attribution(idMachine=data.get('idMachine'), idUser=new_user.idUser)  
+        db.session.add(attribution)
+        db.session.commit()
         return jsonify({"message": "User created successfully"})
+
 
     elif request.method == 'GET':
         users = User.query.all()

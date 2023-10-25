@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import EditIcon from '@mui/icons-material/Edit'; // Make sure the import path is correct
-import { useHistory } from 'react-router-dom'; // Correct the import path
+import EditIcon from '@mui/icons-material/Edit'; 
+import { useHistory } from 'react-router-dom'; 
 
 export default function User() {
   const [dataToDisplay, setDataToDisplay] = useState([]);
@@ -49,6 +49,7 @@ export default function User() {
             ))}
           </tbody>
         </table>
+
       </div>
     </div>
   );

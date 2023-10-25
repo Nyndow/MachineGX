@@ -107,7 +107,7 @@ const fetchUsers = () => {
                     </ListItemButton>
                   </ListItem>
                 ))}
-                    <ListItemButton  onClick={() => history.push('/user_add')}>
+                    <ListItemButton  onClick={() => history.push(`/user_add/${idMachine}`)}>
                       <ListItemIcon>
                         <AddIcon />
                       </ListItemIcon>

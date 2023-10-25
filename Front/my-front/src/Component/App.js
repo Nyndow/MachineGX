@@ -46,7 +46,7 @@ function App() {
           
           {/*CRUDADD*/}
           <PrivateRoute path="/add/:entity" component={AddAdmin} />
-          <PrivateRoute path="/user_add" component={UserAdd}/>
+          <PrivateRoute path="/user_add/:idMachine" component={UserAdd}/>
 
           {/*CRUDEDIT*/}
           <PrivateRoute path="/edit/:entity/:id" component={EditCRUD} />
