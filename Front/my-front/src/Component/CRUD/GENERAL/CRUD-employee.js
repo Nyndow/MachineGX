@@ -4,7 +4,7 @@ import CRUD from './CRUD'
 export default class CRUDEmployee extends Component {
   render() {
     return (
-        <div><CRUD entity="user" idField="idUser" columns={['idUser', 'userUsername','numEmployee']} /></div>
+        <div><CRUD entity="user" idField="idUser" columns={['userUsername','numEmployee']} /></div>
     )
   }
 }

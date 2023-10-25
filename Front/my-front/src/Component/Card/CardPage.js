@@ -23,28 +23,25 @@ export default function CardPage() {
   const history = useHistory();
   const apiUrl = process.env.REACT_APP_API_URL;
   const [connected, setConnected] = useState(false)
-  const [buttonLabel, setButtonLabel] = useState('CONNECT');
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   useEffect(() => {
     fetchUsers();
   }, []);
 
+  useEffect(() => {
+    axios
+    .get(`${apiUrl}/verify_conn/${idMachine}`)
+    .then((response) => {
+      setConnected(response.data);
+    })
+    .catch(() => {
+    });
+  }, []);
+
   const handleConnect = () => {
-    if (buttonLabel === 'CONNECT') {
       togglePopup();
-    } else if (buttonLabel === 'DISCONNECT') {
-      axios
-        .post(`${apiUrl}/disconnect/${idMachine}`)
-        .then(() => {
-          setConnected(true)
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-      setButtonLabel('CONNECT');
     }
-  }
 
   const handleConnection = (key) => {
     const requestData = {
@@ -52,7 +49,7 @@ export default function CardPage() {
     };
   axios.post(`${apiUrl}/connect/${idMachine}`, requestData)
   .then(() => {
-    setButtonLabel('DISCONNECT');
+    setConnected(true);
     togglePopup()
   })
   .catch(() => {
@@ -60,16 +57,15 @@ export default function CardPage() {
   });
 }
 
-  const fetchUsers = () => {
-    axios
-      .get(`${apiUrl}/machine_user/${idMachine}`)
-      .then((response) => {
-        setData(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
+const fetchUsers = () => {
+  axios
+    .get(`${apiUrl}/machine_user/${idMachine}`)
+    .then((response) => {
+      setData(response.data);
+    })
+    .catch(() => {
+    });
+}
 
   const togglePopup = () => {
     setIsPopupOpen(!isPopupOpen);

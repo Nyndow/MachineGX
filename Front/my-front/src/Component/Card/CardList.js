@@ -5,7 +5,6 @@ import axios from 'axios';
 import '../../Styles/CardList.css';
 import PaginationComponent from '../Services/Pagination';
 import ClearIcon from '@mui/icons-material/Clear';
-import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import AddIcon from '@mui/icons-material/Add';
@@ -173,18 +172,6 @@ const CardList = () => {
     setIsPopupOpen(!isPopupOpen);
   };
 
-  const VisuallyHiddenInput = styled('input')({
-    clip: 'rect(0 0 0 0)',
-    clipPath: 'inset(50%)',
-    height: 1,
-    overflow: 'hidden',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    whiteSpace: 'nowrap',
-    width: 1,
-  });
-
   return (
     <div className="card-list">
       <div className='option-list'>
@@ -201,7 +188,6 @@ const CardList = () => {
 
             <Button onClick={togglePopup} color="secondary" size="large" component="label" variant="outlined" startIcon={<CloudUploadIcon />}>
               Upload
-              <VisuallyHiddenInput type="file" />
             </Button>
             <Button variant="outlined" size="large" color="success" onClick={updateMachineState}>
               Connect

@@ -17,7 +17,7 @@ export default function Process({ idMachine, connected }) {
         clearInterval(intervalId);
       };
     }
-  }, [connected]); // Include `connected` as a dependency
+  }, [connected]); 
 
   const fetchData = () => {
     axios

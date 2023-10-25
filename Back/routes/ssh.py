@@ -48,3 +48,16 @@ def disconnect(machine_id):
             return jsonify({'status': 'SSH client not found'}), 404
     except Exception as e:
         return jsonify({'status': 'An error occurred', 'error_message': str(e)}), 500
+    
+# VERIFY CONNECTION
+@ssh_bp.route('/verify_conn/<int:machine_id>', methods=['GET'])
+def verify_conn(machine_id):
+    try:
+        ssh_client = ssh_clients.get(machine_id)
+
+        if ssh_client:
+            return jsonify(True)
+        else:
+            return jsonify(False)
+    except Exception as e:
+        return jsonify({'status': 'An error occurred', 'error_message': str(e)}), 500

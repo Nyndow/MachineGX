@@ -6,6 +6,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import SystemUpdateAltIcon from '@mui/icons-material/SystemUpdateAlt';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import SettingsIcon from '@mui/icons-material/Settings';
+import PersonIcon from '@mui/icons-material/Person';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom';
@@ -69,6 +70,24 @@ const DropdownButton = ({ statusConnection, idMachine }) => {
               Upload
             </MenuItem>
           )}
+          {statusConnection&&(
+            <hr></hr>
+          )}
+          <MenuItem onClick={() => history.push(`/editMachine/${idMachine}`)}>
+            <ListItemIcon>
+              <SettingsIcon /> 
+            </ListItemIcon>
+            Edit
+          </MenuItem>
+          <MenuItem onClick={() => history.push(`/users_machine/${idMachine}`)}>
+            <ListItemIcon>
+              <PersonIcon /> 
+            </ListItemIcon>
+            Users
+          </MenuItem>
+          {statusConnection&&(
+            <hr></hr>
+          )}
           {statusConnection && (
             <MenuItem onClick={() => handleClose('Option 3')}>
               <ListItemIcon>
@@ -77,12 +96,6 @@ const DropdownButton = ({ statusConnection, idMachine }) => {
               Disconnect
             </MenuItem>
           )}
-          <MenuItem onClick={() => history.push(`/editMachine/${idMachine}`)}>
-            <ListItemIcon>
-              <SettingsIcon /> {/* Add your custom icon component */}
-            </ListItemIcon>
-            Edit
-          </MenuItem>
           {statusConnection && (
             <MenuItem onClick={() => handleClose('Option 6')}>
               <ListItemIcon>

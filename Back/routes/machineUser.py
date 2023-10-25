@@ -44,8 +44,6 @@ def machine_list():
 
 @machine_user.route('/machine_user/<int:machine_id>', methods=['GET'])
 def get_machine_user(machine_id):
-    if machine_id in ssh_clients: 
-        return jsonify({"message": "already connected"}), 401 
     try:
         query = (
             db.session.query(User.userUsername, User.idUser)
