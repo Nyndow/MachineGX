@@ -8,16 +8,8 @@ function EditCRUD() {
   let columns = [];
 
   switch (entity) {
-    case 'user':
-      columns = ['numEmployee','userUsername','userPassword'];
-      break;
-  
     case 'administration':
       columns = ['numEmployee','adminUsername','adminPassword'];
-      break;
-  
-    case 'machine':
-      columns = ['machineName','ipAddr','idOS','portNumber'];
       break;
 
     case 'oSys':

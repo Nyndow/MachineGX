@@ -8,16 +8,8 @@ const AddAdmin = () => {
   let columns = [];
 
   switch (entity) {
-    case 'user':
-      columns = ['numEmployee','userUsername', 'userPassword'];
-      break;
-  
     case 'administration':
       columns = ['adminUsername','numEmployee', 'adminPassword'];
-      break;
-  
-    case 'machine':
-      columns = ['machineName','idOS','ipAddr','portNumber'];
       break;
 
     case 'oSys':

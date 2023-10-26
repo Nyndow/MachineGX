@@ -35,10 +35,8 @@ function App() {
           <PrivateRoute path="/editMachine/:idMachine" component={MachineEdit} />
           <PrivateRoute path="/history" component={History} />
 
-          {/*CRUD GENERAL*/}
-          <PrivateRoute path="/crud-machine" component={CRUDGeneral.CRUDMachine} />
+          {/*CRUD GENERAL*/} 
           <PrivateRoute path="/crud-command" component={CRUDGeneral.CRUDCommand} />
-          <PrivateRoute path="/crud-user" component={CRUDGeneral.CRUDEmployee} />;
           <PrivateRoute path="/crud-attribution" component={CRUDGeneral.CRUDAttribution} />;
           <PrivateRoute path="/crud-administration" component={CRUDGeneral.CRUDAdmin} />;
           <PrivateRoute path="/crud-option" component={CRUDGeneral.CRUDOption} />;

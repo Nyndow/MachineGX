@@ -138,7 +138,7 @@ function UserEdit() {
             Update
           </Button>
         </div>
-        <button onClick={handleDelete}>
+        <button onClick={handleDelete} style={{width:'45px'}}>
           <DeleteIcon/>
         </button>
       </div>
