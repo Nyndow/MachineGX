@@ -44,8 +44,6 @@ def machine_list():
 
 @machine_user.route('/machine_user/<int:machine_id>', methods=['GET'])
 def get_machine_user(machine_id):
-    if machine_id in ssh_clients: 
-        return jsonify({"message": "already connected"}), 401 
     try:
         query = (
             db.session.query(User.userUsername, User.idUser)
@@ -75,4 +73,12 @@ def users_machine(machine_id):
         return jsonify(user_data)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+#VERIFY CONNEXION FOR CARDPAGE FROM CARDLIST
+@machine_user.route('/verify_conn/<int:user_id>', methods=['GET'])
+def verify_conn(user_id):
+    if user_id in ssh_clients:
+        return jsonify(success=True)
+    else:
+        return jsonify(success=False)
 

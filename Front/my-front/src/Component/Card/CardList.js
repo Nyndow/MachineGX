@@ -251,6 +251,7 @@ const CardList = () => {
               imageUrl={card.imgOS}
               idMachine={card.idMachine}
               state={card.state}
+              idUser = {card.idUser}
               freeRAM={card.script_data?.FreeMemory || "0"}
               totalRAM={card.script_data?.TotalMemory || "0 GB"}
               DownUsage={card.script_data?.DownloadSpeed || "0 KB/s"}

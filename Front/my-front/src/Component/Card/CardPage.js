@@ -15,19 +15,35 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import PersonIcon from '@mui/icons-material/Person';
 import AddIcon from '@mui/icons-material/Add';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom';
+import { useHistory,useLocation } from 'react-router-dom/cjs/react-router-dom';
 
 export default function CardPage() {
-  const { idMachine, idOS } = useParams();
+  const { idMachine, idOS, idUser } = useParams();
   const [data, setData] = useState([]);
   const history = useHistory();
   const apiUrl = process.env.REACT_APP_API_URL;
   const [connected, setConnected] = useState(false)
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const user = queryParams.get('idUser');
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+    if (user !== null) {
+      verifyConn(user);
+    }
+  }, [user]);
+
+  const verifyConn=(key) =>{
+    axios.get(`${apiUrl}/verify_conn/${key}`)
+    .then(()=>{
+      setConnected(true);
+    })
+    .catch(()=>{
+
+    })
+  }
 
   const handleConnect = () => {
       togglePopup();
