@@ -97,72 +97,63 @@ const DropdownButton = ({ statusConnection, idMachine, selectedData }) => {
         </IconButton>
       </div>
       <div>
-        <Menu
-          id="dropdown-menu"
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={() => handleClose(null)}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'center',
-          }}
-          PaperProps={{
-            style: {
-              width: '300px',
-            },
-          }}
-        >
-          {statusConnection && (
-            <MenuItem onClick={() => handleClose('Option 1')}>
-              <ListItemIcon>
-                <SystemUpdateAltIcon />
-              </ListItemIcon>
-              Update
-            </MenuItem>
-          )}
-          {statusConnection && (
-            <MenuItem onClick={togglePopup} >
-              <ListItemIcon>
-                <CloudUploadIcon />
-              </ListItemIcon>
-              Upload
-            </MenuItem>
-          )}
-          {statusConnection&&(
-            <hr></hr>
-          )}
+      <Menu id="dropdown-menu" anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={() => handleClose(null)} transformOrigin={{ vertical: 'top', horizontal: 'center' }} PaperProps={{ style: { width: '300px' } }}>
+        {statusConnection && (
+          <MenuItem onClick={() => handleClose('Option 1')}>
+            <ListItemIcon>
+              <SystemUpdateAltIcon />
+            </ListItemIcon>
+            Update
+          </MenuItem>
+        )}
+        {statusConnection && (
+          <MenuItem onClick={togglePopup} >
+            <ListItemIcon>
+              <CloudUploadIcon />
+            </ListItemIcon>
+            Upload
+          </MenuItem>
+        )}
+        {statusConnection&&idMachine&&(
+          <hr></hr>
+        )}
+        {idMachine && (
           <MenuItem onClick={() => history.push(`/editMachine/${idMachine}`)}>
             <ListItemIcon>
               <SettingsIcon /> 
             </ListItemIcon>
             Edit
           </MenuItem>
+        )}
+        {idMachine && (
           <MenuItem onClick={() => history.push(`/users_machine/${idMachine}`)}>
             <ListItemIcon>
               <PersonIcon /> 
             </ListItemIcon>
             Users
           </MenuItem>
-          {statusConnection&&(
-            <hr></hr>
-          )}
-          {statusConnection && (
-            <MenuItem onClick={() => handleClose('Option 3')}>
-              <ListItemIcon>
-                <SettingsIcon />
-              </ListItemIcon>
-              Disconnect
-            </MenuItem>
-          )}
-          {statusConnection && (
-            <MenuItem onClick={() => poweroff}>
-              <ListItemIcon>
-                <PowerSettingsNewIcon />
-              </ListItemIcon>
-              Poweroff
-            </MenuItem>
-          )}
-        </Menu>
+        )}
+        {statusConnection&&(
+          <hr></hr>
+        )}
+        {statusConnection && (
+          <MenuItem onClick={() => handleClose('Option 3')}>
+            <ListItemIcon>
+              <SettingsIcon />
+            </ListItemIcon>
+            Disconnect
+          </MenuItem>
+        )}
+        {statusConnection && (
+          <MenuItem onClick={() => poweroff}>
+            <ListItemIcon>
+              <PowerSettingsNewIcon />
+            </ListItemIcon>
+            Poweroff
+          </MenuItem>
+        )}
+      </Menu>
+
       </div>
             {/* Upload Section */}
             <div className="popup-container">

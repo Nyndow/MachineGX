@@ -15,7 +15,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import PersonIcon from '@mui/icons-material/Person';
 import AddIcon from '@mui/icons-material/Add';
-import { useHistory,useLocation } from 'react-router-dom/cjs/react-router-dom';
+import { useHistory,useLocation } from 'react-router-dom';
 
 export default function CardPage() {
   const { idMachine, idOS} = useParams();
