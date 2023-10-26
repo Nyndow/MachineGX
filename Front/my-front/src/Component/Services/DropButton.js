@@ -10,22 +10,80 @@ import PersonIcon from '@mui/icons-material/Person';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom';
+import axios from 'axios';
+import ClearIcon from '@mui/icons-material/Clear';
 
 
-const DropdownButton = ({ statusConnection, idMachine }) => {
+const DropdownButton = ({ statusConnection, idMachine, selectedData }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const history = useHistory();
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const apiUrl = process.env.REACT_APP_API_URL;
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const goEdit= () =>{
-    history.push
+  const poweroff = () => {
+    for(let i=0; i<selectedData.length; i++){
+    const machine = selectedData[i];
+    axios
+    .post(`${apiUrl}/poweroff/${machine.idUser}`)
+    .then(() => {
+      setAnchorEl(null);
+    })
+    .catch(()=>{
+    })
   }
+}
+
+/*UPLOAD*/
+    const handleFileSelect = (e) => {
+      setSelectedFiles((prevSelectedFiles) => [...prevSelectedFiles, ...e.target.files]);
+    };
+
+    const uploadFile = async (file, idUser) => {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        await axios.post(`${apiUrl}/transfer-script/${idUser}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+      } catch (error) {
+        console.error(`Error uploading file to machine`, error);
+      }
+    };
+
+    const uploadFiles = async () => {
+      try {
+        console.log('data',selectedData)
+        for (const machine of selectedData) {
+          const promises = selectedFiles.map((file) => uploadFile(file, machine.idUser));
+          await Promise.all(promises);
+        }
+        setSelectedFiles([]);
+      } catch (error) {
+        console.error('Error uploading files:', error);
+      }
+    };
+
+    const removeFile = (index) => {
+      const updatedSelectedFiles = [...selectedFiles];
+      updatedSelectedFiles.splice(index, 1);
+      setSelectedFiles(updatedSelectedFiles);
+    };
+
+    const togglePopup = () => {
+      setIsPopupOpen(!isPopupOpen);
+    };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -63,7 +121,7 @@ const DropdownButton = ({ statusConnection, idMachine }) => {
             </MenuItem>
           )}
           {statusConnection && (
-            <MenuItem onClick={() => handleClose('Option 2')}>
+            <MenuItem onClick={togglePopup} >
               <ListItemIcon>
                 <CloudUploadIcon />
               </ListItemIcon>
@@ -97,7 +155,7 @@ const DropdownButton = ({ statusConnection, idMachine }) => {
             </MenuItem>
           )}
           {statusConnection && (
-            <MenuItem onClick={() => handleClose('Option 6')}>
+            <MenuItem onClick={() => poweroff}>
               <ListItemIcon>
                 <PowerSettingsNewIcon />
               </ListItemIcon>
@@ -106,6 +164,46 @@ const DropdownButton = ({ statusConnection, idMachine }) => {
           )}
         </Menu>
       </div>
+            {/* Upload Section */}
+            <div className="popup-container">
+        {isPopupOpen && (
+          <div className="popup">
+            <div className="popup-content">
+            <ClearIcon onClick={() => togglePopup()} className='close-icon'/>
+              <div className="custom-file">
+                <input type="file" multiple onChange={handleFileSelect} id="fileInput" className="custom-file-input" />
+                <label htmlFor="fileInput" className="custom-file-label">Click here to choose files to upload</label>
+              </div>
+              <hr></hr>
+              {selectedFiles.length > 0 && (
+                <div className="selected-files-container">
+                  {selectedFiles.map((file, index) => (
+                    <div className="file-box" key={index}>
+                          <div className="clear-button-container">
+                            <ClearIcon onClick={() => removeFile(index)} fontSize="small" className="clear-icon" />
+                          </div>
+                      {file.type.startsWith('image') ? (
+                        <img src={URL.createObjectURL(file)} alt={file.name} />
+                      ) : file.type.startsWith('video') ? (
+                        <video controls>
+                          <source src={URL.createObjectURL(file)} type={file.type} />
+                        </video>
+                      ) : (
+                        <p>{file.name}</p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+              <hr></hr>
+              <div className="send-button">
+                <button onClick={uploadFiles}>Upload</button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+      {/* Ending upload Section */}
     </div>
   );
 };

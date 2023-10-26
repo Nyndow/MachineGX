@@ -18,7 +18,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { useHistory,useLocation } from 'react-router-dom/cjs/react-router-dom';
 
 export default function CardPage() {
-  const { idMachine, idOS, idUser } = useParams();
+  const { idMachine, idOS} = useParams();
   const [data, setData] = useState([]);
   const history = useHistory();
   const apiUrl = process.env.REACT_APP_API_URL;
@@ -27,6 +27,11 @@ export default function CardPage() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const user = queryParams.get('idUser');
+  const [dataSelect, setDataSelect] = useState({
+    idMachine: idMachine,
+    idUser: '',
+    idOS: idOS,
+  });
 
   useEffect(() => {
     fetchUsers();
@@ -57,6 +62,10 @@ export default function CardPage() {
   axios.post(`${apiUrl}/connect/${key}`, requestData)
   .then(() => {
     setConnected(true);
+    setDataSelect({
+      ...dataSelect, 
+      idUser: key, 
+    });
     togglePopup()
   })
   .catch(() => {
@@ -96,7 +105,7 @@ const fetchUsers = () => {
               Connect
             </button>
           )}
-          <DropdownButton statusConnection={connected} idMachine={idMachine} />
+          <DropdownButton statusConnection={connected} idMachine={idMachine} selectedData={[dataSelect]} />
         </div>
           <hr className="hr"></hr>
           <div className="ressource">

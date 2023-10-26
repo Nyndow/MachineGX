@@ -32,7 +32,7 @@ function Sidebar() {
         <button onClick={() => history.push('/home')}>
           <img src={HomeIcon} alt="Home" />
         </button>
-        <button onClick={() => history.push('/machine')}>
+        <button onClick={() => history.push('/machine-all')}>
           <img src={TerminalIcon} alt="machine" />
         </button>
         <button onClick={() => history.push('/history')}>

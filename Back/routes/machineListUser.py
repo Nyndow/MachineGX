@@ -115,8 +115,9 @@ def transfer_file(user_id):
             return jsonify({"error": "SSH client not found for machine ID"}), 405
 
         try:
+            user = User.query.get(user_id)
             sftp = ssh.open_sftp()
-            sftp.putfo(request.files['file'], '/home/' + request.args.get('userUsername') + '/notEmployee/' + request.files['file'].filename)
+            sftp.putfo(request.files['file'], '/home/' + user.userUsername + '/notEmployee/' + request.files['file'].filename)
             sftp.close()
 
             return jsonify({"message": "File uploaded successfully to SSH server"})

@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import '../../../Styles/CRUD.css'; 
+import '../../../Styles/MachineAll.css'; 
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 import PaginationComponent from '../../Services/Pagination';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
-import { faSearch, faEdit, faPlusCircle, faTimes } from '@fortawesome/free-solid-svg-icons';
+import MovingIcon from '@mui/icons-material/Moving';
+import EditIcon from '@mui/icons-material/Edit';
+import Button from '@mui/material/Button';
+import ComputerIcon from '@mui/icons-material/Computer';
+import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 function MachineAll() {
   const [data, setData] = useState([]);
@@ -15,6 +20,7 @@ function MachineAll() {
   const [selectedItems, setSelectedItems] = useState(new Set());
   const [selectAll, setSelectAll] = useState(false);
   const apiUrl = process.env.REACT_APP_API_URL;
+  const history = useHistory();
 
   useEffect(() => {
     axios
@@ -77,9 +83,9 @@ function MachineAll() {
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
   return (
-    <div className='main-container'>
-      <div className="main">
-        <div className="crud-container">
+    <div className='machineMain-container'>
+      <div className="machine">
+        <div className="machine-container">
           <div className="search-container">
             <div className="search-input-container">
               <FontAwesomeIcon icon={faSearch} className={`search-icon ${searchQuery ? 'hidden' : ''}`} />
@@ -98,7 +104,21 @@ function MachineAll() {
             </div>
           </div>
           <div className="table-wrapper" style={{ marginTop: '20px' }}>
-            <table className="crud-table">
+            <div className="add-button-container">
+              <div className="add-button">
+                <Link to={`/machine`}>
+                  <Button size='large' variant="outlined" startIcon={<ComputerIcon />}>
+                    New
+                  </Button>
+                </Link>
+                <Button variant="outlined" size="large" color="success">
+                  Connect
+                </Button>
+                
+              </div>
+            </div>
+          <div className="table-wrapper" style={{ marginTop: '20px' }}>
+            <table className="machine-table">
               <thead>
                 <tr>
                   <th>
@@ -113,11 +133,12 @@ function MachineAll() {
                   <th>User</th>
                   <th>State</th>
                   <th></th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
                 {dataToDisplay.map((rowData, index) => (
-                    <tr key={index} className={index % 2 === 0 ? 'crud-table-row-even' : null}>
+                    <tr key={index} className='crud-table-row-even'>
                         <td>
                         <input
                             type="checkbox"
@@ -127,13 +148,18 @@ function MachineAll() {
                         </td>
                     <td>{rowData.machineName}</td>
                     <td>{rowData.userUsername} | {rowData.numEmployee}</td>
-                    <td></td>
                     <td>
-                      <Link to={`/editMachine/${rowData.idMachine}`} className="custom-link-button">
-                        <button className="edit-button">
-                          <FontAwesomeIcon icon={faEdit} />
-                        </button>
-                      </Link>
+                      <span style={{ color: connected ? 'green' : 'red' }}>
+                        {connected ? 'Connected' : 'Disconnected'}
+                      </span>
+                    </td>
+                    <td>
+                        <Button variant='outlined' color='secondary' onClick={() => history.push(`/machine-page/${rowData.idMachine}/${rowData.idOS}?idUser=${rowData.idUser}`)}>
+                        <MovingIcon />
+                        </Button>
+                        <Button variant="outlined" onClick={() => history.push(`/editMachine/${rowData.idMachine}`)}  >
+                          <EditIcon/>
+                        </Button>
                     </td>
                   </tr>
                 ))}
@@ -149,6 +175,7 @@ function MachineAll() {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
   

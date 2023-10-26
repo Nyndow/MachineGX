@@ -179,7 +179,6 @@ function CRUD(props) {
                     )}
                   </td>
                 ))}
-
                     <td>
                       {selectedItems.has(rowData[props.idField]) ? (
                         <>

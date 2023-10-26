@@ -7,8 +7,8 @@ import PaginationComponent from '../Services/Pagination';
 import ClearIcon from '@mui/icons-material/Clear';
 import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import AddIcon from '@mui/icons-material/Add';
-import IconButton from '@mui/material/IconButton';
+import { Link } from 'react-router-dom/cjs/react-router-dom.min';
+import ComputerIcon from '@mui/icons-material/Computer';
 
 const CardList = () => {
   const [cardData, setCardData] = useState([]);
@@ -178,13 +178,11 @@ const CardList = () => {
         <div className='test-align'>
 
           <div className='right-buttons'>
-          <IconButton
-            aria-label="delete"
-            style={{ fontSize: '4em' }}
-            onClick={() => history.push('/machine')}
-          >
-            <AddIcon fontSize="inherit" />
-          </IconButton>
+          <Link to={`/machine`}>
+                  <Button size='large' variant="outlined" startIcon={<ComputerIcon />}>
+                    New
+                  </Button>
+          </Link>
 
             <Button onClick={togglePopup} color="secondary" size="large" component="label" variant="outlined" startIcon={<CloudUploadIcon />}>
               Upload
