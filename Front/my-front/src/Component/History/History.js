@@ -47,9 +47,11 @@ export default function History() {
         <table className="history-table">
           <thead>
             <tr>
-              {columns.map((column) => (
-                <th key={column}>{column}</th>
-              ))}
+            <th>Admin</th>
+            <th>Machine</th>
+            <th>Description</th>
+            <th>Target</th>
+            <th>Date</th>            
               <th></th>
             </tr>
           </thead>

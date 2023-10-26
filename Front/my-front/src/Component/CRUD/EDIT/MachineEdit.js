@@ -11,6 +11,8 @@ import Link from '@mui/material/Link';
 import Button from '@mui/material/Button';
 import HelpIcon from '@mui/icons-material/Help';
 import { useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function MachineEdit() {
   const apiUrl = process.env.REACT_APP_API_URL;
@@ -25,6 +27,7 @@ function MachineEdit() {
     nomOS: '', 
     versionOS: '', 
   });
+  const history = useHistory()
 
   useEffect(() => {
     fetchData();
@@ -101,6 +104,18 @@ function MachineEdit() {
         </MenuItem>
       ));
   }, [oSysData, formData.nomOS]);
+
+  const handleDelete = () => {
+    axios
+      .delete(`${apiUrl}/machine/${idMachine}`)
+      .then(() => {
+        history.goBack();
+      })
+      .catch((error) => {
+        console.error('Error deleting item:', error);
+      });
+  };
+
 
   const isFormEmpty = Object.values(formData).some((value) => value === '');
 
@@ -202,12 +217,26 @@ function MachineEdit() {
                 Update
               </Button>
             </div>
+            <button onClick={handleDelete} style={{width:'45px'}}>
+              <DeleteIcon/>
+            </button>
       </div>
-      {linkMachine !== '' && <p style={{color:'green'}}>Machine updated successfully, click <Link
-              color="info"
-              href={`/machine-page/${linkMachine.link}`}
-              underline="hover"
-            >here </Link> to configure </p>}
+      {linkMachine !== '' && (
+        <p style={{ color: 'green' }}>
+          Machine updated successfully, click{' '}
+          <span
+            style={{ color: 'blue', cursor: 'pointer', textDecoration: 'underline' }}
+            onClick={() => {
+              if (linkMachine !== '') {
+                history.push(`/machine-page/${linkMachine.link}`);
+              }
+            }}
+          >
+            here
+          </span>{' '}
+          to configure
+        </p>
+      )}
     </div>
   );
 }

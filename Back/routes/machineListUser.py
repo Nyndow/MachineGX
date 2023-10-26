@@ -66,19 +66,16 @@ def machineHome():
         return str(e)
 
 
-@machine_user_list.route('/transfer-script/<int:machine_id>', methods=['POST'])
-def transfer_file(machine_id):
-    uploaded_file = request.files['file']
-    user_username = request.args.get('userUsername')
-
-    if uploaded_file:
-        ssh = ssh_clients.get(machine_id)
+@machine_user_list.route('/transfer-script/<int:user_id>', methods=['POST'])
+def transfer_file(user_id):
+    if request.files['file']:
+        ssh = ssh_clients.get(user_id)
         if ssh is None:
             return jsonify({"error": "SSH client not found for machine ID"}), 405
 
         try:
             sftp = ssh.open_sftp()
-            sftp.putfo(uploaded_file, '/home/' + user_username + '/notEmployee/' + uploaded_file.filename)
+            sftp.putfo(request.files['file'], '/home/' + request.args.get('userUsername') + '/notEmployee/' + request.files['file'].filename)
             sftp.close()
 
             return jsonify({"message": "File uploaded successfully to SSH server"})
@@ -90,11 +87,11 @@ def transfer_file(machine_id):
 
 
 #RESSOURCES DETAILS IF IT'S A LINUX SYS
-@machine_user_list.route('/execute-script/<int:machine_id>', methods=['GET'])
-def execute_script(machine_id):
+@machine_user_list.route('/execute-script/<int:user_id>', methods=['GET'])
+def execute_script(user_id):
     try:
         user_username = request.args.get('userUsername')
-        ssh = ssh_clients.get(machine_id)
+        ssh = ssh_clients.get(user_id)
         if ssh is None:
             return jsonify({"error": "SSH client not found for machine ID"}), 405
 

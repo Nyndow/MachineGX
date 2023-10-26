@@ -51,7 +51,7 @@ const CardList = () => {
     updatedCardData.forEach(async (machine, i) => {
       if (machine.state === 'up') {
         try {
-          const response = await axios.get(`${apiUrl}/execute-script/${machine.idMachine}`, {
+          const response = await axios.get(`${apiUrl}/execute-script/${machine.idUser}`, {
             params: {
               userUsername: machine.userUsername
             }
@@ -89,10 +89,10 @@ const CardList = () => {
     for (let i = 0; i < updatedCardData.length; i++) {
       const machine = updatedCardData[i];
       const requestData = {
-        idUser : machine.idUser,
+        idMachine : machine.idMachine,
       };
       axios
-        .post(`${apiUrl}/connect/${machine.idMachine}`, requestData)
+        .post(`${apiUrl}/connect/${machine.idUser}`, requestData)
         .then(() => {
           updatedCardData[i] = { ...machine, state: 'up' };
           setCardData(updatedCardData);
@@ -107,7 +107,7 @@ const CardList = () => {
     try {
       for (let i = 0; i < connectedMachines.length; i++) {
         const machine = connectedMachines[i];
-        await axios.post(`${apiUrl}/disconnect/${machine.idMachine}`);
+        await axios.post(`${apiUrl}/disconnect/${machine.idUser}`);
       }
 
       const updatedCardData = cardData.map((machine) => ({

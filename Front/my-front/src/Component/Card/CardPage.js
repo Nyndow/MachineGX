@@ -35,9 +35,9 @@ export default function CardPage() {
 
   const handleConnection = (key) => {
     const requestData = {
-      idUser : key,
+      idMachine : idMachine,
     };
-  axios.post(`${apiUrl}/connect/${idMachine}`, requestData)
+  axios.post(`${apiUrl}/connect/${key}`, requestData)
   .then(() => {
     setConnected(true);
     togglePopup()
