@@ -10,6 +10,8 @@ import IconButton from '@mui/material/IconButton';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useParams } from 'react-router-dom';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { useHistory } from 'react-router-dom';
 
 function UserEdit() {
   const apiUrl = process.env.REACT_APP_API_URL;
@@ -20,9 +22,10 @@ function UserEdit() {
   const initialFormData = {
     numEmployee: '',
     userUsername: '',
-    userPassword: '', 
+    userPassword: '',
   };
   const [formData, setFormData] = useState(initialFormData);
+  const history = useHistory()
 
   useEffect(() => {
     axios.get(`${apiUrl}/user/${idUser}`)
@@ -33,7 +36,7 @@ function UserEdit() {
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
-  }, [idUser]);
+  }, [apiUrl, idUser]);
 
   const handleInputChange = useCallback((event) => {
     const { name, value } = event.target;
@@ -64,6 +67,17 @@ function UserEdit() {
         });
     }
   }, [apiUrl, isSubmitting, formData, idUser]);
+
+  const handleDelete = () => {
+    axios
+      .delete(`${apiUrl}/user/${idUser}`)
+      .then(() => {
+        history.goBack();
+      })
+      .catch((error) => {
+        console.error('Error deleting item:', error);
+      });
+  };
 
   const isFormEmpty = Object.values(formData).some((value) => value === '');
 
@@ -124,6 +138,9 @@ function UserEdit() {
             Update
           </Button>
         </div>
+        <button onClick={handleDelete}>
+          <DeleteIcon/>
+        </button>
       </div>
     </div>
   );

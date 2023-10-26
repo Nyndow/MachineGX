@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit'; 
-import { useHistory } from 'react-router-dom'; 
+import AddIcon from '@mui/icons-material/Add'; 
+import { useHistory } from 'react-router-dom';
+import Button from '@mui/material/Button'; 
 
 export default function User() {
   const [dataToDisplay, setDataToDisplay] = useState([]);
@@ -49,7 +51,11 @@ export default function User() {
             ))}
           </tbody>
         </table>
-
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+          <Button variant="text" startIcon={<AddIcon />} onClick={() => history.push(`/user_add/${idMachine}`)}>
+            Add new user
+          </Button>
+        </div>
       </div>
     </div>
   );
