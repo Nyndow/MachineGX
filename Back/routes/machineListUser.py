@@ -17,8 +17,6 @@ def machineHome():
             OSys.imgOS,
             Machine.idMachine,
             Machine.idOS,
-            Machine.ipAddr,
-            Machine.portNumber,
             User.userUsername,
             User.idUser,
             User.numEmployee
@@ -42,8 +40,6 @@ def machineHome():
             imgOS,
             idMachine,
             idOS,
-            ipAddr,
-            portNumber,
             userUsername,
             idUser,
             numEmployee
@@ -53,14 +49,59 @@ def machineHome():
                 'imgOS': imgOS,
                 'idMachine': idMachine,
                 'idOS': idOS,
-                'ipAddr': ipAddr,
-                'portNumber': portNumber,
                 'userUsername': userUsername,
                 'idUser': idUser,
                 'numEmployee':numEmployee
             })
 
         return jsonify({'machineHome': machine_list})
+
+    except Exception as e:
+        return str(e)
+    
+@machine_user_list.route('/machineAll', methods=['GET'])
+def machineAll():
+    try:
+        query = db.session.query(
+            Machine.machineName,
+            OSys.imgOS,
+            Machine.idMachine,
+            Machine.idOS,
+            User.userUsername,
+            User.idUser,
+            User.numEmployee
+        ).join(
+            OSys,
+            Machine.idOS == OSys.idOS
+        ).join(
+            Attribution,
+            Attribution.idMachine == Machine.idMachine
+        ).join(
+            User,
+            User.idUser == Attribution.idUser
+        ).distinct().all()
+
+        machine_all = []
+        for (
+            machineName,
+            imgOS,
+            idMachine,
+            idOS,
+            userUsername,
+            idUser,
+            numEmployee
+        ) in query:
+            machine_all.append({
+                'machineName': machineName,
+                'imgOS': imgOS,
+                'idMachine': idMachine,
+                'idOS': idOS,
+                'userUsername': userUsername,
+                'idUser': idUser,
+                'numEmployee':numEmployee
+            })
+
+        return jsonify({'machineAll': machine_all})
 
     except Exception as e:
         return str(e)

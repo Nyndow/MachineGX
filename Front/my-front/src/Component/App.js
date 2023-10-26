@@ -16,6 +16,7 @@ import PrivateRoute from './Services/privateAuth';
 import UserAdd from './CRUD/ADD/UserAdd';
 import User from './CRUD/GENERAL/User';
 import UserEdit from './CRUD/EDIT/UserEdit';
+import MachineAll from './CRUD/GENERAL/MachineAll';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           <PrivateRoute path="/history" component={History} />
 
           {/*CRUD GENERAL*/} 
+          <PrivateRoute path="/machine-all" component={MachineAll}/>
           <PrivateRoute path="/crud-command" component={CRUDGeneral.CRUDCommand} />
           <PrivateRoute path="/crud-attribution" component={CRUDGeneral.CRUDAttribution} />;
           <PrivateRoute path="/crud-administration" component={CRUDGeneral.CRUDAdmin} />;
