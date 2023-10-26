@@ -37,11 +37,12 @@ export default function CardPage() {
 
   const verifyConn=(key) =>{
     axios.get(`${apiUrl}/verify_conn/${key}`)
-    .then(()=>{
-      setConnected(true);
+    .then((response)=>{
+      if(response.data === true){
+        setConnected(true)
+      }
     })
     .catch(()=>{
-
     })
   }
 

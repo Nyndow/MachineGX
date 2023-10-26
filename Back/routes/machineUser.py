@@ -77,8 +77,4 @@ def users_machine(machine_id):
 #VERIFY CONNEXION FOR CARDPAGE FROM CARDLIST
 @machine_user.route('/verify_conn/<int:user_id>', methods=['GET'])
 def verify_conn(user_id):
-    if user_id in ssh_clients:
-        return jsonify(success=True)
-    else:
-        return jsonify(success=False)
-
+    return jsonify(success=user_id in ssh_clients)
