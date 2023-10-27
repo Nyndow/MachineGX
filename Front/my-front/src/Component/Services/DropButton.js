@@ -58,6 +58,7 @@ const handleDisconnect = () => {
       if (onSuccessfulDisconnect) {
         onSuccessfulDisconnect(successfulMachines);
       }
+      setAnchorEl(null);
     })
     
       .catch((error) => {

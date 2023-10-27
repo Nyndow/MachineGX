@@ -3,7 +3,6 @@ import '../../../Styles/MachineAll.css';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import PaginationComponent from '../../Services/Pagination';
-import Box from '@mui/material/Box';
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import MovingIcon from '@mui/icons-material/Moving';
 import EditIcon from '@mui/icons-material/Edit';
@@ -15,6 +14,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
+import SortIcon from '@mui/icons-material/Sort';
 
 function MachineAll() {
   const [data, setData] = useState([]);
@@ -25,6 +25,7 @@ function MachineAll() {
   const [selectAll, setSelectAll] = useState(false);
   const apiUrl = process.env.REACT_APP_API_URL;
   const history = useHistory();
+  const [showConnectedOnly, setShowConnectedOnly] = useState(false);
 
   useEffect(() => {
     axios
@@ -34,13 +35,53 @@ function MachineAll() {
           ...machine,
           connected: false,
         }));
-        setData(updatedData);
+  
+        const verificationPromises = updatedData.map((machine) =>
+          axios.get(`${apiUrl}/verify_conn/${machine.idUser}`)
+        );
+  
+        Promise.all(verificationPromises)
+          .then((verificationResponses) => {
+            verificationResponses.forEach((response, index) => {
+              if (response.data.success === true) {
+                updatedData[index].connected = true;
+              }
+            });
+  
+            setData(updatedData);
+          })
+          .catch((error) => {
+            console.error('Error verifying connections:', error);
+          });
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
   }, []);
+  
 
+  const changeShow = () => {
+    const initialData = [...data]
+    if (!showConnectedOnly) {
+      const connectedMachines = data.filter((machine) => machine.connected);
+      setData(connectedMachines);
+    } else {
+      axios
+        .get(`${apiUrl}/machineAll`)
+        .then((response) => {
+          const updatedData = response.data.machineAll.map((machine) => ({
+            ...machine,
+            connected: false,
+          }));
+          setData(updatedData);
+        })
+        .catch((error) => {
+          console.error('Error fetching data:', error);
+        });
+    }
+    setShowConnectedOnly(!showConnectedOnly);
+  };
+  
   /*CONNECTION*/ 
   const handleConnect = async () => {
     const updatedCardData = [...data];
@@ -125,7 +166,7 @@ function MachineAll() {
           </div>
           <div className="table-wrapper" style={{ marginTop: '20px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <TextField
+            <div><TextField
               id="input-with-icon-textfield"
               label="Search"
               variant="outlined"
@@ -149,13 +190,17 @@ function MachineAll() {
                 ),
               }}
             />
+                <IconButton onClick={changeShow}>
+                  <SortIcon />
+                </IconButton>
+                </div>
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
               <Link to={`/machine`} style={{ marginRight: '10px' }}>
                 <Button size='large' variant="outlined" startIcon={<ComputerIcon size='large' />}>
                   New
                 </Button>
               </Link>
-              <Button onClick={handleConnect} variant="outlined" size="medium" color="success" style={{ marginRight: '10px' }}>
+              <Button onClick={handleConnect} variant="outlined" color="success" style={{ marginRight: '10px' }}>
                 Connect
               </Button>
               <DropdownButton
