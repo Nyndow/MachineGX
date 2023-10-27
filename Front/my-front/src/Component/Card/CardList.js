@@ -36,12 +36,29 @@ const CardList = () => {
     axios
       .get(`${apiUrl}/machineList`)
       .then((response) => {
-        if (response.data && response.data.machineHome) {
-          setCardData(response.data.machineHome);
-        } else {
-          console.error('Invalid API response format:', response.data);
-        }
-      })
+        const updatedData = response.data.machineHome.map((machine) => ({
+          ...machine,
+          state: false,
+        }));
+
+        const verificationPromises = updatedData.map((machine) =>
+        axios.get(`${apiUrl}/verify_conn/${machine.idUser}`)
+      );
+
+        Promise.all(verificationPromises)
+        .then((verificationResponses) => {
+          verificationResponses.forEach((response, index) => {
+            if (response.data.success === true) {
+              updatedData[index].state = true;
+            }
+          });
+
+          setCardData(updatedData);
+        })
+        .catch((error) => {
+          console.error('Error verifying connections:', error);
+        });
+        })
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
@@ -51,7 +68,7 @@ const CardList = () => {
     const updatedCardData = [...cardData];
 
     updatedCardData.forEach(async (machine, i) => {
-      if (machine.state === 'up') {
+      if (machine.state === true) {
         try {
           const response = await axios.get(`${apiUrl}/execute-script/${machine.idUser}`, {
             params: {
@@ -96,7 +113,7 @@ const CardList = () => {
       axios
         .post(`${apiUrl}/connect/${machine.idUser}`, requestData)
         .then(() => {
-          updatedCardData[i] = { ...machine, state: 'up' };
+          updatedCardData[i] = { ...machine, state: true };
           setCardData(updatedCardData);
         })
         .catch((error) => {
@@ -111,7 +128,7 @@ const CardList = () => {
     successfulMachines.forEach((machine) => {
       const index = updatedCardData.findIndex((data) => data.idMachine === machine.idMachine);
       if (index !== -1) {
-        updatedCardData[index] = { ...updatedCardData[index], state: 'down' };
+        updatedCardData[index] = { ...updatedCardData[index], state: false };
       }
     });
 

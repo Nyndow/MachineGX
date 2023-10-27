@@ -43,7 +43,7 @@ export default function CardPage() {
   const verifyConn=(key) =>{
     axios.get(`${apiUrl}/verify_conn/${key}`)
     .then((response)=>{
-      if(response.data === true){
+      if(response.data.success === true){
         setConnected(true)
       }
     })
@@ -76,7 +76,7 @@ export default function CardPage() {
 /*DECONNECTION*/
 const handleSuccessfulDisconnect = (successfulMachines) => {
   setConnected(false)
-};  
+};
 
 const fetchUsers = () => {
   axios

@@ -6,7 +6,7 @@ import down from "../../Utils/icons/downarrow.png";
 
 const CardItem = ({ idOS, machineName, freeRAM, totalRAM, CPUUsage, DownUsage, UpUsage, userUsername, numEmployee, imageUrl, idMachine, state, idUser }) => {
   const history = useHistory();
-  const stateIndicatorClass = state === 'up' ? 'green-state' : 'red-state';
+  const stateIndicatorClass = state? 'green-state' : 'red-state';
 
   const handleClick = () => {
     history.push(`/machine-page/${idMachine}/${idOS}?idUser=${idUser}`);
