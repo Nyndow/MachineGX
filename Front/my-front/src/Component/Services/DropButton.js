@@ -14,7 +14,7 @@ import axios from 'axios';
 import ClearIcon from '@mui/icons-material/Clear';
 
 
-const DropdownButton = ({ statusConnection, idMachine, selectedData }) => {
+const DropdownButton = ({ statusConnection, idMachine, selectedData,onSuccessfulDisconnect }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const history = useHistory();
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -41,6 +41,33 @@ const DropdownButton = ({ statusConnection, idMachine, selectedData }) => {
     })
   }
 }
+
+/*DECONNECTION*/
+const handleDisconnect = () => {
+  try {
+    const disconnectPromises = selectedData.map((machine) => {
+      return axios.post(`${apiUrl}/disconnect/${machine.idUser}`)
+        .then(() => machine) 
+        .catch(() => {
+          return null; 
+        });
+    });
+    Promise.all(disconnectPromises)
+    .then((disconnectedMachines) => {
+      const successfulMachines = disconnectedMachines.filter(machine => machine !== null);
+      if (onSuccessfulDisconnect) {
+        onSuccessfulDisconnect(successfulMachines);
+      }
+    })
+    
+      .catch((error) => {
+        console.error('Error disconnecting connected machines:', error);
+      });
+  } catch (error) {
+    console.error('Error disconnecting connected machines:', error);
+  }
+};
+
 
 /*UPLOAD*/
     const handleFileSelect = (e) => {
@@ -85,16 +112,22 @@ const DropdownButton = ({ statusConnection, idMachine, selectedData }) => {
       setIsPopupOpen(!isPopupOpen);
     };
 
+  /*END UPLOAD*/
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <div>
-        <IconButton
-          aria-controls="dropdown-menu"
-          aria-haspopup="true"
-          onClick={handleClick}
-        >
-          <MenuIcon fontSize="large" style={{ color: 'white' }} />
-        </IconButton>
+      {
+        idMachine || statusConnection ? (
+          <IconButton
+            aria-controls="dropdown-menu"
+            aria-haspopup="true"
+            onClick={handleClick}
+          >
+            <MenuIcon fontSize="large" style={{ color: 'white' }} />
+          </IconButton>
+        ) : null
+      }
       </div>
       <div>
       <Menu id="dropdown-menu" anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={() => handleClose(null)} transformOrigin={{ vertical: 'top', horizontal: 'center' }} PaperProps={{ style: { width: '300px' } }}>
@@ -137,7 +170,7 @@ const DropdownButton = ({ statusConnection, idMachine, selectedData }) => {
           <hr></hr>
         )}
         {statusConnection && (
-          <MenuItem onClick={() => handleClose('Option 3')}>
+          <MenuItem onClick={handleDisconnect}>
             <ListItemIcon>
               <SettingsIcon />
             </ListItemIcon>

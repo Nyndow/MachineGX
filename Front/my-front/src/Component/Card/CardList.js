@@ -105,22 +105,34 @@ const CardList = () => {
     }
   };
 
-  const disconnectAllMachines = async () => {
+  const disconnectAllMachines = () => {
     try {
-      for (let i = 0; i < connectedMachines.length; i++) {
-        const machine = connectedMachines[i];
-        await axios.post(`${apiUrl}/disconnect/${machine.idUser}`);
-      }
-
-      const updatedCardData = cardData.map((machine) => ({
-        ...machine,
-        state: 'down',
-      }));
-      setCardData(updatedCardData);
+      const disconnectPromises = connectedMachines.map((machine) => {
+        return axios.post(`${apiUrl}/disconnect/${machine.idUser}`)
+          .then(() => {
+            return {
+              ...machine,
+              state: 'down',
+            };
+          });
+      });
+  
+      Promise.all(disconnectPromises)
+        .then((updatedMachines) => {
+          setCardData(updatedMachines);
+        })
+        .catch((error) => {
+          console.error('Error disconnecting connected machines:', error);
+        });
     } catch (error) {
       console.error('Error disconnecting connected machines:', error);
     }
   };
+
+  const handleSuccessfulDisconnect = (successfulMachines) => {
+    console.log('Successful machines:', successfulMachines);
+  };  
+  
 
   const getPaginatedData = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -149,7 +161,7 @@ const CardList = () => {
             <Button variant="outlined" color="error" size="large" onClick={disconnectAllMachines}>
               Disconnect
             </Button>
-            <DropdownButton statusConnection={connected} selectedData={connectedMachines} />
+            <DropdownButton onSuccessfulDisconnect={handleSuccessfulDisconnect} statusConnection={connected} selectedData={connectedMachines} />
 
           </div>
         </div>
