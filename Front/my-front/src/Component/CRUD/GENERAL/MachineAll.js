@@ -3,14 +3,18 @@ import '../../../Styles/MachineAll.css';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import PaginationComponent from '../../Services/Pagination';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Box from '@mui/material/Box';
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import MovingIcon from '@mui/icons-material/Moving';
 import EditIcon from '@mui/icons-material/Edit';
 import Button from '@mui/material/Button';
 import ComputerIcon from '@mui/icons-material/Computer';
-import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
+import ClearIcon from '@mui/icons-material/Clear';
 import DropdownButton from '../../Services/DropButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import TextField from '@mui/material/TextField';
+import IconButton from '@mui/material/IconButton';
+import SearchIcon from '@mui/icons-material/Search';
 
 function MachineAll() {
   const [data, setData] = useState([]);
@@ -117,32 +121,41 @@ function MachineAll() {
     <div className='machineMain-container'>
       <div className="machine">
         <div className="machine-container">
-          <div className="search-container">
-            <div className="search-input-container">
-              <FontAwesomeIcon icon={faSearch} className={`search-icon ${searchQuery ? 'hidden' : ''}`} />
-              <input
-                type="text"
-                placeholder="      Search..."
-                value={searchQuery}
-                onChange={handleSearchInputChange}
-                className="search-input"
-              />
-              {searchQuery && (
-                <button className="clear-button" onClick={handleClearSearch}>
-                  <FontAwesomeIcon icon={faTimes} />
-                </button>
-              )}
-            </div>
+          <div>
           </div>
           <div className="table-wrapper" style={{ marginTop: '20px' }}>
-            <div className="add-button-container">
-            <div className="add-button" style={{ display: 'flex', alignItems: 'center' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <TextField
+              id="input-with-icon-textfield"
+              label="Search"
+              variant="outlined"
+              type="text"
+              value={searchQuery}
+              onChange={handleSearchInputChange}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+                endAdornment: (
+                  searchQuery && (
+                    <InputAdornment position="end">
+                      <IconButton onClick={handleClearSearch}>
+                        <ClearIcon />
+                      </IconButton>
+                    </InputAdornment>
+                  )
+                ),
+              }}
+            />
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
               <Link to={`/machine`} style={{ marginRight: '10px' }}>
-                <Button size='large' variant="outlined" startIcon={<ComputerIcon />}>
+                <Button size='large' variant="outlined" startIcon={<ComputerIcon size='large' />}>
                   New
                 </Button>
               </Link>
-              <Button onClick={handleConnect} variant="outlined" size="large" color="success" style={{ marginRight: '10px' }}>
+              <Button onClick={handleConnect} variant="outlined" size="medium" color="success" style={{ marginRight: '10px' }}>
                 Connect
               </Button>
               <DropdownButton
@@ -151,7 +164,7 @@ function MachineAll() {
                 onSuccessfulDisconnect={handleSuccessfulDisconnect}
               />
             </div>
-            </div>
+          </div>
           <div className="table-wrapper" style={{ marginTop: '20px' }}>
             <table className="machine-table">
               <thead>
