@@ -10,11 +10,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import Button from '@mui/material/Button';
 import ComputerIcon from '@mui/icons-material/Computer';
 import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
+import DropdownButton from '../../Services/DropButton';
 
 function MachineAll() {
   const [data, setData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [connected , setConnected] = useState(false)
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
   const [selectedItems, setSelectedItems] = useState(new Set());
@@ -26,12 +26,41 @@ function MachineAll() {
     axios
       .get(`${apiUrl}/machineAll`)
       .then((response) => {
-        setData(response.data.machineAll);
+        const updatedData = response.data.machineAll.map((machine) => ({
+          ...machine,
+          connected: false,
+        }));
+        setData(updatedData);
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
   }, []);
+
+  /*CONNECTION*/ 
+  const handleConnect = async () => {
+    const updatedCardData = [...data];
+  
+    for (let i = 0; i < updatedCardData.length; i++) {
+      const machine = updatedCardData[i];
+      const requestData = {
+        idMachine: machine.idMachine,
+      };
+  
+      try {
+        await axios.post(`${apiUrl}/connect/${machine.idUser}`, requestData);
+  
+        updatedCardData[i] = { ...machine, connected: true };
+  
+        setData(updatedCardData);
+      } catch (error) {
+        console.error('Error updating machine state:', error);
+      }
+    }
+  };
+  
+  
+
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };
@@ -111,9 +140,10 @@ function MachineAll() {
                     New
                   </Button>
                 </Link>
-                <Button variant="outlined" size="large" color="success">
+                <Button onClick={handleConnect} variant="outlined" size="large" color="success">
                   Connect
                 </Button>
+                <DropdownButton  />
                 
               </div>
             </div>
@@ -149,8 +179,8 @@ function MachineAll() {
                     <td>{rowData.machineName}</td>
                     <td>{rowData.userUsername} | {rowData.numEmployee}</td>
                     <td>
-                      <span style={{ color: connected ? 'green' : 'red' }}>
-                        {connected ? 'Connected' : 'Disconnected'}
+                      <span style={{ color: rowData.connected ? 'green' : 'red' }}>
+                        {rowData.connected ? 'Connected' : 'Disconnected'}
                       </span>
                     </td>
                     <td>
