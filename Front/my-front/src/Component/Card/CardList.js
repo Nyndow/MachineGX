@@ -14,7 +14,7 @@ const CardList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
   const [connected, setConnected] = useState(false)
-  const connectedMachines = cardData.filter((machine) => machine.state === 'up');
+  const connectedMachines = cardData.filter((machine) => machine.state===true);
 
   useEffect(() => {
     fetchData();

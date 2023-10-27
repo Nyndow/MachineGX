@@ -40,10 +40,24 @@ export default function CardPage() {
     }
   }, [user]);
 
+  const fetchUsers = () => {
+    axios
+      .get(`${apiUrl}/machine_user/${idMachine}`)
+      .then((response) => {
+        setData(response.data);
+      })
+      .catch((error) => {
+        if (error.response && error.response.status === 401) {
+          setConnected(true);
+        }
+      });
+  }
+
   const verifyConn=(key) =>{
     axios.get(`${apiUrl}/verify_conn/${key}`)
     .then((response)=>{
       if(response.data.success === true){
+        dataSelect.idUser = key;
         setConnected(true)
       }
     })
@@ -77,19 +91,6 @@ export default function CardPage() {
 const handleSuccessfulDisconnect = (successfulMachines) => {
   setConnected(false)
 };
-
-const fetchUsers = () => {
-  axios
-    .get(`${apiUrl}/machine_user/${idMachine}`)
-    .then((response) => {
-      setData(response.data);
-    })
-    .catch((error) => {
-      if (error.response && error.response.status === 401) {
-        setConnected(true);
-      }
-    });
-}
 
   const togglePopup = () => {
     setIsPopupOpen(!isPopupOpen);
