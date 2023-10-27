@@ -58,8 +58,10 @@ function MachineAll() {
       }
     }
   };
-  
-  
+
+  /*DISCONNECT*/ 
+  const handleSuccessfulDisconnect = (successfulMachines) => {
+  };
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
@@ -134,18 +136,21 @@ function MachineAll() {
           </div>
           <div className="table-wrapper" style={{ marginTop: '20px' }}>
             <div className="add-button-container">
-              <div className="add-button">
-                <Link to={`/machine`}>
-                  <Button size='large' variant="outlined" startIcon={<ComputerIcon />}>
-                    New
-                  </Button>
-                </Link>
-                <Button onClick={handleConnect} variant="outlined" size="large" color="success">
-                  Connect
+            <div className="add-button" style={{ display: 'flex', alignItems: 'center' }}>
+              <Link to={`/machine`} style={{ marginRight: '10px' }}>
+                <Button size='large' variant="outlined" startIcon={<ComputerIcon />}>
+                  New
                 </Button>
-                <DropdownButton  />
-                
-              </div>
+              </Link>
+              <Button onClick={handleConnect} variant="outlined" size="large" color="success" style={{ marginRight: '10px' }}>
+                Connect
+              </Button>
+              <DropdownButton
+                selectedData={data.filter(machine => machine.connected === true)}
+                statusConnection={data.filter(machine => machine.connected === true).length > 0}
+                onSuccessfulDisconnect={handleSuccessfulDisconnect}
+              />
+            </div>
             </div>
           <div className="table-wrapper" style={{ marginTop: '20px' }}>
             <table className="machine-table">
