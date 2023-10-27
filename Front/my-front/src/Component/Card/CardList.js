@@ -105,32 +105,17 @@ const CardList = () => {
     }
   };
 
-  const disconnectAllMachines = () => {
-    try {
-      const disconnectPromises = connectedMachines.map((machine) => {
-        return axios.post(`${apiUrl}/disconnect/${machine.idUser}`)
-          .then(() => {
-            return {
-              ...machine,
-              state: 'down',
-            };
-          });
-      });
-  
-      Promise.all(disconnectPromises)
-        .then((updatedMachines) => {
-          setCardData(updatedMachines);
-        })
-        .catch((error) => {
-          console.error('Error disconnecting connected machines:', error);
-        });
-    } catch (error) {
-      console.error('Error disconnecting connected machines:', error);
-    }
-  };
-
   const handleSuccessfulDisconnect = (successfulMachines) => {
-    console.log('Successful machines:', successfulMachines);
+    const updatedCardData = [...cardData];
+    
+    successfulMachines.forEach((machine) => {
+      const index = updatedCardData.findIndex((data) => data.idMachine === machine.idMachine);
+      if (index !== -1) {
+        updatedCardData[index] = { ...updatedCardData[index], state: 'down' };
+      }
+    });
+
+    setCardData(updatedCardData);
   };  
   
 
@@ -157,9 +142,6 @@ const CardList = () => {
           </Link>
             <Button variant="outlined" size="large" color="success" onClick={updateMachineState}>
               Connect
-            </Button>
-            <Button variant="outlined" color="error" size="large" onClick={disconnectAllMachines}>
-              Disconnect
             </Button>
             <DropdownButton onSuccessfulDisconnect={handleSuccessfulDisconnect} statusConnection={connected} selectedData={connectedMachines} />
 

@@ -73,6 +73,11 @@ export default function CardPage() {
   });
 }
 
+/*DECONNECTION*/
+const handleSuccessfulDisconnect = (successfulMachines) => {
+  setConnected(false)
+};  
+
 const fetchUsers = () => {
   axios
     .get(`${apiUrl}/machine_user/${idMachine}`)
@@ -105,7 +110,7 @@ const fetchUsers = () => {
               Connect
             </button>
           )}
-          <DropdownButton statusConnection={connected} idMachine={idMachine} selectedData={[dataSelect]} />
+          <DropdownButton onSuccessfulDisconnect={handleSuccessfulDisconnect} statusConnection={connected} idMachine={idMachine} selectedData={[dataSelect]} />
         </div>
           <hr className="hr"></hr>
           <div className="ressource">
