@@ -14,23 +14,21 @@ const CardList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
   const [connected, setConnected] = useState(false)
-  const connectedMachines = cardData.filter((machine) => machine.state===true);
 
   useEffect(() => {
     fetchData();
-
     const intervalId = setInterval(fetchScriptData, 2000);
-
     return () => {
       clearInterval(intervalId);
     };
   }, []);
 
   useEffect(() => {
-    if (connectedMachines.length > 0) {
+    if ((cardData.filter(machine => machine.state===true)).length > 0) {
       setConnected(true);
     }
-  }, [connectedMachines]);  
+    else{setConnected(false)}
+  },);  
 
   const fetchData = () => {
     axios
@@ -90,11 +88,9 @@ const CardList = () => {
             };
           }
           else {
-            console.error('Invalid script_data response format:', response.data);
           }
           setCardData(updatedCardData);
         } catch (error) {
-          console.error('Error fetching script_data:', error);
         }
       }
     });
@@ -122,17 +118,8 @@ const CardList = () => {
     }
   };
 
-  const handleSuccessfulDisconnect = (successfulMachines) => {
-    const updatedCardData = [...cardData];
-    
-    successfulMachines.forEach((machine) => {
-      const index = updatedCardData.findIndex((data) => data.idMachine === machine.idMachine);
-      if (index !== -1) {
-        updatedCardData[index] = { ...updatedCardData[index], state: false };
-      }
-    });
-
-    setCardData(updatedCardData);
+  const handleSuccessfulDisconnect = () => {
+    fetchData()
   };  
   
 
@@ -160,7 +147,7 @@ const CardList = () => {
             <Button variant="outlined" size="large" color="success" onClick={updateMachineState}>
               Connect
             </Button>
-            <DropdownButton onSuccessfulDisconnect={handleSuccessfulDisconnect} statusConnection={connected} selectedData={connectedMachines} />
+            <DropdownButton onSuccessfulDisconnect={handleSuccessfulDisconnect} statusConnection={connected} selectedData={cardData.filter(machine => machine.state===true)} />
 
           </div>
         </div>

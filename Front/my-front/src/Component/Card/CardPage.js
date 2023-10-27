@@ -88,7 +88,7 @@ export default function CardPage() {
 }
 
 /*DECONNECTION*/
-const handleSuccessfulDisconnect = (successfulMachines) => {
+const handleSuccessfulDisconnect = () => {
   setConnected(false)
 };
 

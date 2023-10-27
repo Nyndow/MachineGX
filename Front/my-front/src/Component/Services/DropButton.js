@@ -58,12 +58,12 @@ const handleDisconnect = () => {
       if (onSuccessfulDisconnect) {
         onSuccessfulDisconnect(successfulMachines);
       }
-      setAnchorEl(null);
     })
-    
       .catch((error) => {
         console.error('Error disconnecting connected machines:', error);
       });
+
+      setAnchorEl(null);
   } catch (error) {
     console.error('Error disconnecting connected machines:', error);
   }

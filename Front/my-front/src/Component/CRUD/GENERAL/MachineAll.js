@@ -28,36 +28,40 @@ function MachineAll() {
   const [showConnectedOnly, setShowConnectedOnly] = useState(false);
 
   useEffect(() => {
-    axios
-      .get(`${apiUrl}/machineAll`)
-      .then((response) => {
-        const updatedData = response.data.machineAll.map((machine) => ({
-          ...machine,
-          connected: false,
-        }));
-  
-        const verificationPromises = updatedData.map((machine) =>
-          axios.get(`${apiUrl}/verify_conn/${machine.idUser}`)
-        );
-  
-        Promise.all(verificationPromises)
-          .then((verificationResponses) => {
-            verificationResponses.forEach((response, index) => {
-              if (response.data.success === true) {
-                updatedData[index].connected = true;
-              }
-            });
-  
-            setData(updatedData);
-          })
-          .catch((error) => {
-            console.error('Error verifying connections:', error);
-          });
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
-      });
+    fetchData()
   }, []);
+
+  const fetchData = () =>{
+    axios
+    .get(`${apiUrl}/machineAll`)
+    .then((response) => {
+      const updatedData = response.data.machineAll.map((machine) => ({
+        ...machine,
+        connected: false,
+      }));
+
+      const verificationPromises = updatedData.map((machine) =>
+        axios.get(`${apiUrl}/verify_conn/${machine.idUser}`)
+      );
+
+      Promise.all(verificationPromises)
+        .then((verificationResponses) => {
+          verificationResponses.forEach((response, index) => {
+            if (response.data.success === true) {
+              updatedData[index].connected = true;
+            }
+          });
+
+          setData(updatedData);
+        })
+        .catch((error) => {
+          console.error('Error verifying connections:', error);
+        });
+    })
+    .catch((error) => {
+      console.error('Error fetching data:', error);
+    });
+  }
   
 
   const changeShow = () => {
@@ -66,18 +70,7 @@ function MachineAll() {
       const connectedMachines = data.filter((machine) => machine.connected);
       setData(connectedMachines);
     } else {
-      axios
-        .get(`${apiUrl}/machineAll`)
-        .then((response) => {
-          const updatedData = response.data.machineAll.map((machine) => ({
-            ...machine,
-            connected: false,
-          }));
-          setData(updatedData);
-        })
-        .catch((error) => {
-          console.error('Error fetching data:', error);
-        });
+      fetchData()
     }
     setShowConnectedOnly(!showConnectedOnly);
   };
