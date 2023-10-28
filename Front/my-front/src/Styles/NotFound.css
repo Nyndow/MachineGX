@@ -1,34 +1,32 @@
 .not-found-container {
-    text-align: center;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center; 
-    min-height: 100vh; 
-    background-color: #ffffff;
-    font-family: 'Roboto', sans-serif;
-  }
-  
-  .not-found-header {
-    font-size: 10rem; 
-    color: #000000; 
-  }
-  
-  .not-found-message {
-    font-size: 3rem;
-    color: #333;
-  }
-  
-  .back-to-home-link {
-    margin-top: 20px;
-    text-decoration: none;
-    color: #007bff; 
-    font-weight: bold;
-    transition: color 0.3s ease; 
-  }
-  
-  .back-to-home-link:hover {
-    color: #0056b3;
-  }
-  
+  min-height: 50vh;
+  font-family: 'Roboto', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+
+.not-found-header {
+  font-size: 10rem;
+  color: #000000;
+}
+
+.not-found-message {
+  font-size: 3rem;
+  color: #333;
+}
+
+.back-to-home-link {
+  margin-top: 20px;
+  text-decoration: none;
+  color: #007bff;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.back-to-home-link:hover {
+  color: #0056b3;
+}

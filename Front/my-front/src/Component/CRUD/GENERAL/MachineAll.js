@@ -65,7 +65,6 @@ function MachineAll() {
   
 
   const changeShow = () => {
-    const initialData = [...data]
     if (!showConnectedOnly) {
       const connectedMachines = data.filter((machine) => machine.connected);
       setData(connectedMachines);
@@ -98,7 +97,8 @@ function MachineAll() {
   };
 
   /*DISCONNECT*/ 
-  const handleSuccessfulDisconnect = (successfulMachines) => {
+  const handleSuccessfulDisconnect = () => {
+    fetchData()
   };
 
   const handlePageChange = (newPage) => {
@@ -157,13 +157,14 @@ function MachineAll() {
         <div className="machine-container">
           <div>
           </div>
-          <div className="table-wrapper" style={{ marginTop: '20px' }}>
+          <div style={{ marginTop: '20px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <div><TextField
               id="input-with-icon-textfield"
               label="Search"
               variant="outlined"
               type="text"
+              style={{backgroundColor:'#110f18'}} 
               value={searchQuery}
               onChange={handleSearchInputChange}
               InputProps={{
@@ -205,7 +206,7 @@ function MachineAll() {
           </div>
           <div className="table-wrapper" style={{ marginTop: '20px' }}>
             <table className="machine-table">
-              <thead>
+              <thead style={{backgroundColor:'#110f18'}}>
                 <tr>
                   <th>
                     <input
@@ -218,7 +219,6 @@ function MachineAll() {
                   <th>Machine</th>
                   <th>User</th>
                   <th>State</th>
-                  <th></th>
                   <th></th>
                 </tr>
               </thead>
@@ -235,8 +235,8 @@ function MachineAll() {
                     <td>{rowData.machineName}</td>
                     <td>{rowData.userUsername} | {rowData.numEmployee}</td>
                     <td>
-                      <span style={{ color: rowData.connected ? 'green' : 'red' }}>
-                        {rowData.connected ? 'Connected' : 'Disconnected'}
+                      <span style={{ color: rowData.connected ? 'green' : 'gray', fontSize:'20px' }}>
+                      {rowData.connected ? '↑' : '↓'}
                       </span>
                     </td>
                     <td>

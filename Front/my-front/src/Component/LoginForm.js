@@ -21,9 +21,9 @@ function LoginForm() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
+  
     const { username, password } = formData;
-
+  
     axios.post(`${apiUrl}/login`, {
       username,
       password,
@@ -31,14 +31,29 @@ function LoginForm() {
     .then(response => {
       const { token } = response.data;
       setToken(token);
-      setFormData({ username: '', password: '', error: '' });
       localStorage.setItem('token', token);
-      history.push('/home');
+
+        axios.get(`${apiUrl}/check_admin`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        .then(response => {
+          if (response.data === true) {
+            localStorage.setItem('isAdmin', true);
+            history.push('/home');
+          } 
+        })
+        .catch(() => {
+          history.push('/home');
+        });
     })
-    .catch(error => {
+
+    .catch(() => {
       setFormData({ ...formData, error: 'Invalid username or password' });
     });
   };
+  
 
   useEffect(() => {
     const storedToken = localStorage.getItem('token');

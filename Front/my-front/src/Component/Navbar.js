@@ -12,6 +12,7 @@ function Sidebar() {
   const [selectedOption, setSelectedOption] = useState('');
 
   const handleLogout = () => {
+    localStorage.removeItem('isAdmin');
     localStorage.removeItem('token');
     setAuthenticated(false);
     history.push('/login');

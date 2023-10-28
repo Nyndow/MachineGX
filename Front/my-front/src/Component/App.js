@@ -13,6 +13,7 @@ import "../Styles/App.css"
 import CardList from './Card/CardList';
 import CardPage from './Card/CardPage';
 import PrivateRoute from './Services/privateAuth';
+import PrivateAdminRoute from './Services/privateAdminAuth';
 import UserAdd from './CRUD/ADD/UserAdd';
 import User from './CRUD/GENERAL/User';
 import UserEdit from './CRUD/EDIT/UserEdit';
@@ -34,13 +35,13 @@ function App() {
           <PrivateRoute path="/home" component={CardList} />
           <PrivateRoute path="/machine" component={MachineOption} />
           <PrivateRoute path="/editMachine/:idMachine" component={MachineEdit} />
-          <PrivateRoute path="/history" component={History} />
+          <PrivateAdminRoute path="/history" component={History} />
 
           {/*CRUD GENERAL*/} 
           <PrivateRoute path="/machine-all" component={MachineAll}/>
           <PrivateRoute path="/crud-command" component={CRUDGeneral.CRUDCommand} />
           <PrivateRoute path="/crud-attribution" component={CRUDGeneral.CRUDAttribution} />;
-          <PrivateRoute path="/crud-administration" component={CRUDGeneral.CRUDAdmin} />;
+          <PrivateAdminRoute path="/crud-administration" component={CRUDGeneral.CRUDAdmin} />;
           <PrivateRoute path="/crud-option" component={CRUDGeneral.CRUDOption} />;
           <PrivateRoute path="/crud-os" component={CRUDGeneral.CRUDOS} />;
           

@@ -1,11 +1,9 @@
-# administration_bp.py
-
 from flask import Blueprint, request, jsonify
 from database import db
 from models.administration import Administration
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt  
-from flask import current_app as app  # Import current_app to access the Flask app
+from flask import current_app as app 
 
 administration_bp = Blueprint('administration', __name__)
 
@@ -44,7 +42,7 @@ def administration_detail(admin_id):
         admin_data = {
             "idAdmin": admin.idAdmin, 
             "adminUsername": admin.adminUsername,
-            "adminPasswordHashed": True,  # Indicate that the password is hashed
+            "adminPasswordHashed": True,  
             "numEmployee": admin.numEmployee
         }
         return jsonify(admin_data)
@@ -69,11 +67,26 @@ def login():
     data = request.get_json()
     admin = Administration.query.filter_by(adminUsername=data['username']).first()
 
-    if not admin or not check_password_hash(admin.adminPassword, data['password']):
+    #if not admin or not check_password_hash(admin.adminPassword, data['password']):
+    if not admin or admin.adminPassword != data.get('password'):
         return jsonify({'message': 'Invalid username or password'}), 401
 
-    payload = {
-        'admin_id': admin.idAdmin
-    }
-    token = jwt.encode(payload, app.config['SECRET_KEY'], algorithm='HS256')
-    return jsonify({'token': token}), 200
+    if admin:
+        payload = {
+            'admin_id': admin.idAdmin
+        }
+        token = jwt.encode(payload, app.config['SECRET_KEY'], algorithm='HS256')
+        return jsonify({'token': token}), 200
+    
+@administration_bp.route('/check_admin', methods=['GET'])
+def check_admin():
+    token = request.headers.get('Authorization').split(' ')[1]
+    try:
+        payload = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
+        admin_id = payload.get('admin_id')
+        admin = Administration.query.get(admin_id)
+        if admin.isAdmin:
+            return jsonify(True)
+        
+    except Exception as e:
+        return jsonify({"error": str(e)}), 501
