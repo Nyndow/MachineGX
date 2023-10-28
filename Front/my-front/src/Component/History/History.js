@@ -67,9 +67,9 @@ export default function History() {
                   </td>
                 ))}
                 <td>
-                  <button className='delete-button' onClick={()=>handleDelete(rowData)}>
+                  {localStorage.getItem('isAdmin') && <button className='delete-button' onClick={()=>handleDelete(rowData)}>
                   <FontAwesomeIcon icon={faTrash} />
-                  </button>
+                  </button>}
                 </td>
               </tr>
             ))}

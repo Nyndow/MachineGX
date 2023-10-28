@@ -42,7 +42,7 @@ function Sidebar() {
         <div className="select-dropdown">
           <select value={selectedOption} onChange={handleOptionChange}>
             <option value="">CRUD</option>
-            <option value="crud-administration">Administration</option>
+            {localStorage.getItem('isAdmin') && <option value="crud-administration">Administration</option>}
             <option value="crud-command">Command</option>
             <option value="crud-option">Option</option>
             <option value="crud-os">OS</option>

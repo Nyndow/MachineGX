@@ -35,7 +35,7 @@ function App() {
           <PrivateRoute path="/home" component={CardList} />
           <PrivateRoute path="/machine" component={MachineOption} />
           <PrivateRoute path="/editMachine/:idMachine" component={MachineEdit} />
-          <PrivateAdminRoute path="/history" component={History} />
+          <PrivateRoute path="/history" component={History} />
 
           {/*CRUD GENERAL*/} 
           <PrivateRoute path="/machine-all" component={MachineAll}/>
