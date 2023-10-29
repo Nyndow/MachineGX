@@ -12,9 +12,10 @@ def administration_list():
     if request.method == 'POST':
         data = request.json
         adminUsername = data.get('adminUsername')
+        isAdmin = data.get('isAdmin')
         adminPassword = generate_password_hash(data.get('adminPassword'))
         numEmployee = data.get('numEmployee')
-        new_administration = Administration(adminUsername=adminUsername, adminPassword=adminPassword, numEmployee=numEmployee) 
+        new_administration = Administration(adminUsername=adminUsername, adminPassword=adminPassword, numEmployee=numEmployee, isAdmin=isAdmin) 
         db.session.add(new_administration)
         db.session.commit()
         return jsonify({"message": "Administration created successfully"})
@@ -67,8 +68,8 @@ def login():
     data = request.get_json()
     admin = Administration.query.filter_by(adminUsername=data['username']).first()
 
-    #if not admin or not check_password_hash(admin.adminPassword, data['password']):
-    if not admin or admin.adminPassword != data.get('password'):
+    if not admin or not check_password_hash(admin.adminPassword, data['password']):
+    #if not admin or admin.adminPassword != data.get('password'):
         return jsonify({'message': 'Invalid username or password'}), 401
 
     if admin:

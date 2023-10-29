@@ -6,7 +6,7 @@ import History from './History/History';
 import * as CRUDGeneral from './CRUD/GENERAL';
 import LoginForm from './LoginForm';
 import NotFound from './NotFound';
-import AddAdmin from './CRUD/ADD/CRUDAdd';
+import AddAdmins from './CRUD/ADD/CRUDAdd';
 import EditCRUD from './CRUD/EDIT/EditCRUD';
 import MachineEdit from './CRUD/EDIT/MachineEdit';
 import "../Styles/App.css"
@@ -18,6 +18,7 @@ import UserAdd from './CRUD/ADD/UserAdd';
 import User from './CRUD/GENERAL/User';
 import UserEdit from './CRUD/EDIT/UserEdit';
 import MachineAll from './CRUD/GENERAL/MachineAll';
+import AdminAdd from './CRUD/ADD/AdminAdd';
 
 function App() {
   return (
@@ -46,8 +47,9 @@ function App() {
           <PrivateRoute path="/crud-os" component={CRUDGeneral.CRUDOS} />;
           
           {/*CRUDADD*/}
-          <PrivateRoute path="/add/:entity" component={AddAdmin} />
+          <PrivateRoute path="/add/:entity" component={AddAdmins} />
           <PrivateRoute path="/user_add/:idMachine" component={UserAdd}/>
+          <PrivateAdminRoute path="/admin_add/" component={AdminAdd}/>
 
           {/*CRUDEDIT*/}
           <PrivateRoute path="/edit/:entity/:id" component={EditCRUD} />
