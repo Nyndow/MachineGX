@@ -4,31 +4,33 @@ import '../../../Styles/machineOption.css';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Input from '@mui/material/Input';
+import Checkbox from '@mui/material/Checkbox';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { useParams } from 'react-router-dom';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
-function UserEdit() {
+function AdminEdit() {
   const apiUrl = process.env.REACT_APP_API_URL;
-  const { idUser } = useParams();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const { idAdmin } = useParams();
 
   const initialFormData = {
     numEmployee: '',
-    userUsername: '',
-    userPassword: '',
+    adminUsername: '',
+    isAdmin: false,
   };
+  const [adminPassword, setAdminPassword] = useState('');
   const [formData, setFormData] = useState(initialFormData);
-  const history = useHistory()
+  const history = useHistory();
 
   useEffect(() => {
-    axios.get(`${apiUrl}/user/${idUser}`)
+    axios
+      .get(`${apiUrl}/administration/${idAdmin}`)
       .then((response) => {
         const formattedData = { ...response.data };
         setFormData(formattedData);
@@ -36,7 +38,7 @@ function UserEdit() {
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
-  }, [apiUrl, idUser]);
+  }, [apiUrl, idAdmin]);
 
   const handleInputChange = useCallback((event) => {
     const { name, value } = event.target;
@@ -46,6 +48,17 @@ function UserEdit() {
     }));
   }, []);
 
+  const handlePasswordChange = (event) => {
+    setAdminPassword(event.target.value);
+  };
+
+  const handleIsAdminChange = () => {
+    setFormData((prevData) => ({
+      ...prevData,
+      isAdmin: !prevData.isAdmin,
+    }));
+  };
+
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -54,10 +67,19 @@ function UserEdit() {
     if (!isSubmitting) {
       setIsSubmitting(true);
 
+      const dataToSend = {
+        ...formData,
+        adminPassword,
+      };
+
+      if (adminPassword === '') {
+        delete dataToSend.adminPassword;
+      }
+
       axios
-        .put(`${apiUrl}/user/${idUser}`, { ...formData })
+        .put(`${apiUrl}/administration/${idAdmin}`, dataToSend)
         .then((response) => {
-          console.log(response.data);
+          history.goBack();
         })
         .catch((error) => {
           console.error('Error sending data:', error);
@@ -66,11 +88,11 @@ function UserEdit() {
           setIsSubmitting(false);
         });
     }
-  }, [apiUrl, isSubmitting, formData, idUser]);
+  }, [apiUrl, isSubmitting, formData, idAdmin, adminPassword, history]);
 
   const handleDelete = () => {
     axios
-      .delete(`${apiUrl}/user/${idUser}`)
+      .delete(`${apiUrl}/administration/${idAdmin}`)
       .then(() => {
         history.goBack();
       })
@@ -99,18 +121,18 @@ function UserEdit() {
           id="userUsername-basic"
           label="Username"
           variant="standard"
-          name="userUsername"
-          value={formData.userUsername}
+          name="adminUsername"
+          value={formData.adminUsername}
           onChange={handleInputChange}
           style={{ marginBottom: '10px' }}
           required
         />
-        <InputLabel htmlFor="standard-adornment-password" >Password</InputLabel>
+        <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
         <Input
           id="standard-adornment-password"
           type={showPassword ? 'text' : 'password'}
-          value={formData.userPassword}
-          onChange={handleInputChange}
+          value={adminPassword}
+          onChange={handlePasswordChange}
           endAdornment={
             <InputAdornment position="end">
               <IconButton
@@ -122,8 +144,23 @@ function UserEdit() {
             </InputAdornment>
           }
         />
+        <label>
+          <Checkbox
+            checked={formData.isAdmin}
+            onChange={handleIsAdminChange}
+            name="isAdmin"
+          />
+          Is Admin
+        </label>
 
-        <div style={{ display: 'flex', justifyContent: 'flex-end', paddingTop: '15px', paddingBottom: '15px' }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            paddingTop: '15px',
+            paddingBottom: '15px',
+          }}
+        >
           <Button
             color="primary"
             variant="text"
@@ -138,12 +175,12 @@ function UserEdit() {
             Update
           </Button>
         </div>
-        <button onClick={handleDelete} style={{width:'45px'}}>
-          <DeleteIcon/>
+        <button onClick={handleDelete} style={{ width: '45px' }}>
+          <DeleteIcon />
         </button>
       </div>
     </div>
   );
 }
 
-export default UserEdit;
+export default AdminEdit;

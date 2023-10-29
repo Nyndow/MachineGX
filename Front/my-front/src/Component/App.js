@@ -19,6 +19,7 @@ import User from './CRUD/GENERAL/User';
 import UserEdit from './CRUD/EDIT/UserEdit';
 import MachineAll from './CRUD/GENERAL/MachineAll';
 import AdminAdd from './CRUD/ADD/AdminAdd';
+import AdminEdit from './CRUD/EDIT/AdminEdit';
 
 function App() {
   return (
@@ -53,6 +54,7 @@ function App() {
 
           {/*CRUDEDIT*/}
           <PrivateRoute path="/edit/:entity/:id" component={EditCRUD} />
+          <PrivateAdminRoute path="/admin_edit/:idAdmin" component={AdminEdit}/>
 
           {/*MACHINELIST ELEMENT*/}
           <PrivateRoute path="/machine-page/:idMachine/:idOS" component={CardPage} />;

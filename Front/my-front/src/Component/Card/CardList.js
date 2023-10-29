@@ -138,7 +138,7 @@ const CardList = () => {
       <div className='option-list'>
         <div className='test-align'>
 
-          <div className='right-buttons'>
+          <div className='right-buttons' style={{display:'flex', justifyContent:'flex-end' }}>
           <Link to={`/machine`}>  
                   <Button size='large' variant="outlined" startIcon={<ComputerIcon />}>
                     New

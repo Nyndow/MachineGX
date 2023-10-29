@@ -27,6 +27,7 @@ def administration_list():
                 "idAdmin": admin.idAdmin,
                 "adminUsername": admin.adminUsername,
                 "adminPasswordHashed": True, 
+                "isAdmin": admin.isAdmin,
                 "numEmployee": admin.numEmployee
             }
             for admin in administrators
@@ -42,17 +43,18 @@ def administration_detail(admin_id):
     if request.method == 'GET':
         admin_data = {
             "idAdmin": admin.idAdmin, 
+            "isAdmin":admin.isAdmin,
             "adminUsername": admin.adminUsername,
-            "adminPasswordHashed": True,  
             "numEmployee": admin.numEmployee
         }
         return jsonify(admin_data)
 
     elif request.method == 'PUT':
         data = request.json
-        admin.adminUsername = data.get('adminUsername', admin.adminUsername)
+        admin.adminUsername = data.get('adminUsername')
+        admin.isAdmin = data.get('isAdmin')
         if 'adminPassword' in data:
-            adminPassword = generate_password_hash(data.get('adminPassword'))  # Update and hash the password
+            adminPassword = generate_password_hash(data.get('adminPassword'))
             admin.adminPassword = adminPassword
         admin.numEmployee = data.get('numEmployee', admin.numEmployee)
         db.session.commit()
