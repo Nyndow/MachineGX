@@ -5,6 +5,8 @@ import HomeIcon from "../Utils/icons/home.png";
 import CommandIcon from "../Utils/icons/icons8-time-machine-50.png";
 import TerminalIcon from "../Utils/icons/settings.png";
 import Logout from "../Utils/icons/exit.png";
+import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
+import IconButton from '@mui/material/IconButton';
 
 function Sidebar() {
   const history = useHistory();
@@ -39,6 +41,9 @@ function Sidebar() {
         <button onClick={() => history.push('/history')}>
           <img src={CommandIcon} alt="History" />
         </button>
+        <IconButton>
+          <SupervisorAccountIcon fontSize='large' onClick={() => history.push('/administration')}/>
+        </IconButton>
         <div className="select-dropdown">
           <select value={selectedOption} onChange={handleOptionChange}>
             <option value="">CRUD</option>

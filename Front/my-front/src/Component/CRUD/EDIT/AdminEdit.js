@@ -94,7 +94,7 @@ function AdminEdit() {
     axios
       .delete(`${apiUrl}/administration/${idAdmin}`)
       .then(() => {
-        history.goBack();
+        history.push('/administration');
       })
       .catch((error) => {
         console.error('Error deleting item:', error);

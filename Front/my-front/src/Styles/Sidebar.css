@@ -36,10 +36,6 @@
   width: 100%;
 }
 
-.sidebar button:hover{
-  background-color:#fafaf1;
-}
-
 .logout-button {
   position: absolute; 
   bottom: 5%;

@@ -20,6 +20,7 @@ import UserEdit from './CRUD/EDIT/UserEdit';
 import MachineAll from './CRUD/GENERAL/MachineAll';
 import AdminAdd from './CRUD/ADD/AdminAdd';
 import AdminEdit from './CRUD/EDIT/AdminEdit';
+import Admin from './CRUD/GENERAL/Admin';
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
 
           {/*CRUD GENERAL*/} 
           <PrivateRoute path="/machine-all" component={MachineAll}/>
+          <PrivateAdminRoute path="/administration" component={Admin}/>
           <PrivateRoute path="/crud-command" component={CRUDGeneral.CRUDCommand} />
           <PrivateRoute path="/crud-attribution" component={CRUDGeneral.CRUDAttribution} />;
           <PrivateAdminRoute path="/crud-administration" component={CRUDGeneral.CRUDAdmin} />;
