@@ -33,19 +33,15 @@ function App() {
           }
         />
         <Switch>
-        <PrivateRoute path="/users_machine/:idMachine" component={User} />
-        <PrivateRoute path="/user_edit/:idUser" component={UserEdit} />
           <PrivateRoute path="/home" component={CardList} />
-          <PrivateRoute path="/machine" component={MachineOption} />
-          <PrivateRoute path="/editMachine/:idMachine" component={MachineEdit} />
           <PrivateRoute path="/history" component={History} />
 
           {/*CRUD GENERAL*/} 
           <PrivateRoute path="/machine-all" component={MachineAll}/>
           <PrivateAdminRoute path="/administration" component={Admin}/>
+          <PrivateRoute path="/users_machine/:idMachine" component={User} />
           <PrivateRoute path="/crud-command" component={CRUDGeneral.CRUDCommand} />
           <PrivateRoute path="/crud-attribution" component={CRUDGeneral.CRUDAttribution} />;
-          <PrivateAdminRoute path="/crud-administration" component={CRUDGeneral.CRUDAdmin} />;
           <PrivateRoute path="/crud-option" component={CRUDGeneral.CRUDOption} />;
           <PrivateRoute path="/crud-os" component={CRUDGeneral.CRUDOS} />;
           
@@ -53,10 +49,13 @@ function App() {
           <PrivateRoute path="/add/:entity" component={AddAdmins} />
           <PrivateRoute path="/user_add/:idMachine" component={UserAdd}/>
           <PrivateAdminRoute path="/admin_add/" component={AdminAdd}/>
+          <PrivateRoute path="/machine" component={MachineOption} />
 
           {/*CRUDEDIT*/}
           <PrivateRoute path="/edit/:entity/:id" component={EditCRUD} />
           <PrivateAdminRoute path="/admin_edit/:idAdmin" component={AdminEdit}/>
+          <PrivateRoute path="/user_edit/:idUser" component={UserEdit} />
+          <PrivateRoute path="/editMachine/:idMachine" component={MachineEdit} />
 
           {/*MACHINELIST ELEMENT*/}
           <PrivateRoute path="/machine-page/:idMachine/:idOS" component={CardPage} />;

@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import "../Styles/Sidebar.css";
-import HomeIcon from "../Utils/icons/home.png";
-import CommandIcon from "../Utils/icons/icons8-time-machine-50.png";
 import TerminalIcon from "../Utils/icons/settings.png";
 import Logout from "../Utils/icons/exit.png";
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import IconButton from '@mui/material/IconButton';
-
+import HomeIcon from '@mui/icons-material/Home';
+import HistoryIcon from '@mui/icons-material/History';
+import DevicesIcon from '@mui/icons-material/Devices';
 function Sidebar() {
   const history = useHistory();
   const [authenticated, setAuthenticated] = useState(true);
@@ -32,22 +32,23 @@ function Sidebar() {
   return (
     authenticated ? (
       <div className="sidebar">
-        <button onClick={() => history.push('/home')}>
-          <img src={HomeIcon} alt="Home" />
-        </button>
-        <button onClick={() => history.push('/machine-all')}>
-          <img src={TerminalIcon} alt="machine" />
-        </button>
-        <button onClick={() => history.push('/history')}>
-          <img src={CommandIcon} alt="History" />
-        </button>
+          <IconButton>
+            <HomeIcon fontSize='large' onClick={() => history.push('/home')} />
+          </IconButton>
+          <IconButton>
+            <DevicesIcon fontSize='large' onClick={() => history.push('/machine-all')} />
+          </IconButton>
         <IconButton>
-          <SupervisorAccountIcon fontSize='large' onClick={() => history.push('/administration')}/>
-        </IconButton>
+            <HistoryIcon fontSize='large' onClick={() => history.push('/history')} />
+          </IconButton>
+        {localStorage.getItem('isAdmin') && (
+          <IconButton>
+            <SupervisorAccountIcon fontSize='large' onClick={() => history.push('/administration')} />
+          </IconButton>
+        )}
         <div className="select-dropdown">
           <select value={selectedOption} onChange={handleOptionChange}>
             <option value="">CRUD</option>
-            {localStorage.getItem('isAdmin') && <option value="crud-administration">Administration</option>}
             <option value="crud-command">Command</option>
             <option value="crud-option">Option</option>
             <option value="crud-os">OS</option>

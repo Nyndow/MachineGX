@@ -3,11 +3,13 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox'; 
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 
 export default function AdminAdd() {
   const apiUrl = process.env.REACT_APP_API_URL;
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false); 
+  const history = useHistory();
   const [userFormData, setUserFormData] = useState({
     numEmployee: '',
     adminUsername: '',
@@ -36,6 +38,7 @@ export default function AdminAdd() {
       axios
         .post(`${apiUrl}/administration/`, dataToSend)
         .then((response) => {
+          history.push('/administration')
         })
         .catch((error) => {
           console.error('Error sending data:', error);
