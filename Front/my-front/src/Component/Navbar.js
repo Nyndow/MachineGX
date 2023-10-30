@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import "../Styles/Sidebar.css";
-import TerminalIcon from "../Utils/icons/settings.png";
-import Logout from "../Utils/icons/exit.png";
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import IconButton from '@mui/material/IconButton';
 import HomeIcon from '@mui/icons-material/Home';
 import HistoryIcon from '@mui/icons-material/History';
 import DevicesIcon from '@mui/icons-material/Devices';
+import LogoutIcon from '@mui/icons-material/Logout';
+import KeyboardIcon from '@mui/icons-material/Keyboard';
+
 function Sidebar() {
   const history = useHistory();
   const [authenticated, setAuthenticated] = useState(true);
@@ -55,9 +56,9 @@ function Sidebar() {
             <option value="crud-attribution">Attribution</option>
           </select>
         </div>
-        <button className="logout-button" onClick={handleLogout}>
-          <img src={Logout} alt="machine" />
-        </button>
+        <IconButton>
+            <LogoutIcon className='logout-button' fontSize='large' onClick={handleLogout} />
+          </IconButton>
       </div>
     ) : null
   );
