@@ -1,0 +1,9 @@
+.option-container{
+    width: 40%;
+    height: 800px;
+    overflow: auto;
+    border: 1px solid #fff;
+    background-color: #110f18;
+    margin-left: 5%;
+    border-radius: 5px;
+}

@@ -6,12 +6,12 @@ class Command(db.Model):
     commandDescription = db.Column(db.String(100), nullable=False)
     commandName = db.Column(db.String(30), nullable=False)
     commandComment = db.Column(db.String(200), nullable=True)
-    baseOS = db.Column(db.String(10), nullable=False)
+    idBaseOsys = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, commandDescription, commandName,commandComment, baseOS):
+    def __init__(self, commandDescription, commandName,commandComment, idBaseOsys):
         self.commandDescription = commandDescription
         self.commandName = commandName
         self.commandComment = commandComment
-        self.baseOS = baseOS
+        self.idBaseOsys = idBaseOsys
 
 

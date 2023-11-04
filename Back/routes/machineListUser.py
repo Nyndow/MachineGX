@@ -6,6 +6,7 @@ from models.user import User
 from models.attribution import Attribution
 from datetime import datetime
 from .ssh_manager import ssh_clients
+from models.imgOS import ImgOsys
 
 machine_user_list = Blueprint('machine_user_list', __name__)
 
@@ -64,27 +65,30 @@ def machineAll():
     try:
         query = db.session.query(
             Machine.machineName,
-            OSys.imgOS,
+            ImgOsys.imgName,
             Machine.idMachine,
             Machine.idOS,
             User.userUsername,
             User.idUser,
             User.numEmployee
-        ).join(
-            OSys,
-            Machine.idOS == OSys.idOS
-        ).join(
-            Attribution,
-            Attribution.idMachine == Machine.idMachine
-        ).join(
-            User,
-            User.idUser == Attribution.idUser
-        ).distinct().all()
+            ).join(
+                OSys,
+                OSys.idOS == Machine.idOS
+            ).join(
+                ImgOsys,
+                ImgOsys.idImg == OSys.idImg
+            ).join(
+                Attribution,
+                Attribution.idMachine == Machine.idMachine
+            ).join(
+                User,
+                User.idUser == Attribution.idUser
+            ).distinct().all()
 
         machine_all = []
         for (
             machineName,
-            imgOS,
+            imgName,
             idMachine,
             idOS,
             userUsername,
@@ -93,7 +97,7 @@ def machineAll():
         ) in query:
             machine_all.append({
                 'machineName': machineName,
-                'imgOS': imgOS,
+                'imgOS': imgName,
                 'idMachine': idMachine,
                 'idOS': idOS,
                 'userUsername': userUsername,

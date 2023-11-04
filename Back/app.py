@@ -9,6 +9,7 @@ from routes.machineBP import machine_bp
 from routes.optionBP import option_bp
 from routes.userBP import user_bp
 from routes.osBP import oSys_bp
+from routes.baseOSBP import baseOsys_bp
 from routes.ssh import ssh_bp
 from routes.machineListUser import machine_user_list
 from routes.machineUser import machine_user
@@ -29,6 +30,7 @@ app.register_blueprint(machine_bp)
 app.register_blueprint(option_bp)
 app.register_blueprint(user_bp)
 app.register_blueprint(oSys_bp)
+app.register_blueprint(baseOsys_bp)
 app.register_blueprint(ssh_bp)
 app.register_blueprint(machine_user_list)
 app.register_blueprint(machine_user)

@@ -25,7 +25,7 @@ const AddAdmin = () => {
       break;
   
     case 'command':
-      columns = ['commandName','baseOS', 'commandDescription', 'commandComment'];
+      columns = ['commandName','idBaseOsys', 'commandDescription', 'commandComment'];
       break;
 
     case 'option':
