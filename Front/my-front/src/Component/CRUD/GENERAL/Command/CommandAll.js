@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import '../../../../Styles/CommandAll.css';
-import Option from '../Option';
+import Option from './Option';
 import ClearIcon from '@mui/icons-material/Clear';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
@@ -59,6 +59,10 @@ export default function CommandAll() {
   const openEditDialog = (commandId) => {
     setSelectedCommandId(commandId);
     setEditDialogOpen(true);
+  };
+
+  const chooseCommand = (commandId) => {
+    setSelectedCommandId(commandId);
   };
 
   const closeAddDialog = () => {
@@ -147,7 +151,7 @@ export default function CommandAll() {
                 {data
                   .filter((item) => item.commandName.toLowerCase().includes(searchQuery.toLowerCase()))
                   .map((rowData, index) => (
-                    <tr key={index} className={index % 2 === 0 ? 'crud-table-row-even' : 'crud-table-row-odd'}>
+                    <tr onClick={() => chooseCommand(rowData.idCommand)} key={index} className={index % 2 === 0 ? 'crud-table-row-even' : 'crud-table-row-odd'}>
                       <td>{rowData.commandName}</td>
                       <td>{rowData.commandDescription}</td>
                       <td>
@@ -171,7 +175,9 @@ export default function CommandAll() {
             </table>
           </div>
         </div>
-        <Option />
+        {selectedCommandId &&(<Option 
+      idCommand = {selectedCommandId}
+      />)}
       </div>
       {isAddDialogOpen && (
         <AddCommand
