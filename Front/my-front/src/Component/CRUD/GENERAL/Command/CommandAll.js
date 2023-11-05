@@ -27,7 +27,8 @@ export default function CommandAll() {
   };
   const [formData, setFormData] = useState(initialValue);
   const [baseOSList, setBaseOSList] = useState([]);
-  const [selectedCommandId, setSelectedCommandId] = useState(null);
+  const [selectedRowData, setSelectedRowData] = useState(null);
+
 
   useEffect(() => {
     fetchData();
@@ -57,12 +58,13 @@ export default function CommandAll() {
   };
 
   const openEditDialog = (commandId) => {
-    setSelectedCommandId(commandId);
+    setSelectedRowData(commandId);
     setEditDialogOpen(true);
   };
 
   const chooseCommand = (commandId) => {
-    setSelectedCommandId(commandId);
+    const selectedRowData = data.find((item) => item.idCommand === commandId);
+    setSelectedRowData({commandName:selectedRowData.commandName, idCommand: selectedRowData.idCommand, commandComment: selectedRowData.commandComment });
   };
 
   const closeAddDialog = () => {
@@ -71,7 +73,18 @@ export default function CommandAll() {
 
   const closeEditDialog = () => {
     setEditDialogOpen(false);
-    setSelectedCommandId(null);
+    setSelectedRowData(null);
+  };
+
+  const handleDeleteCommand = (commandId) => {
+    axios
+      .delete(`${apiUrl}/command/${commandId}`)
+      .then(() => {
+        setData((prevData) => prevData.filter((item) => item.idCommand !== commandId));
+      })
+      .catch((error) => {
+        console.error('Error deleting command:', error);
+      });
   };
 
   const handleUserInputChange = useCallback((event) => {
@@ -175,8 +188,8 @@ export default function CommandAll() {
             </table>
           </div>
         </div>
-        {selectedCommandId &&(<Option 
-      idCommand = {selectedCommandId}
+        {selectedRowData &&(<Option 
+      rowCommand = {selectedRowData}
       />)}
       </div>
       {isAddDialogOpen && (
@@ -195,7 +208,7 @@ export default function CommandAll() {
           apiUrl={apiUrl}
           baseOSList={baseOSList}
           closeAddDialog={closeEditDialog}
-          idCommand =  {selectedCommandId}
+          idCommand =  {selectedRowData.idCommand}
           refreshData={fetchData}
         />
       )}
