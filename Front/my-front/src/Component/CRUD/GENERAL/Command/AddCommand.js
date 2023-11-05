@@ -15,7 +15,7 @@ function AddCommand({baseOSList, handleNewCommandChange, handleUserInputChange, 
         <ClearIcon onClick={closeAddDialog} className='close-icon' /> 
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
           <TextField
-            id="numEmp-basic"
+            id="command-add-basic"
             label="Command"
             variant="standard"
             name="commandName"
@@ -27,7 +27,7 @@ function AddCommand({baseOSList, handleNewCommandChange, handleUserInputChange, 
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
           <TextField
-            id="userUsername-basic"
+            id="command-desc-basic"
             label="Description"
             variant="standard"
             name="commandDescription"
@@ -39,7 +39,7 @@ function AddCommand({baseOSList, handleNewCommandChange, handleUserInputChange, 
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
           <TextField
-            id="sfssfs-basic"
+            id="command-comment-basic"
             label="Comment"
             variant="standard"
             name="commandComment"
@@ -52,7 +52,7 @@ function AddCommand({baseOSList, handleNewCommandChange, handleUserInputChange, 
           />
         </div>
         <FormControl component="fieldset" style={{ minWidth: '85%' }}>
-          <FormLabel id="demo-row-radio-buttons-group-label" style={{ display: 'flex' }}>
+          <FormLabel id="form-os-command" style={{ display: 'flex' }}>
             Select Base OS
           </FormLabel>
           <RadioGroup

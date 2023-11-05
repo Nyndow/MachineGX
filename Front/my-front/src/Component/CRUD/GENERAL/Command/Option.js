@@ -9,11 +9,21 @@ import SearchIcon from '@mui/icons-material/Search';
 import Button from '@mui/material/Button';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import AddOption from './AddOption';
 
 export default function Option({ rowCommand }) {
   const [data, setData] = useState([]);
   const apiUrl = process.env.REACT_APP_API_URL;
   const [searchQuery, setSearchQuery] = useState('');
+  const initialValue = {
+    commandName: '',
+    commandDescription: '',
+    commandComment: '',
+    idBaseOsys: '',
+  };
+  const [formData, setFormData] = useState(initialValue);
+  const [isAddDialogOpen, setAddDialogOpen] = useState(false);
+  const [isEditDialogOpen, setEditDialogOpen] = useState(false);
 
   useEffect(() => {
     if (rowCommand) {
@@ -34,12 +44,36 @@ export default function Option({ rowCommand }) {
     axios
       .delete(`${apiUrl}/option/${idOption}`)
       .then(() => {
-        // Handle successful deletion
       })
       .catch(() => {
-        // Handle error message
       });
   };
+
+  const handleNewCommandChange = useCallback(() => {
+    const dataToSend = {
+      ...formData,
+      idCommand: rowCommand.idCommand
+    };
+    axios
+      .post(`${apiUrl}/option/`, dataToSend)
+      .then((response) => {
+        setFormData(initialValue);
+        closeAddDialog();
+        fetchData(); // You are missing the definition of this function.
+      })
+      .catch((error) => {
+        console.error('Error sending data:', error);
+      });
+  }, [formData, rowCommand]);
+  
+
+  const handleUserInputChange = useCallback((event) => {
+    const { name, value } = event.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  }, []);
 
   const handleClearSearch = () => {
     setSearchQuery('');
@@ -47,6 +81,14 @@ export default function Option({ rowCommand }) {
 
   const handleSearchInputChange = (e) => {
     setSearchQuery(e.target.value);
+  };
+
+  const closeAddDialog = () => {
+    setAddDialogOpen(false);
+    setFormData([])
+  };
+  const openAddDialog = () => {
+    setAddDialogOpen(true);
   };
 
   return (
@@ -57,7 +99,7 @@ export default function Option({ rowCommand }) {
       </div>
       <hr></hr>
       <TextField
-        id="input-with-icon-textfield"
+        id="input-for-search-option"
         variant="outlined"
         type="text"
         style={{ backgroundColor: '#110f18', width: '100%' }}
@@ -80,7 +122,10 @@ export default function Option({ rowCommand }) {
           ),
         }}
       />
-      {rowCommand ? (
+          <Button style={{ justifyContent: 'flex-end' }} variant="outlined" color="success" onClick={openAddDialog}>
+            New
+          </Button>
+      {data.length > 0 ? (
         <div className="table-wrapper" style={{ marginTop: '20px' }}>
           <div></div>
           <table className="machine-table">
@@ -133,6 +178,11 @@ export default function Option({ rowCommand }) {
           <p style={{ textAlign: 'center' }}>Click on the history you want to check</p>
         </div>
       )}
+      {isAddDialogOpen && (
+        <AddOption
+          idCommand={rowCommand.idCommand}
+          closeAddDialog={closeAddDialog}
+        />)}
     </div>
   );
 }

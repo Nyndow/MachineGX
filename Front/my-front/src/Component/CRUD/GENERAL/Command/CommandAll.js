@@ -73,7 +73,6 @@ export default function CommandAll() {
 
   const closeEditDialog = () => {
     setEditDialogOpen(false);
-    setSelectedRowData(null);
   };
 
   const handleDeleteCommand = (commandId) => {
@@ -124,7 +123,7 @@ export default function CommandAll() {
       <div style={{ display: 'flex' }}>
         <div className="commands-container">
           <TextField
-            id="input-with-icon-textfield"
+            id="input-for-command-search"
             variant="outlined"
             type="text"
             style={{ backgroundColor: '#110f18', width: '100%' }}
