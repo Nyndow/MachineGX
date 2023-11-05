@@ -24,6 +24,7 @@ export default function Option({ rowCommand }) {
   const [formData, setFormData] = useState(initialValue);
   const [isAddDialogOpen, setAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setEditDialogOpen] = useState(false);
+  const [selectedRowData, setSelectedRowData] = useState(null);
 
   useEffect(() => {
     if (rowCommand) {
@@ -49,31 +50,10 @@ export default function Option({ rowCommand }) {
       });
   };
 
-  const handleNewCommandChange = useCallback(() => {
-    const dataToSend = {
-      ...formData,
-      idCommand: rowCommand.idCommand
-    };
-    axios
-      .post(`${apiUrl}/option/`, dataToSend)
-      .then((response) => {
-        setFormData(initialValue);
-        closeAddDialog();
-        fetchData(); // You are missing the definition of this function.
-      })
-      .catch((error) => {
-        console.error('Error sending data:', error);
-      });
-  }, [formData, rowCommand]);
-  
-
-  const handleUserInputChange = useCallback((event) => {
-    const { name, value } = event.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  }, []);
+  const openEditDialog = (idOption) => {
+    setSelectedRowData(idOption);
+    setEditDialogOpen(true);
+  };
 
   const handleClearSearch = () => {
     setSearchQuery('');
@@ -126,7 +106,7 @@ export default function Option({ rowCommand }) {
             New
           </Button>
       {data.length > 0 ? (
-        <div className="table-wrapper" style={{ marginTop: '20px' }}>
+        <div className="table-wrapper" style={{ marginTop: '20px',backgroundColor:'#110f18' }}>
           <div></div>
           <table className="machine-table">
             <thead style={{ backgroundColor: '#110f18' }}>
@@ -138,7 +118,7 @@ export default function Option({ rowCommand }) {
                 <th></th>
               </tr>
             </thead>
-            <tbody>
+            <tbody style={{backgroundColor: '#110f18'}}>
               {data
                 .filter((item) =>
                   item.optionSyntax.toLowerCase().includes(searchQuery.toLowerCase())
@@ -162,7 +142,7 @@ export default function Option({ rowCommand }) {
                       <Button variant="outlined" onClick={() => openEditDialog(rowData.idOption)}>
                         <EditIcon />
                       </Button>
-                      <Button variant="outlined" onClick={() => handleDeleteOption(rowData.idOption)}>
+                      <Button variant="outlined" color='secondary'  onClick={() => handleDeleteOption(rowData.idOption)}>
                         <DeleteIcon />
                       </Button>
                     </td>

@@ -66,8 +66,6 @@ function AddOption({closeAddDialog, idCommand}) {
             style={{ marginBottom: '10px', minWidth: '85%' }}
             required
           />
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
           <TextField
             id="description-basic"
             label="Description"
@@ -78,8 +76,6 @@ function AddOption({closeAddDialog, idCommand}) {
             style={{ marginBottom: '10px', minWidth: '85%' }}
             required
           />
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
           <TextField
             id="CommentOption-basic"
             label="Comment"
@@ -90,9 +86,7 @@ function AddOption({closeAddDialog, idCommand}) {
             value={formData.optionComment}
             onChange={handleUserInputChange}
             style={{ marginBottom: '10px', minWidth: '85%' }}
-            required
           />
-        </div>
         <label>
             <Checkbox
               checked={formData.targetIn}
@@ -101,6 +95,7 @@ function AddOption({closeAddDialog, idCommand}) {
             />
             Target
           </label>
+          </div>
         <Button style={{ display: 'flex', justifyContent: 'flex-end' }} variant='outlined' onClick={handleNewCommandChange}>Save</Button>
       </div>
     </div>

@@ -50,9 +50,7 @@ function App() {
           <PrivateRoute path="/osys" component={OS} />
           <PrivateRoute path="/base_osys" component={BaseOS} />
           <PrivateRoute path="/command" component={CommandAll} />
-          <PrivateRoute path="/crud-command" component={CRUDGeneral.CRUDCommand} />
-          <PrivateRoute path="/crud-attribution" component={CRUDGeneral.CRUDAttribution} />;
-          <PrivateRoute path="/crud-option" component={CRUDGeneral.CRUDOption} />;
+          <PrivateRoute path="/crud-attribution" component={CRUDGeneral.CRUDAttribution} />
           
           {/*CRUDADD*/}
           <PrivateRoute path="/add/:entity" component={AddAdmins} />

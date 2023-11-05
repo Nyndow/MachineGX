@@ -149,8 +149,8 @@ export default function CommandAll() {
           <Button style={{ justifyContent: 'flex-end' }} variant="outlined" color="success" onClick={openAddDialog}>
             New
           </Button>
-          <div className="table-wrapper" style={{ marginTop: '20px' }}>
-            <table className="machine-table">
+          <div className="table-wrapper" style={{ marginTop: '20px', backgroundColor:'#110f18' }}>
+            <table className="machine-table" style={{border:'none'}}>
               <thead style={{ backgroundColor: '#110f18' }}>
                 <tr>
                   <th>Command</th>
@@ -159,7 +159,7 @@ export default function CommandAll() {
                   <th></th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody style={{ backgroundColor: '#110f18' }}>
                 {data
                   .filter((item) => item.commandName.toLowerCase().includes(searchQuery.toLowerCase()))
                   .map((rowData, index) => (
@@ -177,7 +177,7 @@ export default function CommandAll() {
                         <Button variant="outlined" onClick={() => openEditDialog(rowData.idCommand)}>
                           <EditIcon />
                         </Button>
-                        <Button variant="outlined" onClick={() => handleDeleteCommand(rowData.idCommand)}>
+                        <Button color='secondary' variant="outlined" onClick={() => handleDeleteCommand(rowData.idCommand)}>
                           <DeleteIcon />
                         </Button>
                       </td>

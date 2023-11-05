@@ -47,7 +47,7 @@ function Sidebar() {
         <button onClick={() => history.push('/command')}>
           <TerminalIcon fontSize='large' />
         </button>)}
-        <button onClick={() => history.push('/history')}>
+        <button onClick={() => history.push('/crud-attribution')}>
           <AttributionIcon fontSize='large' />
         </button>
         <button onClick={() => history.push('/osys')}>
@@ -58,15 +58,6 @@ function Sidebar() {
             <SupervisorAccountIcon fontSize='large' />
           </button>
         )}
-
-        <div className="select-dropdown">
-          <select value={selectedOption} onChange={handleOptionChange}>
-            <option value="">CRUD</option>
-            <option value="crud-command">Command</option>
-            <option value="crud-option">Option</option>
-            <option value="crud-attribution">Attribution</option>
-          </select>
-        </div>
         <button>
           <LogoutIcon className='logout-button' fontSize='large' onClick={handleLogout} />
         </button>
