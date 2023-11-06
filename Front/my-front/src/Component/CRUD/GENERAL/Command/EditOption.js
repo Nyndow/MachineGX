@@ -5,37 +5,53 @@ import ClearIcon from '@mui/icons-material/Clear';
 import axios from 'axios';
 import Checkbox from '@mui/material/Checkbox';
 
-function EditOption({apiUrl, closeAddDialog,refreshData, idCommand }) {
+function EditOption({apiUrl, closeAddDialog, rowOption }) {
   const [formData, setFormData] = useState({
+    idOption:'',
     optionSyntax: '',  
     optionDescription: '',
     optionComment: '',
-    targetIn: false,
+    targetIn: false
   });
 
+
+  console.log(formData)
+
   const handleUserInputChange = useCallback((event) => {
-    const { name, value } = event.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    const { name, value, type, checked } = event.target;
+  
+    if (type === 'checkbox') {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: checked,
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
   }, []);
 
-useEffect(() => {
-axios.get(`${apiUrl}/command/${idCommand}`)
-.then((response)=>{
-  setFormData(response.data)
-})
-  },[idCommand]);
-
+  useEffect(() => {
+    if (rowOption) {
+      setFormData({
+        ...rowOption,
+        idOption: rowOption.idOption || '',
+        optionSyntax: rowOption.optionSyntax || '',
+        optionDescription: rowOption.optionDescription || '',
+        optionComment: rowOption.optionComment || '',
+        targetIn: rowOption.targetIn || false
+      });
+    }
+  }, [rowOption]);
   const handleUpdateCommand = () => {
     axios
-      .put(`${apiUrl}/command/${idCommand}`, formData)
+      .put(`${apiUrl}/option/${rowOption.idOption}`, formData)
       .then(() => {
         closeAddDialog();
       })
       .then(() => {
-        refreshData();
       })
       .catch((error) => {
         console.error('Error updating command:', error);
@@ -52,8 +68,8 @@ axios.get(`${apiUrl}/command/${idCommand}`)
             id="numEmp-basic"
             label="Command"
             variant="standard"
-            name="commandName"
-            value={formData.commandName}
+            name="optionSyntax"
+            value={formData.optionSyntax}
             onChange={handleUserInputChange} 
             style={{ marginBottom: '10px', minWidth: '85%' }}
             required
@@ -64,8 +80,8 @@ axios.get(`${apiUrl}/command/${idCommand}`)
             id="userUsername-basic"
             label="Description"
             variant="standard"
-            name="commandDescription"
-            value={formData.commandDescription}
+            name="optionDescription"
+            value={formData.optionDescription}
             onChange={handleUserInputChange} 
             style={{ marginBottom: '10px', minWidth: '85%' }}
             required
@@ -76,15 +92,15 @@ axios.get(`${apiUrl}/command/${idCommand}`)
             id="sfssfs-basic"
             label="Comment"
             variant="standard"
-            name="commandComment"
+            name="optionComment"
             multiline
             rows={4}
-            value={formData.commandComment}
+            value={formData.optionComment}
             onChange={handleUserInputChange} 
             style={{ marginBottom: '10px', minWidth: '85%' }}
             required
           />
-                  <label>
+            <label>
             <Checkbox
               checked={formData.targetIn}
               onChange={handleUserInputChange}

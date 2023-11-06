@@ -10,6 +10,7 @@ import Button from '@mui/material/Button';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddOption from './AddOption';
+import EditOption from './EditOption';
 
 export default function Option({ rowCommand }) {
   const [data, setData] = useState([]);
@@ -21,25 +22,33 @@ export default function Option({ rowCommand }) {
     commandComment: '',
     idBaseOsys: '',
   };
-  const [formData, setFormData] = useState(initialValue);
   const [isAddDialogOpen, setAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setEditDialogOpen] = useState(false);
   const [selectedRowData, setSelectedRowData] = useState(null);
 
   useEffect(() => {
     if (rowCommand) {
-      axios
-        .get(`${apiUrl}/optionByCmd/${rowCommand.idCommand}`)
-        .then((response) => {
-          setData(response.data);
-        })
-        .catch((error) => {
-          console.log(error);
-          // Set data to an empty array when the request fails
-          setData([]);
-        });
+      fetchData(rowCommand.idCommand);
     }
   }, [rowCommand]);
+  
+  const fetchData = (commandId) => {
+    axios
+      .get(`${apiUrl}/optionByCmd/${commandId}`)
+      .then((response) => {
+        setData(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        setData([]);
+      });
+  };
+  
+
+  const chooseCommand = (idOption) => {
+    const selectedRowData = data.find((item) => item.idOption === idOption);
+    setSelectedRowData({optionSyntax:selectedRowData.optionSyntax,targetIn:selectedRowData.targetIn, idOption: selectedRowData.idOption,optionDescription: selectedRowData.optionDescription, optionComment: selectedRowData.optionComment });
+  };
 
   const handleDeleteOption = (idOption) => {
     axios
@@ -50,11 +59,6 @@ export default function Option({ rowCommand }) {
       });
   };
 
-  const openEditDialog = (idOption) => {
-    setSelectedRowData(idOption);
-    setEditDialogOpen(true);
-  };
-
   const handleClearSearch = () => {
     setSearchQuery('');
   };
@@ -63,13 +67,20 @@ export default function Option({ rowCommand }) {
     setSearchQuery(e.target.value);
   };
 
-  const closeAddDialog = () => {
-    setAddDialogOpen(false);
-    setFormData([])
-  };
   const openAddDialog = () => {
     setAddDialogOpen(true);
   };
+
+  const openEditDialog = (commandId) => {
+    setSelectedRowData(commandId);
+    setEditDialogOpen(true);
+  };
+
+  const closeEditDialog = () => {
+    setEditDialogOpen(false);
+    fetchData;
+  };
+
 
   return (
     <div className='option-container'>
@@ -77,6 +88,8 @@ export default function Option({ rowCommand }) {
         Command: {rowCommand.commandName}
         Note: {rowCommand.commandComment}
       </div>
+      {data.length > 0 ? (
+        <div>
       <hr></hr>
       <TextField
         id="input-for-search-option"
@@ -105,11 +118,10 @@ export default function Option({ rowCommand }) {
           <Button style={{ justifyContent: 'flex-end' }} variant="outlined" color="success" onClick={openAddDialog}>
             New
           </Button>
-      {data.length > 0 ? (
         <div className="table-wrapper" style={{ marginTop: '20px',backgroundColor:'#110f18' }}>
           <div></div>
-          <table className="machine-table">
-            <thead style={{ backgroundColor: '#110f18' }}>
+          <table className="machine-table" style={{border:'none', borderRadius:'0%'}}>
+            <thead>
               <tr>
                 <th>Option</th>
                 <th>Description</th>
@@ -125,6 +137,8 @@ export default function Option({ rowCommand }) {
                 )
                 .map((rowData, index) => (
                   <tr
+                  onClick={() => chooseCommand(rowData.idOption)}
+                  style={{ backgroundColor: '#110f18' }}
                     key={index}
                     className={index % 2 === 0 ? 'crud-table-row-even' : 'crud-table-row-odd'}
                   >
@@ -150,12 +164,14 @@ export default function Option({ rowCommand }) {
                 ))}
             </tbody>
           </table>
-        </div>
+        </div></div>
       ) : (
-        <div className='no-select'>
-          <p style={{ marginLeft: '25%' }}>No data selected</p>
+        <div>
           <hr></hr>
-          <p style={{ textAlign: 'center' }}>Click on the history you want to check</p>
+          <p style={{ textAlign: 'center' }}>This command doesn't not have any option</p>
+          <Button style={{ justifyContent: 'flex-end' }} size='large' variant="outlined" color="success" onClick={openAddDialog}>
+            New
+          </Button>
         </div>
       )}
       {isAddDialogOpen && (
@@ -163,6 +179,14 @@ export default function Option({ rowCommand }) {
           idCommand={rowCommand.idCommand}
           closeAddDialog={closeAddDialog}
         />)}
+
+{isEditDialogOpen && (
+        <EditOption
+          apiUrl={apiUrl}
+          closeAddDialog={closeEditDialog}
+          rowOption =  {selectedRowData}
+        />
+      )}
     </div>
   );
 }

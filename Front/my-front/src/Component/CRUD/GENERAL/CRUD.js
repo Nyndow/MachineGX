@@ -162,7 +162,7 @@ function CRUD(props) {
               </thead>
               <tbody>
               {dataToDisplay.map((rowData, index) => (
-              <tr key={index} className={index % 2 === 0 ? 'crud-table-row-even' : null}>
+              <tr key={index}>
                 <td>
                   <input
                     type="checkbox"

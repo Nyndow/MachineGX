@@ -150,8 +150,8 @@ export default function CommandAll() {
             New
           </Button>
           <div className="table-wrapper" style={{ marginTop: '20px', backgroundColor:'#110f18' }}>
-            <table className="machine-table" style={{border:'none'}}>
-              <thead style={{ backgroundColor: '#110f18' }}>
+            <table className="machine-table" style={{border:'none', borderRadius:'0%'}}>
+              <thead >
                 <tr>
                   <th>Command</th>
                   <th>Description</th>
@@ -160,10 +160,12 @@ export default function CommandAll() {
                 </tr>
               </thead>
               <tbody style={{ backgroundColor: '#110f18' }}>
-                {data
-                  .filter((item) => item.commandName.toLowerCase().includes(searchQuery.toLowerCase()))
+                {data.filter((item) => 
+                      item.commandName.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                      item.commandDescription.toLowerCase().includes(searchQuery.toLowerCase())
+                    )
                   .map((rowData, index) => (
-                    <tr onClick={() => chooseCommand(rowData.idCommand)} key={index} className={index % 2 === 0 ? 'crud-table-row-even' : 'crud-table-row-odd'}>
+                    <tr onClick={() => chooseCommand(rowData.idCommand)} key={index} style={{ backgroundColor: '#110f18' }}  >
                       <td>{rowData.commandName}</td>
                       <td>{rowData.commandDescription}</td>
                       <td>
