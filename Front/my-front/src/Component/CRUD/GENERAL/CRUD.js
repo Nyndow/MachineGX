@@ -10,21 +10,21 @@ function CRUD(props) {
   const [data, setData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(5);
+  const [itemsPerPage] = useState(20);
   const [selectedItems, setSelectedItems] = useState(new Set());
   const [selectAll, setSelectAll] = useState(false);
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    const apiUrl = process.env.REACT_APP_API_URL;
     axios
-      .get(`${apiUrl}/${props.entity}`)
+      .get(`${apiUrl}/attribution`)
       .then((response) => {
         setData(response.data);
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
-  }, [props.entity]);
+  }, []);
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
@@ -34,12 +34,12 @@ function CRUD(props) {
     setSearchQuery('');
   };
 
-  const handleItemSelect = (rowData) => {
+  const handleItemSelect = (idAttribution) => {
     const newSelectedItems = new Set(selectedItems);
-    if (newSelectedItems.has(rowData[props.idField])) {
-      newSelectedItems.delete(rowData[props.idField]);
+    if (newSelectedItems.has(idAttribution)) {
+      newSelectedItems.delete(idAttribution);
     } else {
-      newSelectedItems.add(rowData[props.idField]);
+      newSelectedItems.add(idAttribution);
     }
     setSelectedItems(newSelectedItems);
   };
@@ -54,7 +54,7 @@ function CRUD(props) {
           value.toString().toLowerCase().includes(searchQuery.toLowerCase())
         )
       );
-      const allItemIds = filteredData.map((item) => item[props.idField]);
+      const allItemIds = filteredData.map((item) => item.idAttribution);
       setSelectedItems(new Set(allItemIds));
       setSelectAll(true);
     }
@@ -64,12 +64,11 @@ function CRUD(props) {
     setSearchQuery(e.target.value);
   };
 
-  const handleDelete = (rowData) => {
-    const apiUrl = process.env.REACT_APP_API_URL;
+  const handleDelete = (idAttribution) => {
     axios
-      .delete(`${apiUrl}/${props.entity}/${rowData[props.idField]}`)
+      .delete(`${apiUrl}/attribution/${idAttribution}`)
       .then((response) => {
-        const updatedData = data.filter((item) => item[props.idField] !== rowData[props.idField]);
+        const updatedData = data.filter((item) => item.idAttribution !== idAttribution);
         setData(updatedData);
         console.log('Item deleted successfully:', response.data);
       })
@@ -79,15 +78,14 @@ function CRUD(props) {
   };
 
   const handleDeleteSelected = () => {
-    const apiUrl = process.env.REACT_APP_API_URL;
     const selectedIds = Array.from(selectedItems);
     Promise.all(
       selectedIds.map((itemId) =>
-        axios.delete(`${apiUrl}/${props.entity}/${itemId}`)
+        axios.delete(`${apiUrl}/attribution/${itemId}`)
       )
     )
       .then((responses) => {
-        const updatedData = data.filter((item) => !selectedIds.includes(item[props.idField]));
+        const updatedData = data.filter((item) => !selectedIds.includes(item.idAttribution));
         setData(updatedData);
         setSelectedItems(new Set());
         console.log('Selected items deleted successfully:', responses);
@@ -96,8 +94,6 @@ function CRUD(props) {
         console.error('Error deleting selected items:', error);
       });
   };
-
-  const { columns } = props;
 
   const filteredData = data.filter((rowData) =>
     Object.values(rowData).some((value) =>
@@ -136,7 +132,7 @@ function CRUD(props) {
             <div className="add-button-container">
               <FontAwesomeIcon icon={faTrash} className="delete-icon" onClick={handleDeleteSelected} />
               <div className="add-button">
-                <Link to={`/add/${props.entity}`}>
+                <Link to={'/attribution_add'}>
                   <button className="add-button-icon">
                     <FontAwesomeIcon icon={faPlusCircle} />
                   </button>
@@ -154,9 +150,11 @@ function CRUD(props) {
                       className="select-all-checkbox"
                     />
                   </th>
-                  {columns.map((column) => (
-                    <th key={column}>{column}</th>
-                  ))}
+                  <th>Machine</th>
+                  <th>User</th>
+                  <th>Employee</th>
+                  <th>Start date</th>
+                  <th>End date</th>
                   <th></th>
                 </tr>
               </thead>
@@ -166,31 +164,27 @@ function CRUD(props) {
                 <td>
                   <input
                     type="checkbox"
-                    checked={selectedItems.has(rowData[props.idField])}
-                    onChange={() => handleItemSelect(rowData)}
+                    checked={selectedItems.has(rowData.idAttribution)}
+                    onChange={() => handleItemSelect(rowData.idAttribution)}
                   />
                 </td>
-                {columns.map((column) => (
-                  <td key={column}>
-                    {column === 'targetIn' ? (
-                      rowData[column] ? 'True' : 'False'
-                    ) : (
-                      rowData[column]
-                    )}
-                  </td>
-                ))}
+                <td>{rowData.machineName}</td>
+                <td>{rowData.userUsername}</td>
+                <td>{rowData.numEmployee}</td>
+                <td>{rowData.dateDebut}</td>
+                <td>{rowData.dateFin}</td>
                     <td>
-                      {selectedItems.has(rowData[props.idField]) ? (
+                      {selectedItems.has(rowData.idAttribution) ? (
                         <>
                         </>
                       ) : (
                         <>
-                          <Link to={`/edit/${props.entity}/${rowData[props.idField]}`} className="custom-link-button">
+                          <Link to={`/edit/attribution/${rowData.idAttribution}`} className="custom-link-button">
                             <button className="edit-button">
                               <FontAwesomeIcon icon={faEdit} />
                             </button>
                           </Link>
-                          <button className="delete-button" onClick={() => handleDelete(rowData)}>
+                          <button className="delete-button" onClick={() => handleDelete(rowData.idAttribution)}>
                             <FontAwesomeIcon icon={faTrash} />
                           </button>
                         </>

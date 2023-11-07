@@ -5,7 +5,7 @@ from models.attribution import Attribution
 
 user_bp = Blueprint('user', __name__)
 
-@user_bp.route('/user/', methods=['POST'])
+@user_bp.route('/user/', methods=['POST', 'GET'])
 def create_user():
     if request.method == 'POST':
         data = request.json
@@ -22,13 +22,12 @@ def create_user():
         return jsonify({"message": "User created successfully"})
 
 
-    elif request.method == 'GET':
+    if request.method == 'GET':
         users = User.query.all()
         user_list = [
             {
                 "idUser": user.idUser,
                 "userUsername": user.userUsername,
-                "userPassword": user.userPassword,
                 "numEmployee": user.numEmployee
             }
             for user in users

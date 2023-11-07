@@ -12,6 +12,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Button from '@mui/material/Button';
 import AddCommand from './AddCommand';
 import EditCommand from './EditCommand';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 export default function CommandAll() {
   const [data, setData] = useState([]);
@@ -146,10 +147,12 @@ export default function CommandAll() {
               ),
             }}
           />
-          <Button style={{ justifyContent: 'flex-end' }} variant="outlined" color="success" onClick={openAddDialog}>
-            New
+          <div className="table-wrapper" style={{ backgroundColor:'#110f18' }}>
+            <div style={{display:'flex', justifyContent: 'flex-end' }}>
+          <Button variant="outlined" size='large' color="success" onClick={openAddDialog} style={{marginBottom:'4%'}}>
+            <AddCircleIcon/>
           </Button>
-          <div className="table-wrapper" style={{ marginTop: '20px', backgroundColor:'#110f18' }}>
+          </div>
             <table className="machine-table" style={{border:'none', borderRadius:'0%'}}>
               <thead >
                 <tr>

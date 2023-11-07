@@ -4,7 +4,7 @@ import CRUD from './CRUD'
 export default class CRUDAttribution extends Component {
   render() {
     return (
-      <div><CRUD entity="attribution" idField="idAttribution" columns={['idAttribution', 'idMachine', 'idUser', 'dateDebut','dateFin']} /></div>
+      <div><CRUD entity="attribution" idField="idAttribution" columns={['machineName', 'userUsername', 'numEmployee', 'dateDebut','dateFin']} /></div>
     )
   }
 }

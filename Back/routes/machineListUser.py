@@ -15,7 +15,7 @@ def machineHome():
     try:
         query = db.session.query(
             Machine.machineName,
-            OSys.imgOS,
+            ImgOsys.imgName,
             Machine.idMachine,
             Machine.idOS,
             User.userUsername,
@@ -30,6 +30,9 @@ def machineHome():
         ).join(
             User,
             User.idUser == Attribution.idUser
+        ).join(
+            ImgOsys,
+            ImgOsys.idImg == OSys.idImg
         ).filter(
             Attribution.dateDebut <= datetime.now(),
             datetime.now() <= Attribution.dateFin
@@ -38,7 +41,7 @@ def machineHome():
         machine_list = []
         for (
             machineName,
-            imgOS,
+            imgName,
             idMachine,
             idOS,
             userUsername,
@@ -47,7 +50,7 @@ def machineHome():
         ) in query:
             machine_list.append({
                 'machineName': machineName,
-                'imgOS': imgOS,
+                'imgOS': imgName,
                 'idMachine': idMachine,
                 'idOS': idOS,
                 'userUsername': userUsername,

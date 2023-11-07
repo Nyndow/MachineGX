@@ -28,6 +28,7 @@ import OSEdit from './CRUD/EDIT/OS/OSEdit';
 import BaseOS from './CRUD/GENERAL/OS.js/BaseOS';
 import BaseOSEdit from './CRUD/EDIT/OS/BaseOSEdit';
 import BaseOsAdd from './CRUD/ADD/OS/BaseOSAdd';
+import AttributionAdd from './CRUD/ADD/AttributionAdd';
 
 function App() {
   return (
@@ -59,6 +60,7 @@ function App() {
           <PrivateRoute path="/machine" component={MachineOption} />
           <PrivateRoute path="/osys_add" component={OSAdd} />
           <PrivateRoute path="/base_osys_add" component={BaseOsAdd} />
+          <PrivateRoute path="/attribution_add" component={AttributionAdd}/>
 
           {/*CRUDEDIT*/}
           <PrivateRoute path="/edit/:entity/:id" component={EditCRUD} />

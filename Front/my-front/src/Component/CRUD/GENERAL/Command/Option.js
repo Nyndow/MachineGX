@@ -11,17 +11,12 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddOption from './AddOption';
 import EditOption from './EditOption';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 export default function Option({ rowCommand }) {
   const [data, setData] = useState([]);
   const apiUrl = process.env.REACT_APP_API_URL;
   const [searchQuery, setSearchQuery] = useState('');
-  const initialValue = {
-    commandName: '',
-    commandDescription: '',
-    commandComment: '',
-    idBaseOsys: '',
-  };
   const [isAddDialogOpen, setAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setEditDialogOpen] = useState(false);
   const [selectedRowData, setSelectedRowData] = useState(null);
@@ -71,6 +66,10 @@ export default function Option({ rowCommand }) {
     setAddDialogOpen(true);
   };
 
+  const closeAddDialog = () => {
+    setAddDialogOpen(false);
+  };
+
   const openEditDialog = (commandId) => {
     setSelectedRowData(commandId);
     setEditDialogOpen(true);
@@ -115,11 +114,12 @@ export default function Option({ rowCommand }) {
           ),
         }}
       />
-          <Button style={{ justifyContent: 'flex-end' }} variant="outlined" color="success" onClick={openAddDialog}>
-            New
-          </Button>
         <div className="table-wrapper" style={{ marginTop: '20px',backgroundColor:'#110f18' }}>
-          <div></div>
+        <div style={{display:'flex', justifyContent: 'flex-end' }}>
+          <Button style={{marginBottom:'4%'}} size='large' variant="outlined" color="success" onClick={openAddDialog}>
+            <AddCircleIcon/>
+          </Button>
+          </div>
           <table className="machine-table" style={{border:'none', borderRadius:'0%'}}>
             <thead>
               <tr>
