@@ -1,22 +1,26 @@
 #!/bin/bash
+#calculate_cpu_usage() {
+ #   cpu_info=($(grep '^cpu ' /proc/stat))
+  #  prev_idle=${cpu_info[4]}
+   # prev_total=$((prev_idle + ${cpu_info[1]} + ${cpu_info[2]} + ${cpu_info[3]} + ${cpu_info[5]} + ${cpu_info[6]} + ${cpu_info[7]} + ${cpu_info[8]}))
+
+    #sleep 1
+
+    #cpu_info=($(grep '^cpu ' /proc/stat))
+    #idle=${cpu_info[4]}
+    #total=$((idle + ${cpu_info[1]} + ${cpu_info[2]} + ${cpu_info[3]} + ${cpu_info[5]} + ${cpu_info[6]} + ${cpu_info[7]} + ${cpu_info[8]}))
+
+#    idle_diff=$((idle - prev_idle))
+ #   total_diff=$((total - prev_total))
+
+  #  cpu_usage_percentage=$((100 * (total_diff - idle_diff) / total_diff))
+
+    #echo "CPUUsage: ${cpu_usage_percentage}%"
+#}
 calculate_cpu_usage() {
-    cpu_info=($(grep '^cpu ' /proc/stat))
-    prev_idle=${cpu_info[4]}
-    prev_total=$((prev_idle + ${cpu_info[1]} + ${cpu_info[2]} + ${cpu_info[3]} + ${cpu_info[5]} + ${cpu_info[6]} + ${cpu_info[7]} + ${cpu_info[8]}))
-
-    sleep 1
-
-    cpu_info=($(grep '^cpu ' /proc/stat))
-    idle=${cpu_info[4]}
-    total=$((idle + ${cpu_info[1]} + ${cpu_info[2]} + ${cpu_info[3]} + ${cpu_info[5]} + ${cpu_info[6]} + ${cpu_info[7]} + ${cpu_info[8]}))
-
-    idle_diff=$((idle - prev_idle))
-    total_diff=$((total - prev_total))
-
-    cpu_usage_percentage=$((100 * (total_diff - idle_diff) / total_diff))
-
-    echo "CPUUsage: ${cpu_usage_percentage}%"
+echo "CPUUsage: $(top -bn1 | grep '%Cpu(s):' | awk '{print $2 + $4}')%"
 }
+
 
 calculate_network_speed() {
     interface="wlp4s0"

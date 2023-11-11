@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import { faSearch, faTrash, faEdit, faPlusCircle, faTimes } from '@fortawesome/free-solid-svg-icons';
 
-function CRUD(props) {
+function Attribution() {
   const [data, setData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -140,7 +140,7 @@ function CRUD(props) {
               </div>
             </div>
             <table className="crud-table">
-              <thead>
+              <thead style={{backgroundColor:'#110f18'}}>
                 <tr>
                   <th>
                     <input
@@ -208,4 +208,4 @@ function CRUD(props) {
   );
 }
 
-export default CRUD;
+export default Attribution;

@@ -8,30 +8,10 @@ function EditCRUD() {
   let columns = [];
 
   switch (entity) {
-    case 'administration':
-      columns = ['numEmployee','adminUsername','adminPassword'];
-      break;
-
-    case 'oSys':
-      columns = ['nomOS','versionOS', 'imgOS'];
-      break;
-  
-    case 'history':
-      columns = ['idMachine', 'idAdmin', 'idOption', 'dateHistory','target'];
-      break;
-  
     case 'attribution':
-      columns = ['idUser', 'idMachine', 'dateDebut', 'dateFin'];
-      break;
-  
-    case 'command':
-      columns = ['commandName','baseOS', 'commandDescription', 'commandComment'];
+      columns = ['dateDebut', 'dateFin'];
       break;
 
-    case 'option':
-      columns = ['idCommand', 'optionDescription', 'optionSyntax','optionComment'];
-      break;
-  
     default:
       columns = ['defaultColumn1', 'defaultColumn2'];
       break;

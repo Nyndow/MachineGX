@@ -1,25 +1,7 @@
 .sidebar {
   width: 70px;
-  position: fixed;
-  margin-top: 7%;
-  height: 60%;
   background-color: #110f18;
   padding-top: 5%;
-  border-radius: 5px; 
-  border: 1px solid #fafaf1;
-}
-
-.sidebar select{
-  width: 100%;
-}
-
-.sidebar a {
-
-  text-decoration: none;
-  font-size: 18px;
-  color: #fff;
-  display: block;
-  transition: 0.3s;
 }
 
 .sidebar img {
@@ -34,20 +16,13 @@
 .sidebar button{
   background-color:#110f18;
   width: 100%;
+  border: none;
 }
 
-.logout-button {
-  bottom: 5%;
-  width: 100%;
-  background-color: #110f18;
-}
+
 
 select{
   background-color:#110f18;
-}
-
-.select-dropdown{
-  border:none;
 }
 
 @media screen and (max-width: 600px) {

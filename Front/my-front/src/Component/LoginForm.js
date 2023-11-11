@@ -41,11 +41,11 @@ function LoginForm() {
         .then(response => {
           if (response.data === true) {
             localStorage.setItem('isAdmin', true);
-            history.push('/home');
+            history.push('/');
           } 
         })
         .catch(() => {
-          history.push('/home');
+          history.push('/');
         });
     })
 
@@ -64,7 +64,7 @@ function LoginForm() {
 
   if(token)
   {
-    history.push('/home');
+    history.push('/');
   }
 
   return (

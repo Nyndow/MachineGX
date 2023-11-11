@@ -22,44 +22,40 @@ function Sidebar() {
     history.push('/login');
   };
 
-  const handleOptionChange = (event) => {
-    const newSelectedOption = event.target.value;
-    setSelectedOption(newSelectedOption);
-
-    if (newSelectedOption) {
-      history.push(`/${newSelectedOption}`);
-    }
+  const handleOptionClick = (option) => {
+    setSelectedOption(option);
+    history.push(option);
   };
 
   return (
     authenticated ? (
       <div className="sidebar">
-        <button onClick={() => history.push('/home')}>
-          <HomeIcon fontSize='large' />
+        <button onClick={() => handleOptionClick('/')}>
+          <HomeIcon fontSize='large' style={{ color: selectedOption === '/' ? 'blue' : 'black' }} />
         </button>
-        <button onClick={() => history.push('/machine-all')}>
-          <DevicesIcon fontSize='large' />
+        <button onClick={() => handleOptionClick('/machine-all')}>
+          <DevicesIcon fontSize='large' style={{ color: selectedOption === '/machine-all' ? 'blue' : 'black' }} />
         </button>
-        <button onClick={() => history.push('/history')}>
-          <HistoryIcon fontSize='large' />
+        <button onClick={() => handleOptionClick('/history')}>
+          <HistoryIcon fontSize='large' style={{ color: selectedOption === '/history' ? 'blue' : 'black' }} />
         </button>
         {localStorage.getItem('isAdmin') && (
-        <button onClick={() => history.push('/command')}>
-          <TerminalIcon fontSize='large' />
+        <button onClick={() => handleOptionClick('/command')}>
+          <TerminalIcon fontSize='large' style={{ color: selectedOption === '/command' ? 'blue' : 'black' }} />
         </button>)}
-        <button onClick={() => history.push('/crud-attribution')}>
-          <AttributionIcon fontSize='large' />
+        <button onClick={() => handleOptionClick('/attribution')}>
+          <AttributionIcon fontSize='large' style={{ color: selectedOption === '/attribution' ? 'blue' : 'black' }} />
         </button>
-        <button onClick={() => history.push('/osys')}>
-          <SettingsSystemDaydreamIcon fontSize='large' />
+        <button onClick={() => handleOptionClick('/osys')}>
+          <SettingsSystemDaydreamIcon fontSize='large' style={{ color: selectedOption === '/osys' ? 'blue' : 'black' }} />
         </button>
         {localStorage.getItem('isAdmin') && (
-          <button onClick={() => history.push('/administration')}>
-            <SupervisorAccountIcon fontSize='large' />
+          <button onClick={() => handleOptionClick('/administration')}>
+            <SupervisorAccountIcon fontSize='large' style={{ color: selectedOption === '/administration' ? 'blue' : 'black' }} />
           </button>
         )}
         <button>
-          <LogoutIcon className='logout-button' fontSize='large' onClick={handleLogout} />
+          <LogoutIcon className='logout-button' fontSize='large' style={{ color: selectedOption === '/logout' ? 'blue' : 'black' }} onClick={handleLogout} />
         </button>
       </div>
     ) : null

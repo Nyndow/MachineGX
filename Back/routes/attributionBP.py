@@ -47,7 +47,7 @@ def attribution_list():
                 "dateFin": attribution.dateFin.strftime('%Y-%m-%d %H:%M')
             }
             for attribution in attributions
-            if attribution.dateDebut is not None  # Add this condition to filter out records with null dateDebut
+            if attribution.dateDebut is not None 
         ]
         return jsonify(attribution_list)
 
@@ -70,8 +70,6 @@ def attribution_detail(attribution_id):
 
     elif request.method == 'PUT':
         data = request.json
-        attribution.idMachine = data.get('idMachine', attribution.idMachine)
-        attribution.idUser = data.get('idUser', attribution.idUser)
         dateDebut_string = data.get('dateDebut', attribution.dateDebut)
         attribution.dateDebut = datetime.strptime(dateDebut_string, '%Y-%m-%dT%H:%M')  
         dateFin_string = data.get('dateFin', attribution.dateFin)

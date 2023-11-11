@@ -7,6 +7,7 @@ from models.attribution import Attribution
 from datetime import datetime
 from .ssh_manager import ssh_clients
 from models.imgOS import ImgOsys
+import subprocess
 
 machine_user_list = Blueprint('machine_user_list', __name__)
 
@@ -161,3 +162,14 @@ def execute_script(user_id):
 
     except Exception as e:
         return jsonify({"error": f"Error during script execution: {str(e)}"}), 500
+    
+    #RESSOURCES DETAILS IF IT'S A LINUX SYS
+@machine_user_list.route('/execute-cpu/<int:user_id>', methods=['GET'])
+def exec_cpu(user_id):
+    try:
+        command_output = subprocess.check_output("top -bn1 | grep '%Cpu(s):' | awk '{print $2 + $4}'", shell=True)
+        cpu_usage = int(float(command_output.decode().strip('%\n')))
+        response = {"CPUUsage": cpu_usage}
+        return jsonify(response)
+    except Exception as e:
+        return jsonify({"error": str(e)})
