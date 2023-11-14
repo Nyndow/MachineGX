@@ -6,10 +6,14 @@ import down from "../../Utils/icons/downarrow.png";
 
 const CardItem = ({ idOS, machineName, freeRAM, totalRAM, CPUUsage, DownUsage, UpUsage, userUsername, numEmployee, imageUrl, idMachine, state, idUser }) => {
   const history = useHistory();
-  const stateIndicatorClass = state? 'green-state' : 'red-state';
+  const stateIndicatorClass = state ? 'green-state' : 'red-state';
 
   const handleClick = () => {
     history.push(`/machine-page/${idMachine}/${idOS}?idUser=${idUser}`);
+  };
+
+  const cpuUsageStyle = {
+    color: CPUUsage > 50 ? 'red' : 'inherit',
   };
 
   return (
@@ -21,9 +25,12 @@ const CardItem = ({ idOS, machineName, freeRAM, totalRAM, CPUUsage, DownUsage, U
             <div className={`state-indicator ${stateIndicatorClass}`}></div>
             <img src={require(`../../Utils/distro-pics/${imageUrl}`)} alt={machineName} className="card-image" />
           </div>
-          <p>RAM : {freeRAM}/{totalRAM}</p>
-          <p>CPU : {CPUUsage} </p>
-          <p>Internet :<img src={down} className='internet-img' alt="machine" /> {DownUsage} <img src={up} className='internet-img' alt="machine" /> {UpUsage} </p>
+          <p>RAM: {freeRAM}/{totalRAM} GB</p>
+          <p style={cpuUsageStyle}>CPU: {CPUUsage} % </p>
+          <p>Internet:
+            <img src={up} className='internet-img' alt="machine" /> {DownUsage}
+            <img src={down} className='internet-img' alt="machine" /> {UpUsage}
+          </p>
         </div>
       </div>
     </div>

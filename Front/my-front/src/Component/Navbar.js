@@ -36,18 +36,15 @@ function Sidebar() {
         <button onClick={() => handleOptionClick('/machine-all')}>
           <DevicesIcon fontSize='large' style={{ color: selectedOption === '/machine-all' ? 'blue' : 'black' }} />
         </button>
-        <button onClick={() => handleOptionClick('/history')}>
-          <HistoryIcon fontSize='large' style={{ color: selectedOption === '/history' ? 'blue' : 'black' }} />
+        <button onClick={() => handleOptionClick('/attribution')}>
+          <AttributionIcon fontSize='large' style={{ color: selectedOption === '/attribution' ? 'blue' : 'black' }} />
         </button>
         {localStorage.getItem('isAdmin') && (
         <button onClick={() => handleOptionClick('/command')}>
           <TerminalIcon fontSize='large' style={{ color: selectedOption === '/command' ? 'blue' : 'black' }} />
         </button>)}
-        <button onClick={() => handleOptionClick('/attribution')}>
-          <AttributionIcon fontSize='large' style={{ color: selectedOption === '/attribution' ? 'blue' : 'black' }} />
-        </button>
-        <button onClick={() => handleOptionClick('/osys')}>
-          <SettingsSystemDaydreamIcon fontSize='large' style={{ color: selectedOption === '/osys' ? 'blue' : 'black' }} />
+        <button onClick={() => handleOptionClick('/history')}>
+          <HistoryIcon fontSize='large' style={{ color: selectedOption === '/history' ? 'blue' : 'black' }} />
         </button>
         {localStorage.getItem('isAdmin') && (
           <button onClick={() => handleOptionClick('/administration')}>

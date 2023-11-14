@@ -20,7 +20,7 @@ function MachineAll() {
   const [data, setData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(5);
+  const [itemsPerPage] = useState(11);
   const [selectedItems, setSelectedItems] = useState(new Set());
   const [selectAll, setSelectAll] = useState(false);
   const apiUrl = process.env.REACT_APP_API_URL;
@@ -101,6 +101,23 @@ function MachineAll() {
     fetchData()
   };
 
+  const poweroff = () => {
+    const selectedMachines = data.filter(machine => machine.connected === true);
+  
+    for (let i = 0; i < selectedMachines.length; i++) {
+      const machine = selectedMachines[i];
+  
+      axios
+        .post(`${apiUrl}/poweroff/${machine.idUser}`)
+        .then(() => {
+        })
+        .catch(error => {
+          console.error("Error during poweroff request:", error);
+        });
+    }
+    fetchData();
+  };
+
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };
@@ -156,8 +173,6 @@ function MachineAll() {
       <div className="machine">
         <div className="machine-container">
           <div>
-          </div>
-          <div style={{ marginTop: '20px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <div><TextField
               id="input-with-icon-textfield"
@@ -201,6 +216,7 @@ function MachineAll() {
                 selectedData={data.filter(machine => machine.connected === true)}
                 statusConnection={data.filter(machine => machine.connected === true).length > 0}
                 onSuccessfulDisconnect={handleSuccessfulDisconnect}
+                poweroff={poweroff}
               />
             </div>
           </div>

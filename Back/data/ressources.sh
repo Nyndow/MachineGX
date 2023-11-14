@@ -16,14 +16,10 @@
   #  cpu_usage_percentage=$((100 * (total_diff - idle_diff) / total_diff))
 
     #echo "CPUUsage: ${cpu_usage_percentage}%"
-#}
-calculate_cpu_usage() {
-echo "CPUUsage: $(top -bn1 | grep '%Cpu(s):' | awk '{print $2 + $4}')%"
-}
-
+#
 
 calculate_network_speed() {
-    interface="wlp4s0"
+    interface="wlp5s0f3u2"
     delay=1
     
     calculate_speed() {
@@ -45,18 +41,4 @@ calculate_network_speed() {
     calculate_speed "$initial_rx" "$initial_tx"
 }
 
-get_memory_info() {
-    total_memory_kb=$(grep -i "MemTotal" /proc/meminfo | awk '{print $2}')
-    
-    free_memory_kb=$(grep -i "MemFree" /proc/meminfo | awk '{print $2}')
-    
-    total_memory_gb=$(echo "scale=2; $total_memory_kb / 1024 / 1024" | bc)
-    free_memory_gb=$(echo "scale=2; $total_memory_gb - $free_memory_kb / 1024 / 1024" | bc)
-    
-    echo "TotalMemory: ${total_memory_gb} GB"
-    echo "FreeMemory: ${free_memory_gb}"
-}
-
-calculate_cpu_usage
 calculate_network_speed
-get_memory_info

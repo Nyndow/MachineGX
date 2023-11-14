@@ -70,16 +70,29 @@ def command_detail(command_id):
 @command_bp.route('/commandList/<int:osys_id>', methods=['GET'])
 def command_list_os(osys_id):
     osys = OSys.query.filter(OSys.idOS == osys_id).first()
-    commands = Command.query.filter(Command.idBaseOsys == osys.baseOS).all()
-    command_list = [
-        {
-            "idCommand": command.idCommand,
-            "commandDescription": command.commandDescription,
-            "commandName": command.commandName,
-            "commandComment": command.commandComment
-        }
-        for command in commands
+
+    if osys:
+        base_os_value = osys.baseOS
+
+        # Query commands for the specified baseOS value and when baseOS is 4
+        commands = Command.query.filter(
+            (Command.idBaseOsys == base_os_value) | (Command.idBaseOsys == 4)
+        ).all()
+
+        command_list = [
+            {
+                "idCommand": command.idCommand,
+                "commandDescription": command.commandDescription,
+                "commandName": command.commandName,
+                "commandComment": command.commandComment
+            }
+            for command in commands
         ]
-    return jsonify(command_list)
+
+        return jsonify(command_list)
+
+    # Handle the case when the specified OS is not found
+    return jsonify({"message": "Specified OS not found."}), 404
+
 
 

@@ -1,0 +1,8 @@
+Flask
+Flask-RESTful
+SQLAlchemy
+Werkzeug
+PyJWT
+paramiko
+Flask-CORS
+Flask-SQLAlchemy

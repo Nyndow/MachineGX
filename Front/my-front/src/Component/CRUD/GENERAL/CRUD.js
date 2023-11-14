@@ -2,9 +2,16 @@ import React, { useState, useEffect } from 'react';
 import '../../../Styles/CRUD.css'; 
 import axios from 'axios';
 import PaginationComponent from '../../Services/Pagination';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
-import { faSearch, faTrash, faEdit, faPlusCircle, faTimes } from '@fortawesome/free-solid-svg-icons';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import SearchIcon from '@mui/icons-material/Search';
+import EditIcon from '@mui/icons-material/Edit';
+import ClearIcon from '@mui/icons-material/Clear';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 
 function Attribution() {
   const [data, setData] = useState([]);
@@ -111,33 +118,46 @@ function Attribution() {
     <div className='main-container'>
       <div className="main">
         <div className="crud-container">
+          <div className="table-wrapper">
+            <div style={{display:'flex',justifyContent:'space-between'}}>
           <div className="search-container">
-            <div className="search-input-container">
-              <FontAwesomeIcon icon={faSearch} className={`search-icon ${searchQuery ? 'hidden' : ''}`} />
-              <input
-                type="text"
-                placeholder="      Search..."
-                value={searchQuery}
-                onChange={handleSearchInputChange}
-                className="search-input"
-              />
-              {searchQuery && (
-                <button className="clear-button" onClick={handleClearSearch}>
-                  <FontAwesomeIcon icon={faTimes} />
-                </button>
-              )}
-            </div>
+          <TextField
+            id="input-for-command-search"
+            variant="outlined"
+            type="text"
+            style={{ backgroundColor: '#110f18', width: '100%' }}
+            value={searchQuery}
+            onChange={handleSearchInputChange}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+              endAdornment: (
+                searchQuery && (
+                  <InputAdornment position="end">
+                    <IconButton onClick={handleClearSearch}>
+                      <ClearIcon />
+                    </IconButton>
+                  </InputAdornment>
+                )
+              ),
+            }}
+          />
           </div>
-          <div className="table-wrapper" style={{ marginTop: '20px' }}>
-            <div className="add-button-container">
-              <FontAwesomeIcon icon={faTrash} className="delete-icon" onClick={handleDeleteSelected} />
-              <div className="add-button">
-                <Link to={'/attribution_add'}>
-                  <button className="add-button-icon">
-                    <FontAwesomeIcon icon={faPlusCircle} />
-                  </button>
-                </Link>
-              </div>
+            <div style={{ display:'flex', justifyContent:'flex-end' }}>
+            <Link to="/attribution_add">
+              <Button size='large' color='success' variant="outlined">
+                    <AddCircleIcon/>
+                </Button>
+              </Link>
+            {selectedItems.size > 0 && (
+            <Button variant="outlined" color="secondary" onClick={handleDeleteSelected}>
+                    <DeleteIcon />
+              </Button>
+            )}
+            </div>
             </div>
             <table className="crud-table">
               <thead style={{backgroundColor:'#110f18'}}>
@@ -174,24 +194,20 @@ function Attribution() {
                 <td>{rowData.dateDebut}</td>
                 <td>{rowData.dateFin}</td>
                     <td>
-                      {selectedItems.has(rowData.idAttribution) ? (
-                        <>
-                        </>
-                      ) : (
-                        <>
-                          <Link to={`/edit/attribution/${rowData.idAttribution}`} className="custom-link-button">
-                            <button className="edit-button">
-                              <FontAwesomeIcon icon={faEdit} />
-                            </button>
-                          </Link>
-                          <button className="delete-button" onClick={() => handleDelete(rowData.idAttribution)}>
-                            <FontAwesomeIcon icon={faTrash} />
-                          </button>
-                        </>
-                      )}
+  
+                <Link to={`/edit/attribution/${rowData.idAttribution}`} >
+                <Button variant="outlined">
+                          <EditIcon/>
+                        </Button>
+                </Link>
+                <Button onClick={() => handleDelete(rowData.idAttribution)} variant="outlined" color='secondary'>
+                          <DeleteIcon/>
+                        </Button>
+                      
+            
                     </td>
                   </tr>
-                ))}
+              ))}
               </tbody>
             </table>
             <div className="pagination-container">

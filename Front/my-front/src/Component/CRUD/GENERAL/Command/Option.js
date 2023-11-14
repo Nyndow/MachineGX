@@ -49,6 +49,7 @@ export default function Option({ rowCommand }) {
     axios
       .delete(`${apiUrl}/option/${idOption}`)
       .then(() => {
+        fetchData(rowCommand.idCommand)
       })
       .catch(() => {
       });
@@ -68,6 +69,7 @@ export default function Option({ rowCommand }) {
 
   const closeAddDialog = () => {
     setAddDialogOpen(false);
+    fetchData(rowCommand.idCommand)
   };
 
   const openEditDialog = (commandId) => {
@@ -77,19 +79,31 @@ export default function Option({ rowCommand }) {
 
   const closeEditDialog = () => {
     setEditDialogOpen(false);
-    fetchData;
+    fetchData(rowCommand.idCommand)
   };
 
 
   return (
     <div className='option-container'>
-      <div>
-        Command: {rowCommand.commandName}
-        Note: {rowCommand.commandComment}
-      </div>
+<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+  <div>
+    <h4><u>Command:</u></h4>
+  </div>
+  <div>
+    {rowCommand.commandName}
+  </div>
+  <div >
+  <h4><u>Note:</u></h4>
+  </div>
+  <div>
+    {rowCommand.commandComment}
+  </div>
+</div>
+
+
       {data.length > 0 ? (
         <div>
-      <hr></hr>
+
       <TextField
         id="input-for-search-option"
         variant="outlined"
@@ -166,13 +180,14 @@ export default function Option({ rowCommand }) {
           </table>
         </div></div>
       ) : (
-        <div>
-          <hr></hr>
-          <p style={{ textAlign: 'center' }}>This command doesn't not have any option</p>
-          <Button style={{ justifyContent: 'flex-end' }} size='large' variant="outlined" color="success" onClick={openAddDialog}>
-            New
-          </Button>
-        </div>
+<div style={{ textAlign: 'center' }}>
+  <hr />
+  <p>This command doesn't have any options.</p>
+  <Button style={{ justifyContent: 'flex-end' }} size='large' variant="text" color="success" onClick={openAddDialog}>
+    <AddCircleIcon/> Add a new command 
+  </Button>
+</div>
+
       )}
       {isAddDialogOpen && (
         <AddOption

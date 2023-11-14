@@ -1,20 +1,19 @@
 /* App.css or your preferred style file */
 .app-container {
-    display: flex;
-    align-items: center;
-    height: 100vh; 
-  }
-  
-  .sidebar-container {
-    flex: 0 0 auto;
-    height: 60%; 
-    border-radius: 5px; 
-    border: 1px solid #fafaf1;
-  }
-  
-  .content {
-    flex-grow: 1;
-    padding: 20px;
-    overflow: auto;
-  }
-  
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar-container {
+  margin-top: 10%;
+  flex: 0 0 auto;
+  border-radius: 5px;
+  height: 50%;
+  border: 1px solid #fafaf1;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 20px;
+  overflow: auto;
+}

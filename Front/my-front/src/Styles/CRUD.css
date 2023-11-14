@@ -65,30 +65,6 @@
     font-size: 14px; 
   }
 }
-
-.crud-table button {
-  background-color: #ff6b00; 
-  color: #e4e4e4; 
-  border: none;
-  padding: 10px 20px;
-  margin-right: 5px;
-  cursor: pointer;
-  border-radius: 4px;
-  font-size: 16px;
-}
-
-.crud-table button:hover {
-  background-color: #E7BFEA; 
-}
-
-.crud-table .delete-button {
-  background-color: #BF5CC8; 
-}
-
-.crud-table .delete-button:hover {
-  background-color: #903499; 
-}
-
 /* SEARCH */
 .search-container {
   margin-top: 2%;
@@ -100,80 +76,4 @@
   border: 1px solid #444; 
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.search-input {
-  padding: 10px;
-  border: none;
-  outline: none;
-  width: 100%;
-  color: #e4e4e4; 
-  background-color: #06011a; 
-}
-
-.search-icon {
-  position: absolute;
-  top: 50%;
-  left: 10px;
-  transform: translateY(-50%);
-  color: #ff6b00; 
-}
-
-.clear-button {
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-  background: transparent;
-  border: none;
-  cursor: pointer;
-}
-
-.clear-button svg {
-  color: #ff6b00; 
-}
-
-.search-icon.hidden {
-  opacity: 0;
-}
-
-/* Add button container */
-.add-button-container {
-  display: flex;
-  align-items: center;
-  margin-bottom: 2%;
-}
-
-.add-button-icon {
-  background-color: #489c40;
-  margin-left: 10px;
-  color: #fff;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.add-button-icon:hover {
-  background-color: #2a7523;
-}
-
-.delete-icon {
-  background-color: #BF5CC8;
-  color: #fff;
-  border: none;
-  padding-left: 20px;
-  padding: 12px 24px;
-  cursor: pointer;
-  border-radius: 4px;
-  font-size: 16px;
-}
-
-.delete-icon:hover {
-  background-color: #903499;
 }

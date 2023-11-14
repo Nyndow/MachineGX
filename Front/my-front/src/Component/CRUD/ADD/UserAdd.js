@@ -31,8 +31,6 @@ export default function UserAdd() {
       axios
         .post(`${apiUrl}/user/`, dataToSend)
         .then((response) => {
-          setLinkMachine(response.data);
-          console.log(response.data);
         })
         .catch((error) => {
           console.error('Error sending data:', error);

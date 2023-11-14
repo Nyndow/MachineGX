@@ -161,7 +161,7 @@ function MachineOption() {
             <Link
               fontSize="small"
               color="info"
-              href="/add/oSys"
+              href="/osys"
               underline="hover"
               style={{
                 display: 'flex',

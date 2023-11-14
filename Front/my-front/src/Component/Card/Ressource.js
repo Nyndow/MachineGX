@@ -1,22 +1,52 @@
 import React, { useState, useEffect } from 'react';
 import '../../Styles/Ressource.css';
-import LinearProgressWithLabel from '@mui/material/LinearProgress';
-import CircularProgressWithLabel from '@mui/material/CircularProgress'
+import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
+import Typography from '@mui/material/Typography';
+import axios from 'axios';
 
-export default function Ressource() {
-  const [cpuUsage, setCpuUsage] = useState(20);
-  const [ramUsage, setRamUsage] = useState(25);
-  const [diskUsage, setDiskUsage] = useState(59);
+export default function Ressource({ idUser }) {
+
+  const [data, setData] = useState({
+    CPUUsage: 0,
+    UsedMemory: 0,
+    TotalMemory: 0,
+  });
+
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCpuUsage(Math.random() * 100);
-      setRamUsage(Math.random() * 100);
-      setDiskUsage(Math.random() * 100);
-    }, 2000); 
 
-    return () => clearInterval(interval);
-  }, []);
+    // Fetch data every 2 seconds
+    const intervalId = setInterval(() => {
+      fetchData();
+    }, 2000);
+
+    // Clear interval on component unmount
+    return () => clearInterval(intervalId);
+  }, [idUser, apiUrl]);
+
+  const fetchData = () => {
+    axios
+      .get(`${apiUrl}/execute-cpu/${idUser}`)
+      .then((response) => {
+        console.log("Original CPUUsage:", response.data.CPUUsage);
+  
+        // Corrected the update of CPUUsage
+        const updatedCPUUsage = response.data.CPUUsage > 90 ? 100 : response.data.CPUUsage;
+        
+        // Corrected the condition to check if updatedCPUUsage is less than 0
+        const finalCPUUsage = updatedCPUUsage < 0 ? 0.5 : updatedCPUUsage;
+  
+        setData({
+          ...response.data,
+          CPUUsage: finalCPUUsage,
+        });
+      })
+      .catch(() => {});
+  };
+  
+  
 
   return (
     <div className='ressource-container'>
@@ -27,22 +57,49 @@ export default function Ressource() {
       </div>
       <hr></hr>
       <div className='ressource-info'>
-        <div className="disk-bar">
-          <p>DISK:</p>
-          <LinearProgressWithLabel color="secondary" variant="determinate" value={diskUsage} />
-        </div>
         <div className="RAM-bar">
-          <p>RAM:</p>
-          <LinearProgressWithLabel color="secondary" variant="determinate" value={ramUsage} />
+          <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+            <CircularProgress variant="determinate" size={200} value={(data.UsedMemory / data.TotalMemory) * 100} />
+            <Box
+              sx={{
+                top: 0,
+                left: 0,
+                bottom: 0,
+                right: 0,
+                position: 'absolute',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Typography variant="caption" component="div" color="text.secondary">
+                RAM : {`${Math.round((data.UsedMemory / data.TotalMemory) * 100)}%`}
+              </Typography>
+            </Box>
+          </Box>
         </div>
         <div className="CPU-bar">
-          <p>CPU:</p>
-          <CircularProgressWithLabel color="secondary" variant="determinate" value={cpuUsage} />
+          <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+            <CircularProgress variant="determinate" color="secondary" size={200} value={data.CPUUsage} />
+            <Box
+              sx={{
+                top: 0,
+                left: 0,
+                bottom: 0,
+                right: 0,
+                position: 'absolute',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Typography variant="caption" component="div" color="text.secondary">
+                CPU : {`${Math.round(data.CPUUsage)}%`}
+              </Typography>
+            </Box>
+          </Box>
         </div>
-        <p>HDD: 20/34 Go</p>
       </div>
-
-      <button className='clear-cache'>clear</button>
     </div>
   );
 }

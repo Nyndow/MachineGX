@@ -115,7 +115,8 @@ const handleSuccessfulDisconnect = () => {
         </div>
           <hr className="hr"></hr>
           <div className="ressource">
-            <Ressource />
+            <Ressource
+            idUser={user} />
           </div>
         </div>
       </div>

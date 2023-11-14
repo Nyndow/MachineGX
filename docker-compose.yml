@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  frontend:
+    build:
+      context: ./Front/my-front
+    ports:
+      - "3000:3000"
+      
+  backend:
+    build:
+      context: ./Back
+    ports:
+      - "5000:5000"
+    environment:
+      - HOST_IP=172.20.0.2

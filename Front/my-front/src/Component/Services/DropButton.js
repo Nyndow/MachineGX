@@ -14,7 +14,7 @@ import axios from 'axios';
 import ClearIcon from '@mui/icons-material/Clear';
 
 
-const DropdownButton = ({ statusConnection, idMachine, selectedData,onSuccessfulDisconnect }) => {
+const DropdownButton = ({ statusConnection, idMachine,poweroff, selectedData,onSuccessfulDisconnect }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const history = useHistory();
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -29,17 +29,9 @@ const DropdownButton = ({ statusConnection, idMachine, selectedData,onSuccessful
     setAnchorEl(null);
   };
 
-  const poweroff = () => {
-    for(let i=0; i<selectedData.length; i++){
-    const machine = selectedData[i];
-    axios
-    .post(`${apiUrl}/poweroff/${machine.idUser}`)
-    .then(() => {
-      setAnchorEl(null);
-    })
-    .catch(()=>{
-    })
-  }
+  const poweroffCall = () => {
+    poweroff();
+  setAnchorEl(null);
 }
 
 /*DECONNECTION*/
@@ -179,7 +171,7 @@ const handleDisconnect = () => {
           </MenuItem>
         )}
         {statusConnection && (
-          <MenuItem onClick={() => poweroff}>
+          <MenuItem onClick={poweroffCall}>
             <ListItemIcon>
               <PowerSettingsNewIcon />
             </ListItemIcon>

@@ -70,30 +70,51 @@ function Command({ idOS, idMachine }) {
   const handlePostData = () => {
     if (!isConfirmButtonDisabled) {
       setIsConfirmButtonDisabled(true);
-
+  
       const postData = {
         selectedOption,
         selectedSecondOption,
         inputData: inputValue,
       };
-
+  
       axios.post(`${apiUrl}/launch-command/${idMachine}`, postData, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}` 
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       })
         .then((response) => {
           console.log('Success:', response);
+  
+          // Create a new command object
+          const newCommand = {
+            Command: data.find(item => item.idCommand == selectedOption)?.commandDescription || '',
+            Option: secondSelectData.find(item => item.idOption == selectedSecondOption)?.optionDescription || '',
+            Target: inputValue,
+            Date: new Date().toLocaleString(), // Customize the date format as needed
+          };
+  
+          // Update the dataToDisplay state by preserving existing commands and adding the new one
+          setDataToDisplay((prevData) => {
+            const newData = { ...prevData };
+            newData[response.data.pid] = newCommand;
+            return newData;
+          });
+  
           setTimeout(() => {
             setIsConfirmButtonDisabled(false);
           }, 1000);
         })
         .catch((error) => {
           console.error('Error:', error);
-          setIsConfirmButtonDisabled(false); 
+          setIsConfirmButtonDisabled(false);
         });
     }
   };
+
+  console.log(dataToDisplay)
+  
+  
+  
 
   return (
     <div className="command-container">

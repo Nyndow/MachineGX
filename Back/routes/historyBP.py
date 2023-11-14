@@ -28,8 +28,7 @@ def history_detail(history_id):
                 c.commandDescription,
                 u.userUsername,
                 os.nomOS,
-                os.versionOS,
-                os.imgOS
+                os.versionOS
             FROM
                 History h
             JOIN
@@ -61,7 +60,6 @@ def history_detail(history_id):
                 "userUsername": result[3],
                 "nomOS": result[4],
                 "versionOS": result[5],
-                "imgOS": result[6],
             }
             return jsonify(result_dict)
         else:

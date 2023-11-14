@@ -1,8 +1,13 @@
 from flask import Blueprint, jsonify,request
 import paramiko
+from sqlalchemy.orm import aliased
 from models.history import History
 from models.command import Command
 from models.option import Option
+from models.baseOS import BaseOsys
+from models.machine import Machine
+from models.OS import OSys
+from models.attribution import Attribution
 from database import db
 from .ssh_manager import ssh_clients
 from datetime import datetime
@@ -71,3 +76,51 @@ def exec_term_command(machine_id):
         return output.decode('utf-8')
     else:
         return 'SSH client not available'
+    
+@custom_cmd_bp.route('/update/<int:user_id>', methods=['GET'])
+def update_machine(user_id):
+    try:
+        ssh = ssh_clients.get(user_id)
+        if ssh is None:
+            return jsonify({"error": "SSH client not found for machine ID"}), 405
+
+        attribution_alias = aliased(Attribution, name="attribution_machine")
+
+        command_query = db.session.query(
+            Command.commandName,
+            Option.optionSyntax
+        ).join(
+            Option,
+            Command.idCommand == Option.idOption
+        ).join(
+            BaseOsys,
+            Command.idBaseOsys == BaseOsys.idBaseOsys
+        ).join(
+            OSys,
+            BaseOsys.idBaseOsys == OSys.baseOS
+        ).join(
+            Machine,
+            OSys.idOS == Machine.idOS
+        ).join(
+            attribution_alias,
+            Machine.idMachine == attribution_alias.idMachine
+        ).filter(
+            Option.optionDescription == "Update all",
+            attribution_alias.idUser == user_id
+        ).first()
+
+
+        if command_query is None:
+            return jsonify({"error": "Update command not found"}), 404
+
+        print(command_query.commandName)
+        print(command_query.optionSyntax)
+
+        # command_string = f"{command_name} {command_syntax}"
+        # stdin, stdout, stderr = ssh.exec_command(command_string)
+
+        return jsonify({"message": "Update command executed successfully"}), 200
+        
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+

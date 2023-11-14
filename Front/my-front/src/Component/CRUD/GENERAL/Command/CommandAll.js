@@ -70,17 +70,19 @@ export default function CommandAll() {
 
   const closeAddDialog = () => {
     setAddDialogOpen(false);
+    fetchData()
   };
 
   const closeEditDialog = () => {
     setEditDialogOpen(false);
+    fetchData()
   };
 
   const handleDeleteCommand = (commandId) => {
     axios
       .delete(`${apiUrl}/command/${commandId}`)
       .then(() => {
-        setData((prevData) => prevData.filter((item) => item.idCommand !== commandId));
+        fetchData()
       })
       .catch((error) => {
         console.error('Error deleting command:', error);
@@ -168,7 +170,7 @@ export default function CommandAll() {
                       item.commandDescription.toLowerCase().includes(searchQuery.toLowerCase())
                     )
                   .map((rowData, index) => (
-                    <tr onClick={() => chooseCommand(rowData.idCommand)} key={index} style={{ backgroundColor: '#110f18' }}  >
+                    <tr className="hovered-td" onClick={() => chooseCommand(rowData.idCommand)} key={index} style={{ backgroundColor: '#110f18' }}  >
                       <td>{rowData.commandName}</td>
                       <td>{rowData.commandDescription}</td>
                       <td>

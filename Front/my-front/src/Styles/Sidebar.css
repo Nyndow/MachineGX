@@ -1,7 +1,12 @@
 .sidebar {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Align items with space between */
+  align-items: center; /* Center items horizontally */
   width: 70px;
   background-color: #110f18;
-  padding-top: 5%;
+  height: 100%;
 }
 
 .sidebar img {
@@ -13,23 +18,23 @@
   background-color: #fafaf1;
 }
 
-.sidebar button{
-  background-color:#110f18;
+
+
+.sidebar button {
+  background-color: #110f18;
   width: 100%;
   border: none;
 }
 
-
-
-select{
-  background-color:#110f18;
+select {
+  background-color: #110f18;
 }
 
 @media screen and (max-width: 600px) {
   .sidebar {
     width: 100%;
     padding: 10px;
-    position: relative;
+    align-items: flex-start; /* Align items to the start for small screens */
   }
 
   .main-content {
