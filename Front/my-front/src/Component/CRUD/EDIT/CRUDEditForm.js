@@ -6,29 +6,27 @@ const CRUDEditForm = ({ entity, columns, entityId }) => {
   const [formData, setFormData] = useState({});
   const apiUrl = process.env.REACT_APP_API_URL;
 
+  // Fetch data when component mounts or entity/entityId changes
   useEffect(() => {
     axios.get(`${apiUrl}/${entity}/${entityId}`)
       .then((response) => {
-        const formattedData = { ...response.data };
-        setFormData(formattedData);
+        setFormData({ ...response.data });
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
-  }, [entityId, entity]);
+  }, [entityId, entity, apiUrl]);
 
+  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  // Submit updated data
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData);
-  };
-
-  const onSubmit = (data) => {
-    axios.put(`${apiUrl}/${entity}/${entityId}`, data)
+    axios.put(`${apiUrl}/${entity}/${entityId}`, formData)
       .then((response) => {
         console.log('Entity updated:', response.data);
       })
@@ -37,8 +35,10 @@ const CRUDEditForm = ({ entity, columns, entityId }) => {
       });
   };
 
+  // Render input based on column type
   const renderInput = (column) => {
-    if (column === 'dateHistory' || column === 'dateDebut' || column === 'dateFin') {
+    // Handle date fields
+    if (['dateHistory', 'dateDebut', 'dateFin'].includes(column)) {
       return (
         <input
           className="crud-form-input"
@@ -49,29 +49,29 @@ const CRUDEditForm = ({ entity, columns, entityId }) => {
           onChange={handleChange}
         />
       );
-    } else {
-      return (
-<TextField
-  id={column}
-  name={column}
-  label={column}
-  variant="standard"
-  type={column === 'userPassword' ? 'password' : 'text'}
-  value={formData[column] || ''}
-  onChange={(e) => handleChange(e, column)}
-/>
-
-      );
     }
+
+    // Default text/password fields
+    return (
+      <TextField
+        id={column}
+        name={column}
+        label={column}
+        variant="standard"
+        type={column === 'userPassword' ? 'password' : 'text'}
+        value={formData[column] || ''}
+        onChange={handleChange}
+        fullWidth
+      />
+    );
   };
-  
 
   return (
     <form className="crud-form-container" onSubmit={handleSubmit}>
       <h2 className="crud-form-title">Edit {entity}</h2>
       {columns.map((column) => (
         <div key={column} className="input-group">
-          {renderInput(column, formData, handleChange)}
+          {renderInput(column)} {/* Only pass 1 argument */}
         </div>
       ))}
       <button className="crud-form-button" type="submit">

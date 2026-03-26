@@ -1,49 +1,49 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
-import axios from 'axios';
-import '../../../Styles/machineOption.css';
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
-import Button from '@mui/material/Button';
-import HelpIcon from '@mui/icons-material/Help';
-import { useParams } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
-import DeleteIcon from '@mui/icons-material/Delete';
+import React, { useEffect, useState, useCallback, useMemo } from "react";
+import axios from "axios";
+import "../../../Styles/machineOption.css";
+import Box from "@mui/material/Box";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import TextField from "@mui/material/TextField";
+import Link from "@mui/material/Link";
+import Button from "@mui/material/Button";
+import HelpIcon from "@mui/icons-material/Help";
+import { useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 function MachineEdit() {
   const apiUrl = process.env.REACT_APP_API_URL;
   const { idMachine } = useParams();
   const [oSysData, setOsData] = useState([]);
-  const [linkMachine, setLinkMachine] = useState('');
+  const [linkMachine, setLinkMachine] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
-    machineName: '', 
-    ipAddr: '', 
-    portNumber: '', 
-    nomOS: '', 
-    versionOS: '', 
+    machineName: "",
+    ipAddr: "",
+    portNumber: "",
+    nomOS: "",
+    versionOS: "",
   });
-  const history = useHistory()
+  const history = useHistory();
 
   useEffect(() => {
     fetchData();
   }, []);
-  
+
   useEffect(() => {
-    axios.get(`${apiUrl}/machine/${idMachine}`)
+    axios
+      .get(`${apiUrl}/machine/${idMachine}`)
       .then((response) => {
         const formattedData = { ...response.data };
         setFormData(formattedData);
       })
       .catch((error) => {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       });
   }, [idMachine]);
-  
 
   const fetchData = useCallback(() => {
     axios
@@ -52,7 +52,7 @@ function MachineEdit() {
         setOsData(response.data);
       })
       .catch((error) => {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       });
   }, [apiUrl]);
 
@@ -71,18 +71,18 @@ function MachineEdit() {
       axios
         .put(`${apiUrl}/machine/${idMachine}`, { ...formData })
         .then((response) => {
-          setLinkMachine(response.data)
-          console.log(response.data)
+          setLinkMachine(response.data);
+          console.log(response.data);
         })
         .catch((error) => {
-          console.error('Error sending data:', error);
+          console.error("Error sending data:", error);
         })
         .finally(() => {
           setIsSubmitting(false);
         });
     }
   }, [apiUrl, isSubmitting, formData]);
-  console.log(localStorage)
+  console.log(localStorage);
 
   const nomOSOptions = useMemo(() => {
     // Create an array of unique nomOS values
@@ -112,128 +112,143 @@ function MachineEdit() {
         history.goBack();
       })
       .catch((error) => {
-        console.error('Error deleting item:', error);
+        console.error("Error deleting item:", error);
       });
   };
 
-
-  const isFormEmpty = Object.values(formData).some((value) => value === '');
+  const isFormEmpty = Object.values(formData).some((value) => value === "");
 
   return (
     <div className="machineOption-container">
       <div className="input-group">
-            <h3>Machine Information </h3>
-            <TextField
-              id="numEMP-basic"
-              label="Machine Name"
-              variant="standard"
-              name="machineName"
-              value={formData.machineName}
-              onChange={handleInputChange}
-              style={{ marginBottom: '10px' }}
-              required
-            />
-            <TextField
-              id="userUsername-basic"
-              label="IP Address"
-              variant="standard"
-              name="ipAddr"
-              value={formData.ipAddr}
-              onChange={handleInputChange}
-              style={{ marginBottom: '10px' }}
-              required
-            />
-            <TextField
-              id="userPassword-basic"
-              label="Port Number"
-              variant="standard"
-              name="portNumber"
-              value={formData.portNumber}
-              onChange={handleInputChange}
-              style={{ marginBottom: '10px' }}
-              required
-            />
+        <h3>Machine Information </h3>
+        <TextField
+          id="numEMP-basic"
+          label="Machine Name"
+          variant="standard"
+          name="machineName"
+          value={formData.machineName}
+          onChange={handleInputChange}
+          style={{ marginBottom: "10px" }}
+          required
+        />
+        <TextField
+          id="userUsername-basic"
+          label="IP Address"
+          variant="standard"
+          name="ipAddr"
+          value={formData.ipAddr}
+          onChange={handleInputChange}
+          style={{ marginBottom: "10px" }}
+          required
+        />
+        <TextField
+          id="userPassword-basic"
+          label="Port Number"
+          variant="standard"
+          name="portNumber"
+          value={formData.portNumber}
+          onChange={handleInputChange}
+          style={{ marginBottom: "10px" }}
+          required
+        />
 
-            <div className='select-OS'>
-              <Box sx={{ minWidth: 120 }}>
-                <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-                  <InputLabel id="nomOSSelect-label">OS</InputLabel>
-                  <Select
-                    labelId="nomOSSelect-label"
-                    id="nomOSSelect"
-                    name="nomOS"
-                    value={formData.nomOS}
-                    onChange={handleInputChange}
-                    required
-                  >
-                    {nomOSOptions}
-                  </Select>
-                </FormControl>
-              </Box>
-
-              <Box sx={{ minWidth: 120 }}>
-                <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-                  <InputLabel id="demo-simple-select-label">Version</InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="versionOSSelect"
-                    name="versionOS"
-                    value={formData.versionOS}
-                    onChange={handleInputChange}
-                    required
-                  >
-                    {versionOSOptions}
-                  </Select>
-                </FormControl>
-              </Box>
-            </div>
-
-            <Link
-              fontSize="small"
-              color="info"
-              href="/add/oSys"
-              underline="hover"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'flex-end',
-              }}
-            >
-              <HelpIcon style={{ marginRight: '4px' }} />OS not there?
-            </Link>
-
-            <div style={{ display: 'flex', justifyContent: 'flex-end', paddingTop: '15px', paddingBottom: '15px' }}>
-              <Button
-                color="primary"
-                variant="text"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-                onClick={handleSubmit}
-                disabled={isFormEmpty} 
+        <div className="select-OS">
+          <Box sx={{ minWidth: 120 }}>
+            <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+              <InputLabel id="nomOSSelect-label">OS</InputLabel>
+              <Select
+                labelId="nomOSSelect-label"
+                id="nomOSSelect"
+                name="nomOS"
+                value={formData.nomOS}
+                onChange={handleInputChange}
+                required
               >
-                Update
-              </Button>
-            </div>
-            <button onClick={handleDelete} style={{width:'45px'}}>
-              <DeleteIcon/>
-            </button>
+                {nomOSOptions}
+              </Select>
+            </FormControl>
+          </Box>
+
+          <Box sx={{ minWidth: 120 }}>
+            <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+              <InputLabel id="demo-simple-select-label">Version</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="versionOSSelect"
+                name="versionOS"
+                value={formData.versionOS}
+                onChange={handleInputChange}
+                required
+              >
+                {versionOSOptions}
+              </Select>
+            </FormControl>
+          </Box>
+        </div>
+
+        <Link
+          fontSize="small"
+          color="info"
+          href="/add/oSys"
+          underline="hover"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-end",
+          }}
+        >
+          <HelpIcon style={{ marginRight: "4px" }} />
+          OS not there?
+        </Link>
+
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            paddingTop: "15px",
+            paddingBottom: "15px",
+          }}
+        >
+          <Button
+            color="primary"
+            variant="text"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            onClick={handleSubmit}
+            disabled={isFormEmpty}
+          >
+            Update
+          </Button>
+        </div>
+        <button onClick={handleDelete} style={{ width: "45px" }}>
+          <DeleteIcon />
+        </button>
       </div>
-      {linkMachine !== '' && (
-        <p style={{ color: 'green' }}>
-          Machine updated successfully, click{' '}
-          <span
-            style={{ color: 'blue', cursor: 'pointer', textDecoration: 'underline' }}
+      {linkMachine !== "" && (
+        <p style={{ color: "green" }}>
+          Machine updated successfully, click{" "}
+          <button
+            style={{
+              color: "blue",
+              cursor: "pointer",
+              textDecoration: "underline",
+              background: "none",
+              border: "none",
+              padding: 0,
+              font: "inherit",
+            }}
             onClick={() => {
-              if (linkMachine !== '') {
+              if (linkMachine !== "") {
                 history.push(`/machine-page/${linkMachine.link}`);
               }
             }}
           >
             here
-          </span>{' '}
+          </button>{" "}
           to configure
         </p>
       )}

@@ -44,7 +44,7 @@ export default function TerminalComponent({ idMachine }) {
   };
 
   return (
-    <div className="terminal" onClick={handleTerminalClick}>
+    <button className="terminal" onClick={handleTerminalClick}>
       <div className="terminal-output">
         {output.map((item, index) => (
           <div key={index}>
@@ -62,6 +62,6 @@ export default function TerminalComponent({ idMachine }) {
           ref={inputRef}
         />
       </form>
-    </div>
+    </button>
   );
 }

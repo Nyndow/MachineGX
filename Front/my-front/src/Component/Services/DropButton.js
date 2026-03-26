@@ -13,119 +13,127 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom';
 import axios from 'axios';
 import ClearIcon from '@mui/icons-material/Clear';
 
-
-const DropdownButton = ({ statusConnection, idMachine,poweroff, selectedData,onSuccessfulDisconnect }) => {
+const DropdownButton = ({
+  statusConnection,
+  idMachine,
+  poweroff,
+  selectedData,
+  onSuccessfulDisconnect,
+}) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const history = useHistory();
   const [selectedFiles, setSelectedFiles] = useState([]);
   const apiUrl = process.env.REACT_APP_API_URL;
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
+  // Open menu
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
+  // Close menu
   const handleClose = () => {
     setAnchorEl(null);
   };
 
+  // Poweroff call
   const poweroffCall = () => {
     poweroff();
-  setAnchorEl(null);
-}
+    setAnchorEl(null);
+  };
 
-/*DECONNECTION*/
-const handleDisconnect = () => {
-  try {
-    const disconnectPromises = selectedData.map((machine) => {
-      return axios.post(`${apiUrl}/disconnect/${machine.idUser}`)
-        .then(() => machine) 
-        .catch(() => {
-          return null; 
-        });
-    });
+  // Disconnect selected machines
+  const handleDisconnect = () => {
+    const disconnectPromises = selectedData.map((machine) =>
+      axios
+        .post(`${apiUrl}/disconnect/${machine.idUser}`)
+        .then(() => machine)
+        .catch(() => null)
+    );
+
     Promise.all(disconnectPromises)
-    .then((disconnectedMachines) => {
-      const successfulMachines = disconnectedMachines.filter(machine => machine !== null);
-      if (onSuccessfulDisconnect) {
-        onSuccessfulDisconnect(successfulMachines);
-      }
-    })
+      .then((disconnectedMachines) => {
+        const successfulMachines = disconnectedMachines.filter(
+          (machine) => machine !== null
+        );
+        if (onSuccessfulDisconnect) {
+          onSuccessfulDisconnect(successfulMachines);
+        }
+      })
       .catch((error) => {
-        console.error('Error disconnecting connected machines:', error);
+        console.error('Error disconnecting machines:', error);
       });
 
-      setAnchorEl(null);
-  } catch (error) {
-    console.error('Error disconnecting connected machines:', error);
-  }
-};
+    setAnchorEl(null);
+  };
 
+  // File selection for upload
+  const handleFileSelect = (e) => {
+    setSelectedFiles((prev) => [...prev, ...e.target.files]);
+  };
 
-/*UPLOAD*/
-    const handleFileSelect = (e) => {
-      setSelectedFiles((prevSelectedFiles) => [...prevSelectedFiles, ...e.target.files]);
-    };
+  // Upload single file to a machine
+  const uploadFile = async (file, idUser) => {
+    const formData = new FormData();
+    formData.append('file', file);
 
-    const uploadFile = async (file, idUser) => {
-      const formData = new FormData();
-      formData.append('file', file);
+    try {
+      await axios.post(`${apiUrl}/transfer-script/${idUser}`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+    } catch (error) {
+      console.error('Error uploading file to machine', error);
+    }
+  };
 
-      try {
-        await axios.post(`${apiUrl}/transfer-script/${idUser}`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-      } catch (error) {
-        console.error(`Error uploading file to machine`, error);
+  // Upload all selected files to selected machines
+  const uploadFiles = async () => {
+    try {
+      for (const machine of selectedData) {
+        const promises = selectedFiles.map((file) => uploadFile(file, machine.idUser));
+        await Promise.all(promises);
       }
-    };
+      setSelectedFiles([]);
+      setIsPopupOpen(false);
+    } catch (error) {
+      console.error('Error uploading files:', error);
+    }
+  };
 
-    const uploadFiles = async () => {
-      try {
-        console.log('data',selectedData)
-        for (const machine of selectedData) {
-          const promises = selectedFiles.map((file) => uploadFile(file, machine.idUser));
-          await Promise.all(promises);
-        }
-        setSelectedFiles([]);
-      } catch (error) {
-        console.error('Error uploading files:', error);
-      }
-    };
+  // Remove selected file
+  const removeFile = (index) => {
+    setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
+  };
 
-    const removeFile = (index) => {
-      const updatedSelectedFiles = [...selectedFiles];
-      updatedSelectedFiles.splice(index, 1);
-      setSelectedFiles(updatedSelectedFiles);
-    };
-
-    const togglePopup = () => {
-      setIsPopupOpen(!isPopupOpen);
-    };
-
-  /*END UPLOAD*/
+  // Toggle upload popup
+  const togglePopup = () => {
+    setIsPopupOpen((prev) => !prev);
+  };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <div>
-      {
-        idMachine || statusConnection ? (
-          <IconButton
-            aria-controls="dropdown-menu"
-            aria-haspopup="true"
-            onClick={handleClick}
-          >
-            <MenuIcon fontSize="large" style={{ color: 'white' }} />
-          </IconButton>
-        ) : null
-      }
-      </div>
-      <div>
-      <Menu id="dropdown-menu" anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={() => handleClose(null)} transformOrigin={{ vertical: 'top', horizontal: 'center' }} PaperProps={{ style: { width: '300px' } }}>
+      {/* Menu Icon */}
+      {(idMachine || statusConnection) && (
+        <IconButton
+          aria-controls="dropdown-menu"
+          aria-haspopup="true"
+          onClick={handleClick}
+        >
+          <MenuIcon fontSize="large" style={{ color: 'white' }} />
+        </IconButton>
+      )}
+
+      {/* Dropdown Menu */}
+      <Menu
+        id="dropdown-menu"
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleClose} // no arguments here
+        transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+        PaperProps={{ style: { width: '300px' } }}
+      >
         {statusConnection && (
-          <MenuItem onClick={() => handleClose('Option 1')}>
+          <MenuItem onClick={handleClose}>
             <ListItemIcon>
               <SystemUpdateAltIcon />
             </ListItemIcon>
@@ -133,20 +141,18 @@ const handleDisconnect = () => {
           </MenuItem>
         )}
         {statusConnection && (
-          <MenuItem onClick={togglePopup} >
+          <MenuItem onClick={togglePopup}>
             <ListItemIcon>
               <CloudUploadIcon />
             </ListItemIcon>
             Upload
           </MenuItem>
         )}
-        {statusConnection&&idMachine&&(
-          <hr></hr>
-        )}
+        {statusConnection && idMachine && <hr />}
         {idMachine && (
           <MenuItem onClick={() => history.push(`/editMachine/${idMachine}`)}>
             <ListItemIcon>
-              <SettingsIcon /> 
+              <SettingsIcon />
             </ListItemIcon>
             Edit
           </MenuItem>
@@ -154,14 +160,12 @@ const handleDisconnect = () => {
         {idMachine && (
           <MenuItem onClick={() => history.push(`/users_machine/${idMachine}`)}>
             <ListItemIcon>
-              <PersonIcon /> 
+              <PersonIcon />
             </ListItemIcon>
             Users
           </MenuItem>
         )}
-        {statusConnection&&(
-          <hr></hr>
-        )}
+        {statusConnection && <hr />}
         {statusConnection && (
           <MenuItem onClick={handleDisconnect}>
             <ListItemIcon>
@@ -180,25 +184,41 @@ const handleDisconnect = () => {
         )}
       </Menu>
 
-      </div>
-            {/* Upload Section */}
-            <div className="popup-container">
-        {isPopupOpen && (
+      {/* Upload Popup */}
+      {isPopupOpen && (
+        <div className="popup-container">
           <div className="popup">
             <div className="popup-content">
-            <ClearIcon onClick={() => togglePopup()} className='close-icon'/>
+              <ClearIcon
+                onClick={togglePopup}
+                className="close-icon"
+                style={{ cursor: 'pointer' }}
+              />
               <div className="custom-file">
-                <input type="file" multiple onChange={handleFileSelect} id="fileInput" className="custom-file-input" />
-                <label htmlFor="fileInput" className="custom-file-label">Click here to choose files to upload</label>
+                <input
+                  type="file"
+                  multiple
+                  onChange={handleFileSelect}
+                  id="fileInput"
+                  className="custom-file-input"
+                />
+                <label htmlFor="fileInput" className="custom-file-label">
+                  Click here to choose files to upload
+                </label>
               </div>
-              <hr></hr>
+              <hr />
               {selectedFiles.length > 0 && (
                 <div className="selected-files-container">
                   {selectedFiles.map((file, index) => (
                     <div className="file-box" key={index}>
-                          <div className="clear-button-container">
-                            <ClearIcon onClick={() => removeFile(index)} fontSize="small" className="clear-icon" />
-                          </div>
+                      <div className="clear-button-container">
+                        <ClearIcon
+                          onClick={() => removeFile(index)}
+                          fontSize="small"
+                          className="clear-icon"
+                          style={{ cursor: 'pointer' }}
+                        />
+                      </div>
                       {file.type.startsWith('image') ? (
                         <img src={URL.createObjectURL(file)} alt={file.name} />
                       ) : file.type.startsWith('video') ? (
@@ -212,15 +232,14 @@ const handleDisconnect = () => {
                   ))}
                 </div>
               )}
-              <hr></hr>
+              <hr />
               <div className="send-button">
                 <button onClick={uploadFiles}>Upload</button>
               </div>
             </div>
           </div>
-        )}
-      </div>
-      {/* Ending upload Section */}
+        </div>
+      )}
     </div>
   );
 };

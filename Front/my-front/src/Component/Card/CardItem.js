@@ -17,7 +17,7 @@ const CardItem = ({ idOS, machineName, freeRAM, totalRAM, CPUUsage, DownUsage, U
   };
 
   return (
-    <div onClick={handleClick}>
+    <button onClick={handleClick}>
       <div className="card">
         <div className="card-content">
           <h3 className="card-title">{machineName} | {numEmployee}</h3>
@@ -33,7 +33,7 @@ const CardItem = ({ idOS, machineName, freeRAM, totalRAM, CPUUsage, DownUsage, U
           </p>
         </div>
       </div>
-    </div>
+    </button>
   );
 };
 
