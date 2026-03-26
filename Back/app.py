@@ -15,11 +15,16 @@ from routes.machineListUser import machine_user_list
 from routes.machineUser import machine_user
 from routes.topBP import top_bp
 from routes.customCommandBP import custom_cmd_bp
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 app = Flask(__name__)
 CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///machineGX.db'
-app.config['SECRET_KEY'] = 'your_secret_key'
+
+
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 db.init_app(app)
 
 app.register_blueprint(administration_bp)
